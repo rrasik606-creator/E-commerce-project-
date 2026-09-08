@@ -1,0 +1,459 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Titan Smart Pro",
+      "brand": "Titan",
+      "category": "men",
+      "type": "smart",
+      "price": 8999,
+      "originalPrice": 10999,
+      "discount": 18,
+      "rating": 4.5,
+      "reviews": 124,
+      "image": "/images/titan-smart-pro.jpg",
+      "description": "Premium smartwatch with fitness tracking, heart-rate monitoring and Bluetooth calling.",
+      "features": [
+        "Bluetooth Calling",
+        "Heart Rate Monitor",
+        "SpO2 Monitoring",
+        "AMOLED Display",
+        "7 Days Battery"
+      ],
+      "stock": 15,
+      "featured": true
+    },
+    {
+      "id": "2",
+      "name": "Fastrack Reflex Vox",
+      "brand": "Fastrack",
+      "category": "men",
+      "type": "smart",
+      "price": 2999,
+      "originalPrice": 3999,
+      "discount": 25,
+      "rating": 4.3,
+      "reviews": 98,
+      "image": "/images/fastrack-reflex.jpg",
+      "description": "Stylish smartwatch designed for everyday fitness and smart notifications.",
+      "features": [
+        "Fitness Tracking",
+        "Sleep Monitoring",
+        "Bluetooth Calling",
+        "Multiple Sports Modes",
+        "Water Resistant"
+      ],
+      "stock": 25,
+      "featured": true
+    },
+    {
+      "id": "3",
+      "name": "Casio Edifice Classic",
+      "brand": "Casio",
+      "category": "men",
+      "type": "casual",
+      "price": 7499,
+      "originalPrice": 8999,
+      "discount": 17,
+      "rating": 4.7,
+      "reviews": 210,
+      "image": "/images/casio-edifice.jpg",
+      "description": "Elegant men's analog watch with a premium stainless-steel design.",
+      "features": [
+        "Stainless Steel Case",
+        "Quartz Movement",
+        "Mineral Glass",
+        "Water Resistant",
+        "Date Display"
+      ],
+      "stock": 12,
+      "featured": true
+    },
+    {
+      "id": "4",
+      "name": "Fossil Grant Chronograph",
+      "brand": "Fossil",
+      "category": "men",
+      "type": "casual",
+      "price": 11999,
+      "originalPrice": 14999,
+      "discount": 20,
+      "rating": 4.6,
+      "reviews": 175,
+      "image": "/images/fossil-grant.jpg",
+      "description": "Classic chronograph watch with a sophisticated leather strap.",
+      "features": [
+        "Chronograph",
+        "Leather Strap",
+        "Quartz Movement",
+        "Date Display",
+        "Water Resistant"
+      ],
+      "stock": 8,
+      "featured": false
+    },
+    {
+      "id": "5",
+      "name": "Noise ColorFit Ultra",
+      "brand": "Noise",
+      "category": "women",
+      "type": "smart",
+      "price": 3499,
+      "originalPrice": 4999,
+      "discount": 30,
+      "rating": 4.4,
+      "reviews": 156,
+      "image": "/images/noise-colorfit.jpg",
+      "description": "Modern smartwatch with a vibrant display and comprehensive health tracking.",
+      "features": [
+        "AMOLED Display",
+        "Heart Rate Tracking",
+        "SpO2 Monitoring",
+        "Sleep Tracking",
+        "100 Sports Modes"
+      ],
+      "stock": 20,
+      "featured": true
+    },
+    {
+      "id": "6",
+      "name": "boAt Lunar Connect",
+      "brand": "boAt",
+      "category": "women",
+      "type": "smart",
+      "price": 2499,
+      "originalPrice": 3499,
+      "discount": 29,
+      "rating": 4.2,
+      "reviews": 87,
+      "image": "/images/boat-lunar.jpg",
+      "description": "Affordable smartwatch with Bluetooth calling and health monitoring.",
+      "features": [
+        "Bluetooth Calling",
+        "Heart Rate Monitor",
+        "Activity Tracking",
+        "Multiple Watch Faces",
+        "Water Resistant"
+      ],
+      "stock": 30,
+      "featured": false
+    },
+    {
+      "id": "7",
+      "name": "Titan Raga Women's Watch",
+      "brand": "Titan",
+      "category": "women",
+      "type": "casual",
+      "price": 5999,
+      "originalPrice": 6999,
+      "discount": 14,
+      "rating": 4.8,
+      "reviews": 245,
+      "image": "/images/titan-raga.jpg",
+      "description": "Elegant women's analog watch featuring a stylish bracelet design.",
+      "features": [
+        "Analog Display",
+        "Stainless Steel Strap",
+        "Quartz Movement",
+        "Mineral Glass",
+        "Water Resistant"
+      ],
+      "stock": 10,
+      "featured": true
+    },
+    {
+      "id": "8",
+      "name": "Fastrack Pink Dial",
+      "brand": "Fastrack",
+      "category": "women",
+      "type": "casual",
+      "price": 2799,
+      "originalPrice": 3499,
+      "discount": 20,
+      "rating": 4.5,
+      "reviews": 134,
+      "image": "/images/fastrack-pink.jpg",
+      "description": "Trendy casual watch with a beautiful pink dial for everyday wear.",
+      "features": [
+        "Analog Display",
+        "Metal Strap",
+        "Quartz Movement",
+        "Mineral Glass",
+        "Water Resistant"
+      ],
+      "stock": 18,
+      "featured": false
+    },
+    {
+      "id": "9",
+      "name": "Samsung Galaxy Watch",
+      "brand": "Samsung",
+      "category": "men",
+      "type": "smart",
+      "price": 19999,
+      "originalPrice": 22999,
+      "discount": 13,
+      "rating": 4.7,
+      "reviews": 320,
+      "image": "/images/samsung-watch.jpg",
+      "description": "Advanced smartwatch with health tracking, GPS and a premium AMOLED display.",
+      "features": [
+        "AMOLED Display",
+        "GPS",
+        "Heart Rate Monitor",
+        "Sleep Tracking",
+        "Bluetooth Calling"
+      ],
+      "stock": 7,
+      "featured": true
+    },
+    {
+      "id": "10",
+      "name": "Sonata Classic Black",
+      "brand": "Sonata",
+      "category": "men",
+      "type": "casual",
+      "price": 1599,
+      "originalPrice": 1999,
+      "discount": 20,
+      "rating": 4.2,
+      "reviews": 89,
+      "image": "/images/sonata-black.jpg",
+      "description": "Simple and reliable analog watch suitable for everyday use.",
+      "features": [
+        "Analog Display",
+        "Leather Strap",
+        "Quartz Movement",
+        "Mineral Glass",
+        "Water Resistant"
+      ],
+      "stock": 35,
+      "featured": false
+    },
+    {
+      "id": "11",
+      "name": "Titan Minimalist Rose",
+      "brand": "Titan",
+      "category": "women",
+      "type": "casual",
+      "price": 4499,
+      "originalPrice": 5499,
+      "discount": 18,
+      "rating": 4.6,
+      "reviews": 112,
+      "image": "/images/titan-rose.jpg",
+      "description": "Minimalist women's watch with a sleek rose-gold finish.",
+      "features": [
+        "Analog Display",
+        "Rose Gold Finish",
+        "Metal Strap",
+        "Quartz Movement",
+        "Water Resistant"
+      ],
+      "stock": 14,
+      "featured": true
+    },
+    {
+      "id": "12",
+      "name": "Fire-Boltt Phoenix Pro",
+      "brand": "Fire-Boltt",
+      "category": "women",
+      "type": "smart",
+      "price": 2999,
+      "originalPrice": 4499,
+      "discount": 33,
+      "rating": 4.3,
+      "reviews": 201,
+      "image": "/images/fireboltt-phoenix.jpg",
+      "description": "Feature-rich smartwatch with calling, health monitoring and sports tracking.",
+      "features": [
+        "Bluetooth Calling",
+        "Heart Rate Monitor",
+        "SpO2",
+        "Sports Tracking",
+        "Large Display"
+      ],
+      "stock": 22,
+      "featured": false
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Rashik",
+      "email": "rashik@gmail.com",
+      "username": "rashik",
+      "password": "rashik123"
+    },
+    {
+      "id": "2",
+      "name": "Arjun Kumar",
+      "email": "arjun@gmail.com",
+      "username": "arjun",
+      "password": "arjun123"
+    },
+    {
+      "id": "3",
+      "name": "Rahul Menon",
+      "email": "rahul@gmail.com",
+      "username": "rahul",
+      "password": "rahul123"
+    },
+    {
+      "id": "4",
+      "name": "Ananya",
+      "email": "ananya@gmail.com",
+      "username": "ananya",
+      "password": "ananya123"
+    },
+    {
+      "id": "5",
+      "name": "Meera Nair",
+      "email": "meera@gmail.com",
+      "username": "meere",
+      "password": "meera123"
+    },
+    {
+      "name": "Rshik",
+      "username": "rashi",
+      "email": "rashi@gmail.com",
+      "password": "Rashi@123",
+      "id": "ORksTVpZYf8"
+    },
+    {
+      "name": "ra",
+      "username": "ttsss",
+      "email": "ss@gmail.com",
+      "password": "ss",
+      "role": "user",
+      "id": "2hREFepGlAA"
+    },
+    {
+      "name": "ggd",
+      "username": "ggggggggg",
+      "email": "hhhhh@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "id": "sJtiPWzM6Ns"
+    }
+  ],
+  "sessions": [
+    {
+      "userId": "ORksTVpZYf8",
+      "id": "yFHy8ZIa7tk"
+    }
+  ],
+  "cart": [
+    {
+      "id": "1",
+      "userId": 1,
+      "productId": 3,
+      "quantity": 1
+    },
+    {
+      "id": "2",
+      "userId": 1,
+      "productId": 5,
+      "quantity": 2
+    },
+    {
+      "id": "3",
+      "userId": 2,
+      "productId": 9,
+      "quantity": 1
+    }
+  ],
+  "wishlist": [
+    {
+      "id": "1",
+      "userId": 1,
+      "productId": 4
+    },
+    {
+      "id": "2",
+      "userId": 1,
+      "productId": 7
+    },
+    {
+      "id": "3",
+      "userId": 2,
+      "productId": 1
+    },
+    {
+      "id": "4",
+      "userId": 3,
+      "productId": 11
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "userId": 1,
+      "items": [
+        {
+          "productId": 2,
+          "quantity": 1,
+          "price": 2999
+        },
+        {
+          "productId": 8,
+          "quantity": 1,
+          "price": 2799
+        }
+      ],
+      "totalAmount": 5798,
+      "status": "Delivered",
+      "orderDate": "2026-08-20",
+      "paymentMethod": "UPI",
+      "shippingAddress": {
+        "address": "12 Main Road",
+        "city": "Kozhikode",
+        "state": "Kerala",
+        "pincode": "673001"
+      }
+    },
+    {
+      "id": "2",
+      "userId": 2,
+      "items": [
+        {
+          "productId": 9,
+          "quantity": 1,
+          "price": 19999
+        }
+      ],
+      "totalAmount": 19999,
+      "status": "Shipped",
+      "orderDate": "2026-08-28",
+      "paymentMethod": "Card",
+      "shippingAddress": {
+        "address": "45 MG Road",
+        "city": "Kochi",
+        "state": "Kerala",
+        "pincode": "682001"
+      }
+    },
+    {
+      "id": "3",
+      "userId": 3,
+      "items": [
+        {
+          "productId": 11,
+          "quantity": 1,
+          "price": 4499
+        }
+      ],
+      "totalAmount": 4499,
+      "status": "Processing",
+      "orderDate": "2026-09-01",
+      "paymentMethod": "Cash on Delivery",
+      "shippingAddress": {
+        "address": "23 Beach Road",
+        "city": "Kannur",
+        "state": "Kerala",
+        "pincode": "670001"
+      }
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

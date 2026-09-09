@@ -106,7 +106,7 @@ const Login = () => {
         <p>{error.password}</p>
         <br />
         <button type='submit'>LOGIN</button>
-        <p>Don't have an account?<Link to="/register"></Link></p>
+        <p>Don't have an account?<Link to="/register">Register</Link></p>
       </form>
     </div>
   )

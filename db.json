@@ -21,7 +21,8 @@
         "7 Days Battery"
       ],
       "stock": 15,
-      "featured": true
+      "featured": true,
+      "isNew":true
     },
     {
       "id": "2",
@@ -44,7 +45,8 @@
         "Water Resistant"
       ],
       "stock": 25,
-      "featured": true
+      "featured": true,
+      "isNew":true
     },
     {
       "id": "3",
@@ -67,7 +69,8 @@
         "Date Display"
       ],
       "stock": 12,
-      "featured": true
+      "featured": true,
+      "isNew":false
     },
     {
       "id": "4",
@@ -90,7 +93,8 @@
         "Water Resistant"
       ],
       "stock": 8,
-      "featured": false
+      "featured": false,
+      "isNew":false
     },
     {
       "id": "5",
@@ -113,7 +117,8 @@
         "100 Sports Modes"
       ],
       "stock": 20,
-      "featured": true
+      "featured": true,
+      "isNew":false
     },
     {
       "id": "6",
@@ -136,7 +141,8 @@
         "Water Resistant"
       ],
       "stock": 30,
-      "featured": false
+      "featured": false,
+      "isNew":false
     },
     {
       "id": "7",
@@ -159,7 +165,8 @@
         "Water Resistant"
       ],
       "stock": 10,
-      "featured": true
+      "featured": true,
+      "isNew":true
     },
     {
       "id": "8",
@@ -182,7 +189,8 @@
         "Water Resistant"
       ],
       "stock": 18,
-      "featured": false
+      "featured": false,
+      "isNew":true
     },
     {
       "id": "9",
@@ -205,7 +213,8 @@
         "Bluetooth Calling"
       ],
       "stock": 7,
-      "featured": true
+      "featured": true,
+      "isNew":true
     },
     {
       "id": "10",
@@ -228,7 +237,8 @@
         "Water Resistant"
       ],
       "stock": 35,
-      "featured": false
+      "featured": false,
+      "isNew":true
     },
     {
       "id": "11",
@@ -251,7 +261,8 @@
         "Water Resistant"
       ],
       "stock": 14,
-      "featured": true
+      "featured": true,
+      "isNew":true
     },
     {
       "id": "12",
@@ -274,7 +285,8 @@
         "Large Display"
       ],
       "stock": 22,
-      "featured": false
+      "featured": false,
+      "isNew":true
     }
   ],
   "users": [

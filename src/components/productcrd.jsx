@@ -1,11 +1,13 @@
 import React from 'react'
 import { Heart } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Productcrd = ({product}) => {
-    const[like,setLike]=useState(false)
+    const[like,setLike]=useState(false);
+    const navigate=useNavigate();
   return (
-    <div className='w-full bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition duration-300'>
+    <div onClick={()=>navigate(`/products/${product.id}`)} className='w-full bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition duration-300'>
 
       {/* img section */}
       <div className='relative m-4 h-[350px] rounded-2xl bg-gray-100 overflow-hidden'>

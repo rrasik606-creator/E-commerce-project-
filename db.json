@@ -11,7 +11,12 @@
       "discount": 18,
       "rating": 4.5,
       "reviews": 124,
-      "image": "/images/titan-smart-pro.jpg",
+      "image": [
+        "/images/titan-smart-pro.jpg",
+        "/images/titan-smart-pro.jpg",
+        "/images/titan-smart-pro.jpg",
+        "/images/titan-smart-pro.jpg"
+      ],
       "description": "Premium smartwatch with fitness tracking, heart-rate monitoring and Bluetooth calling.",
       "features": [
         "Bluetooth Calling",
@@ -35,7 +40,12 @@
       "discount": 25,
       "rating": 4.3,
       "reviews": 98,
-      "image": "/images/fastrack-reflex.jpg",
+      "image": [
+        "/images/fastrack-reflex.jpg",
+        "/images/fastrack-reflex.jpg",
+        "/images/fastrack-reflex.jpg",
+        "/images/fastrack-reflex.jpg"
+      ],
       "description": "Stylish smartwatch designed for everyday fitness and smart notifications.",
       "features": [
         "Fitness Tracking",
@@ -59,7 +69,12 @@
       "discount": 17,
       "rating": 4.7,
       "reviews": 210,
-      "image": "/images/casio-edifice.jpg",
+      "image": [
+        "/images/casio-edifice.jpg",
+        "/images/casio-edifice.jpg",
+        "/images/casio-edifice.jpg",
+        "/images/casio-edifice.jpg"
+      ],
       "description": "Elegant men's analog watch with a premium stainless-steel design.",
       "features": [
         "Stainless Steel Case",
@@ -83,7 +98,12 @@
       "discount": 20,
       "rating": 4.6,
       "reviews": 175,
-      "image": "/images/fossil-grant.jpg",
+      "image": [
+        "/images/fossil-grant.jpg",
+        "/images/fossil-grant.jpg",
+        "/images/fossil-grant.jpg",
+        "/images/fossil-grant.jpg"
+      ],
       "description": "Classic chronograph watch with a sophisticated leather strap.",
       "features": [
         "Chronograph",
@@ -107,7 +127,12 @@
       "discount": 30,
       "rating": 4.4,
       "reviews": 156,
-      "image": "/images/noise-colorfit.jpg",
+      "image": [
+        "/images/noise-colorfit.jpg",
+        "/images/noise-colorfit.jpg",
+        "/images/noise-colorfit.jpg",
+        "/images/noise-colorfit.jpg"
+      ],
       "description": "Modern smartwatch with a vibrant display and comprehensive health tracking.",
       "features": [
         "AMOLED Display",
@@ -131,7 +156,12 @@
       "discount": 29,
       "rating": 4.2,
       "reviews": 87,
-      "image": "/images/boat-lunar.jpg",
+      "image": [
+        "/images/boat-lunar.jpg",
+        "/images/boat-lunar.jpg",
+        "/images/boat-lunar.jpg",
+        "/images/boat-lunar.jpg"
+      ],
       "description": "Affordable smartwatch with Bluetooth calling and health monitoring.",
       "features": [
         "Bluetooth Calling",
@@ -155,7 +185,12 @@
       "discount": 14,
       "rating": 4.8,
       "reviews": 245,
-      "image": "/images/titan-raga.jpg",
+      "image": [
+        "/images/titan-raga.jpg",
+        "/images/titan-raga.jpg",
+        "/images/titan-raga.jpg",
+        "/images/titan-raga.jpg"
+      ],
       "description": "Elegant women's analog watch featuring a stylish bracelet design.",
       "features": [
         "Analog Display",
@@ -179,7 +214,12 @@
       "discount": 20,
       "rating": 4.5,
       "reviews": 134,
-      "image": "/images/fastrack-pink.jpg",
+      "image": [
+        "/images/fastrack-pink.jpg",
+        "/images/fastrack-pink.jpg",
+        "/images/fastrack-pink.jpg",
+        "/images/fastrack-pink.jpg"
+      ],
       "description": "Trendy casual watch with a beautiful pink dial for everyday wear.",
       "features": [
         "Analog Display",
@@ -203,7 +243,12 @@
       "discount": 13,
       "rating": 4.7,
       "reviews": 320,
-      "image": "/images/samsung-watch.jpg",
+      "image": [
+        "/images/samsung-watch.jpg",
+        "/images/samsung-watch.jpg",
+        "/images/samsung-watch.jpg",
+        "/images/samsung-watch.jpg"
+      ],
       "description": "Advanced smartwatch with health tracking, GPS and a premium AMOLED display.",
       "features": [
         "AMOLED Display",
@@ -227,7 +272,12 @@
       "discount": 20,
       "rating": 4.2,
       "reviews": 89,
-      "image": "/images/sonata-black.jpg",
+      "image": [
+        "/images/sonata-black.jpg",
+        "/images/sonata-black.jpg",
+        "/images/sonata-black.jpg",
+        "/images/sonata-black.jpg"
+      ],
       "description": "Simple and reliable analog watch suitable for everyday use.",
       "features": [
         "Analog Display",
@@ -251,7 +301,12 @@
       "discount": 18,
       "rating": 4.6,
       "reviews": 112,
-      "image": "/images/titan-rose.jpg",
+      "image": [
+        "/images/titan-rose.jpg",
+        "/images/titan-rose.jpg",
+        "/images/titan-rose.jpg",
+        "/images/titan-rose.jpg"
+      ],
       "description": "Minimalist women's watch with a sleek rose-gold finish.",
       "features": [
         "Analog Display",
@@ -275,7 +330,12 @@
       "discount": 33,
       "rating": 4.3,
       "reviews": 201,
-      "image": "/images/fireboltt-phoenix.jpg",
+      "image": [
+        "/images/fireboltt-phoenix.jpg",
+        "/images/fireboltt-phoenix.jpg",
+        "/images/fireboltt-phoenix.jpg",
+        "/images/fireboltt-phoenix.jpg"
+      ],
       "description": "Feature-rich smartwatch with calling, health monitoring and sports tracking.",
       "features": [
         "Bluetooth Calling",

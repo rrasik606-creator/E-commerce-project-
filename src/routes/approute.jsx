@@ -6,6 +6,8 @@ import Home from '../pages/user/home'
 import Products from '../pages/user/products'
 import Productdetails from '../pages/user/productdetails'
 import Cart from '../pages/user/cart'
+import Wishlist from '../pages/user/wishlist'
+import Checkout from '../pages/user/checkout'
 
 const Approute = () => {
   return (
@@ -17,6 +19,8 @@ const Approute = () => {
         <Route path='/products' element={<Products/>}/>
         <Route path='/products/:id' element={<Productdetails/>}/>
         <Route path='/cart' element={<Cart/>}/>
+        <Route path='/wishlist' element={<Wishlist/>}/>
+        <Route path='/checkout' element={<Checkout/>}/>
       </Routes>
     </div>
   )

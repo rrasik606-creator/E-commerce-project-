@@ -79,7 +79,6 @@ const Register = () => {
 
       try{
           await axios.post(API_URL,userdata)
-          await axios.post("http://localhost:3001/role",)
           navigate("/login")
       }
       catch{

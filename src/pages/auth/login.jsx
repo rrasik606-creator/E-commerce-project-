@@ -59,18 +59,16 @@ const Login = () => {
       console.log(check);
 
     if(check){
-      const session=await axios.post("http://localhost:3001/sessions",{userId:check.id});
       const loggedUser={
         id:check.id,
         name:check.name,
         username:check.username,
         email:check.email
       };
-      dispatch(login({user:loggedUser,sessionId:session.data.id}))
-      localStorage.setItem("user",JSON.stringify(loggedUser));
-      localStorage.setItem("sessiionId",session.data.id);
+      dispatch(login({user:loggedUser}))
+      localStorage.setItem("user",check.id);
       alert("login successfully!");
-      navigate('/home');
+      navigate('/');
     }
     else{
       alert("Invalid email or password...")

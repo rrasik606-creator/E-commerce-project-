@@ -27,7 +27,7 @@
       ],
       "stock": 15,
       "featured": true,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "2",
@@ -56,7 +56,7 @@
       ],
       "stock": 25,
       "featured": true,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "3",
@@ -85,7 +85,7 @@
       ],
       "stock": 12,
       "featured": true,
-      "isNew":false
+      "isNew": false
     },
     {
       "id": "4",
@@ -114,7 +114,7 @@
       ],
       "stock": 8,
       "featured": false,
-      "isNew":false
+      "isNew": false
     },
     {
       "id": "5",
@@ -143,7 +143,7 @@
       ],
       "stock": 20,
       "featured": true,
-      "isNew":false
+      "isNew": false
     },
     {
       "id": "6",
@@ -172,7 +172,7 @@
       ],
       "stock": 30,
       "featured": false,
-      "isNew":false
+      "isNew": false
     },
     {
       "id": "7",
@@ -201,7 +201,7 @@
       ],
       "stock": 10,
       "featured": true,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "8",
@@ -230,7 +230,7 @@
       ],
       "stock": 18,
       "featured": false,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "9",
@@ -259,7 +259,7 @@
       ],
       "stock": 7,
       "featured": true,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "10",
@@ -288,7 +288,7 @@
       ],
       "stock": 35,
       "featured": false,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "11",
@@ -317,7 +317,7 @@
       ],
       "stock": 14,
       "featured": true,
-      "isNew":true
+      "isNew": true
     },
     {
       "id": "12",
@@ -346,7 +346,7 @@
       ],
       "stock": 22,
       "featured": false,
-      "isNew":true
+      "isNew": true
     }
   ],
   "users": [
@@ -355,14 +355,14 @@
       "name": "Rashik",
       "email": "rashik@gmail.com",
       "username": "rashik",
-      "password": "rashik123"
+      "password": "Rashik@123"
     },
     {
       "id": "2",
       "name": "Arjun Kumar",
       "email": "arjun@gmail.com",
       "username": "arjun",
-      "password": "arjun123"
+      "password": "Arjun@123"
     },
     {
       "id": "3",
@@ -407,32 +407,73 @@
       "password": "123456",
       "role": "user",
       "id": "sJtiPWzM6Ns"
+    },
+    {
+      "name": "aslam",
+      "username": "aslu",
+      "email": "aslu@gmail.com",
+      "password": "Aslu@123",
+      "id": "tX89Gh02eBo"
     }
   ],
   "sessions": [
     {
       "userId": "ORksTVpZYf8",
       "id": "yFHy8ZIa7tk"
+    },
+    {
+      "userId": "1",
+      "id": "4-sUpHKhlqs"
     }
   ],
   "cart": [
     {
-      "id": "1",
-      "userId": 1,
-      "productId": 3,
-      "quantity": 1
+      "userId": "tX89Gh02eBo",
+      "items": [
+        {
+          "productId": "6",
+          "name": "boAt Lunar Connect",
+          "price": 2499,
+          "image": [
+            "/images/boat-lunar.jpg",
+            "/images/boat-lunar.jpg",
+            "/images/boat-lunar.jpg",
+            "/images/boat-lunar.jpg"
+          ],
+          "quantity": 3
+        }
+      ],
+      "id": "kYNCqhyChhs"
     },
     {
-      "id": "2",
-      "userId": 1,
-      "productId": 5,
-      "quantity": 2
-    },
-    {
-      "id": "3",
-      "userId": 2,
-      "productId": 9,
-      "quantity": 1
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "3",
+          "name": "Casio Edifice Classic",
+          "price": 7499,
+          "image": [
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg"
+          ],
+          "quantity": 1
+        }
+      ],
+      "id": "ubTr9EQazSE"
     }
   ],
   "wishlist": [
@@ -455,6 +496,72 @@
       "id": "4",
       "userId": 3,
       "productId": 11
+    },
+    {
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "1",
+          "name": "Titan Smart Pro",
+          "brand": "Titan",
+          "price": 8999,
+          "image": [
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg"
+          ]
+        },
+        {
+          "productId": "5",
+          "name": "Noise ColorFit Ultra",
+          "brand": "Noise",
+          "price": 3499,
+          "image": [
+            "/images/noise-colorfit.jpg",
+            "/images/noise-colorfit.jpg",
+            "/images/noise-colorfit.jpg",
+            "/images/noise-colorfit.jpg"
+          ]
+        },
+        {
+          "productId": "3",
+          "name": "Casio Edifice Classic",
+          "brand": "Casio",
+          "price": 7499,
+          "image": [
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg"
+          ]
+        },
+        {
+          "productId": "10",
+          "name": "Sonata Classic Black",
+          "brand": "Sonata",
+          "price": 1599,
+          "image": [
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg"
+          ]
+        },
+        {
+          "productId": "12",
+          "name": "Fire-Boltt Phoenix Pro",
+          "brand": "Fire-Boltt",
+          "price": 2999,
+          "image": [
+            "/images/fireboltt-phoenix.jpg",
+            "/images/fireboltt-phoenix.jpg",
+            "/images/fireboltt-phoenix.jpg",
+            "/images/fireboltt-phoenix.jpg"
+          ]
+        }
+      ],
+      "id": "3izB5cQSkeU"
     }
   ],
   "orders": [
@@ -525,6 +632,123 @@
         "state": "Kerala",
         "pincode": "670001"
       }
+    },
+    {
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ],
+          "quantity": 9
+        },
+        {
+          "productId": "1",
+          "name": "Titan Smart Pro",
+          "price": 8999,
+          "image": [
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg"
+          ],
+          "quantity": 3
+        }
+      ],
+      "address": {
+        "name": "rs",
+        "phone": "hdhh",
+        "address": "shshs",
+        "city": "hshd",
+        "state": "shshs",
+        "pincode": "hshsh"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 53988,
+      "shipping": 0,
+      "total": 53988,
+      "status": "Placed",
+      "id": "MJwWNzuci4o"
+    },
+    {
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "hhhjh",
+        "phone": "hhj",
+        "address": "ertyuiol",
+        "city": "dfghjk",
+        "state": "frtghyj",
+        "pincode": "rtghjkl"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 2999,
+      "shipping": 100,
+      "total": 3099,
+      "status": "Placed",
+      "id": "COore4lvvgI"
+    },
+    {
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ],
+          "quantity": 4
+        },
+        {
+          "productId": "7",
+          "name": "Titan Raga Women's Watch",
+          "price": 5999,
+          "image": [
+            "/images/titan-raga.jpg",
+            "/images/titan-raga.jpg",
+            "/images/titan-raga.jpg",
+            "/images/titan-raga.jpg"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "rashik",
+        "phone": "4545442552",
+        "address": "asdfghjkxcvbnmghjk",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "gsgshhsgs"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 17995,
+      "total": 17995,
+      "status": "Placed",
+      "orderDate": "2026-09-15T11:00:35.850Z",
+      "id": "pUeeT17g18A"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

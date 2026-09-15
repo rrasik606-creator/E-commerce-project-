@@ -8,6 +8,7 @@ import Productdetails from '../pages/user/productdetails'
 import Cart from '../pages/user/cart'
 import Wishlist from '../pages/user/wishlist'
 import Checkout from '../pages/user/checkout'
+import Orders from '../pages/user/orders'
 
 const Approute = () => {
   return (
@@ -21,6 +22,7 @@ const Approute = () => {
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/wishlist' element={<Wishlist/>}/>
         <Route path='/checkout' element={<Checkout/>}/>
+        <Route path='/orders' element={<Orders/>}/>
       </Routes>
     </div>
   )

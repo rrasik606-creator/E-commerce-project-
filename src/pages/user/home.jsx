@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ShieldCheck,Truck,RotateCcw,Headphones,ArrowRight,ChevronLeft,ChevronRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const trustBadges = [
   { icon: ShieldCheck, title: "100% Authentic", subtitle: "Original watches only" },
@@ -9,13 +10,15 @@ const trustBadges = [
 ];
 
 const categories = [
-  { name: "Sports Watches", image: "https://placehold.co/400x400/dcdcdc/1a1a1a?text=Smart+Watch" },
-  { name: "Casual Watches", image: "https://placehold.co/400x400/e3ded2/1a1a1a?text=Casual+Watch" },
+  { name: "Sports Watches", type: "sports", image: "https://placehold.co/400x400/dcdcdc/1a1a1a?text=Sports+Watch" },
+  { name: "Casual Watches", type: "casual", image: "https://placehold.co/400x400/e3ded2/1a1a1a?text=Casual+Watch" },
 ];
 
 const Home = () => {
 
   const [slide, setSlide] = useState(1);
+
+  const navigate = useNavigate();
 
   const totalSlides = 3;
 
@@ -38,7 +41,11 @@ const Home = () => {
             <p className="text-gray-600 mb-8 leading-relaxed">
               Crafted for those who value style, precision and every moment.
             </p>
-            <button className="inline-flex items-center gap-2 rounded-md bg-gray-900 text-white px-6 py-3 text-sm font-medium hover:bg-gray-800 transition-colors">
+
+            <button
+              onClick={() => navigate("/products")}
+              className="inline-flex items-center gap-2 rounded-md bg-gray-900 text-white px-6 py-3 text-sm font-medium hover:bg-gray-800 transition-colors"
+            >
               Shop Now
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -55,6 +62,7 @@ const Home = () => {
 
         <div className="absolute bottom-6 right-6 md:right-16 flex items-center gap-3 text-sm text-gray-500">
           <span>0{slide} / 0{totalSlides}</span>
+
           <button
             onClick={prevSlide}
             aria-label="Previous slide"
@@ -62,6 +70,7 @@ const Home = () => {
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
+
           <button
             onClick={nextSlide}
             aria-label="Next slide"
@@ -79,6 +88,7 @@ const Home = () => {
           {trustBadges.map(({ icon: Icon, title, subtitle }) => (
             <div key={title} className="flex items-center gap-4 px-6 md:px-10 py-8">
               <Icon className="h-6 w-6 text-gray-800 shrink-0" />
+
               <div>
                 <p className="text-sm font-medium text-gray-900">{title}</p>
                 <p className="text-xs text-gray-500">{subtitle}</p>
@@ -93,10 +103,19 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-14">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <p className="text-xs tracking-[0.2em] text-gray-400 mb-2">FEATURED COLLECTION</p>
-            <h2 className="text-3xl font-bold">Find Your Perfect Watch</h2>
+            <p className="text-xs tracking-[0.2em] text-gray-400 mb-2">
+              FEATURED COLLECTION
+            </p>
+
+            <h2 className="text-3xl font-bold">
+              Find Your Perfect Watch
+            </h2>
           </div>
-          <button className="hidden sm:flex items-center gap-1 text-sm font-medium text-gray-800 hover:text-gray-600">
+
+          <button
+            onClick={() => navigate("/products")}
+            className="hidden sm:flex items-center gap-1 text-sm font-medium text-gray-800 hover:text-gray-600"
+          >
             View All
             <ArrowRight className="h-4 w-4" />
           </button>
@@ -106,6 +125,7 @@ const Home = () => {
           {categories.map((cat) => (
             <button
               key={cat.name}
+              onClick={() => navigate(`/products?type=${cat.type}`)}
               className="group text-left rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
             >
               <div className="aspect-square bg-gray-100 overflow-hidden">
@@ -115,16 +135,22 @@ const Home = () => {
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
+
               <div className="flex items-center justify-between px-4 py-3">
-                <span className="text-sm font-medium text-gray-900">{cat.name}</span>
+                <span className="text-sm font-medium text-gray-900">
+                  {cat.name}
+                </span>
+
                 <ArrowRight className="h-4 w-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </button>
           ))}
         </div>
       </section>
+
     </div>
   )
 }
 
 export default Home
+

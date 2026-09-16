@@ -59,7 +59,7 @@ const Footer = () => {
           </h3>
 
           <div className="mt-5 flex flex-col gap-3 text-sm text-gray-500">
-            <Link to="/order" className="hover:text-gray-900">
+            <Link to="/orders" className="hover:text-gray-900">
               My Orders
             </Link>
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { ShieldCheck,Truck,RotateCcw,Headphones,ArrowRight,ChevronLeft,ChevronRight } from 'lucide-react'
-import Footer from '../../components/footer';
 
 const trustBadges = [
   { icon: ShieldCheck, title: "100% Authentic", subtitle: "Original watches only" },
@@ -124,7 +123,6 @@ const Home = () => {
           ))}
         </div>
       </section>
-      <Footer/>
     </div>
   )
 }

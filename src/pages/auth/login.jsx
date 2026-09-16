@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useNavigate,Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/slices/authslice'
+import toast from 'react-hot-toast'
 
 const API_URL="http://localhost:3001/users";
 
@@ -33,8 +34,8 @@ const Login = () => {
   }
 
   if(data.password.trim()!==""){
-    if(data.password.trim().length<8||!/[A-Z]/.test(data.password) || !/[a-z]/.test(data.password) || !/[0-9]/.test(data.password) || !/[!@#$%^&*]/.test(data.password)){
-      error.password="Password must be at least 8 characters with uppercase, lowercase, number, and special character...";
+    if(data.password.trim().length<8){
+      error.password="Password must be at least 8 characters...";
     }
   }
 
@@ -42,12 +43,12 @@ const Login = () => {
     e.preventDefault();
 
     if(data.username.trim()===""||data.password.trim()===""){
-      alert("Please fill all...")
+      toast.error("Please fill all...")
       return
     }
 
     if(error.username||error.password){
-      alert("Enter valid details...");
+      toast.error("Enter valid details...");
       return
     }
 
@@ -73,16 +74,16 @@ const Login = () => {
         dispatch(login({user:loggedUser}))
         localStorage.setItem("user",check.id);
 
-        alert("login successfully!");
+        toast.success("login successful!");
         navigate('/');
       }
       else{
-        alert("Invalid email or password...")
+        toast.error("Invalid username or password...")
       }
     }
     catch(error){
       console.log(error)
-      alert("Somthing went to wrong...");
+      toast.error("Something went wrong...");
     }
   }  
 

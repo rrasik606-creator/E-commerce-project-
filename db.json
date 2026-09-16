@@ -449,26 +449,14 @@
       "userId": "ORksTVpZYf8",
       "items": [
         {
-          "productId": "2",
-          "name": "Fastrack Reflex Vox",
-          "price": 2999,
+          "productId": "10",
+          "name": "Sonata Classic Black",
+          "price": 1599,
           "image": [
-            "/images/fastrack-reflex.jpg",
-            "/images/fastrack-reflex.jpg",
-            "/images/fastrack-reflex.jpg",
-            "/images/fastrack-reflex.jpg"
-          ],
-          "quantity": 1
-        },
-        {
-          "productId": "3",
-          "name": "Casio Edifice Classic",
-          "price": 7499,
-          "image": [
-            "/images/casio-edifice.jpg",
-            "/images/casio-edifice.jpg",
-            "/images/casio-edifice.jpg",
-            "/images/casio-edifice.jpg"
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg",
+            "/images/sonata-black.jpg"
           ],
           "quantity": 1
         }
@@ -500,18 +488,6 @@
     {
       "userId": "ORksTVpZYf8",
       "items": [
-        {
-          "productId": "1",
-          "name": "Titan Smart Pro",
-          "brand": "Titan",
-          "price": 8999,
-          "image": [
-            "/images/titan-smart-pro.jpg",
-            "/images/titan-smart-pro.jpg",
-            "/images/titan-smart-pro.jpg",
-            "/images/titan-smart-pro.jpg"
-          ]
-        },
         {
           "productId": "5",
           "name": "Noise ColorFit Ultra",
@@ -558,6 +534,30 @@
             "/images/fireboltt-phoenix.jpg",
             "/images/fireboltt-phoenix.jpg",
             "/images/fireboltt-phoenix.jpg"
+          ]
+        },
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "brand": "Fastrack",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ]
+        },
+        {
+          "productId": "1",
+          "name": "Titan Smart Pro",
+          "brand": "Titan",
+          "price": 8999,
+          "image": [
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg",
+            "/images/titan-smart-pro.jpg"
           ]
         }
       ],
@@ -749,6 +749,49 @@
       "status": "Placed",
       "orderDate": "2026-09-15T11:00:35.850Z",
       "id": "pUeeT17g18A"
+    },
+    {
+      "userId": "ORksTVpZYf8",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Fastrack Reflex Vox",
+          "price": 2999,
+          "image": [
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg",
+            "/images/fastrack-reflex.jpg"
+          ],
+          "quantity": 4
+        },
+        {
+          "productId": "3",
+          "name": "Casio Edifice Classic",
+          "price": 7499,
+          "image": [
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg",
+            "/images/casio-edifice.jpg"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "vbnm,.",
+        "phone": "fghm",
+        "address": "fghj,",
+        "city": "fghjk",
+        "state": "vbnm",
+        "pincode": "dfghjk"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 19495,
+      "total": 19495,
+      "status": "Placed",
+      "orderDate": "2026-09-16T07:09:40.855Z",
+      "id": "vFO-TKNP1mA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

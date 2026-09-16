@@ -8,7 +8,7 @@ import {
   Package,
   X,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../redux/slices/authslice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -95,7 +95,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full border-b border-gray-100 bg-white">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white">
 
       {/* TOP NAVBAR */}
       <div className="flex h-[80px] items-center px-6 md:px-10 lg:px-[5%]">
@@ -277,26 +277,45 @@ const Navbar = () => {
       <div className="hidden h-[50px] items-center justify-center border-t border-gray-100 md:flex">
         <nav className="flex items-center gap-10 text-sm text-gray-600">
 
-          <Link
+          <NavLink
             to="/"
-            className="hover:text-gray-900"
+            end
+            className={({ isActive }) =>
+              `relative py-4 hover:text-gray-900 ${
+                isActive
+                  ? "font-medium text-gray-900 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-gray-900"
+                  : ""
+              }`
+            }
           >
             Home
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/products"
-            className="hover:text-gray-900"
+            className={({ isActive }) =>
+              `relative py-4 hover:text-gray-900 ${
+                isActive
+                  ? "font-medium text-gray-900 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-gray-900"
+                  : ""
+              }`
+            }
           >
             Collections
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/about"
-            className="hover:text-gray-900"
+            className={({ isActive }) =>
+              `relative py-4 hover:text-gray-900 ${
+                isActive
+                  ? "font-medium text-gray-900 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:bg-gray-900"
+                  : ""
+              }`
+            }
           >
             About Us
-          </Link>
+          </NavLink>
 
         </nav>
       </div>
@@ -336,3 +355,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

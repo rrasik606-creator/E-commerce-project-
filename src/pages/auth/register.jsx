@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import {useNavigate,Link} from 'react-router-dom';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const API_URL="http://localhost:3001/users";
 
@@ -53,8 +54,8 @@ const Register = () => {
      }
 
      if(data.password.trim()!==""){
-        if(data.password.trim().length<8||!/[A-Z]/.test(data.password) || !/[a-z]/.test(data.password) || !/[0-9]/.test(data.password) || !/[!@#$%^&*]/.test(data.password)){
-           error.password="Password must be at least 8 characters with uppercase, lowercase, number, and special character...";
+        if(data.password.trim().length<8){
+           error.password="Password must be at least 8 characters...";
         }
      }
 
@@ -69,21 +70,22 @@ const Register = () => {
       e.preventDefault();
 
       if(data.name.trim()===""||data.username.trim()===""||data.email.trim()===""||data.password.trim()===""||data.confirmpassword.trim()===""){
-        alert("Please fill all...")
+        toast.error("Please fill all...")
         return
       }
 
       if(error.name||error.username||error.email||error.password||error.confirmpassword){
-        alert("Enter valid datails...")
+        toast.error("Enter valid datails...")
         return
       }
 
       try{
           await axios.post(API_URL,userdata)
+          toast.success("registeration successfully completed")
           navigate("/login")
       }
       catch{
-          alert("sorry, an error occured...")
+          toast.error("sorry, an error occured...")
       }
     }
 

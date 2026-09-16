@@ -182,12 +182,8 @@ const Cart = () => {
   );
 
 
-  // Shipping
-  const shipping = subtotal >= 5000 ? 0 : 100;
-
-
   // Total
-  const total = subtotal + shipping;
+  const total = subtotal ;
 
 
   return (
@@ -413,7 +409,7 @@ const Cart = () => {
                   </h3>
 
                   <p className="text-sm text-gray-500 mt-1">
-                    Free delivery on orders above ₹5,000
+                    Free delivery
                   </p>
                 </div>
 
@@ -462,22 +458,6 @@ const Cart = () => {
 
                 <span>
                   ₹{subtotal.toLocaleString("en-IN")}
-                </span>
-
-              </div>
-
-
-              {/* Shipping */}
-              <div className="flex justify-between text-gray-600 mb-5">
-
-                <span>
-                  Shipping
-                </span>
-
-                <span>
-                  {shipping === 0
-                    ? "Free"
-                    : `₹${shipping}`}
                 </span>
 
               </div>

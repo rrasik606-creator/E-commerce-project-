@@ -12,6 +12,7 @@ const Products = () => {
 
     const category = searchParams.get("category") || "";
     const brand = searchParams.get("brand") || "";
+    const search = searchParams.get("search") || "";
 
     const getProduct = async () => {
         const response = await axios.get(API_URL);
@@ -43,7 +44,7 @@ const Products = () => {
         )
     }
 
-    // Get unique brands from products
+    // Get unique brands
     const brands = [
         ...new Set(
             products
@@ -63,8 +64,18 @@ const Products = () => {
             ? product.brand === brand
             : true;
 
-        return categoryMatch && brandMatch;
+        const searchMatch = search
+            ? product.name
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              product.brand
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            : true;
+
+        return categoryMatch && brandMatch && searchMatch;
     });
+
 
     // Category change
     const handleCategoryChange = (e) => {
@@ -80,6 +91,7 @@ const Products = () => {
         setSearchParams(searchParams);
     };
 
+
     // Brand change
     const handleBrandChange = (e) => {
 
@@ -94,14 +106,21 @@ const Products = () => {
         setSearchParams(searchParams);
     };
 
+
     return (
         <div className='min-h-screen bg-white'>
 
-            {/* page header */}
+            {/* PAGE HEADER */}
             <div className='px-6 md:px-10 lg:px-16 pt-10'>
 
                 <h1 className='text-4xl md:text-5xl font-semibold text-gray-900'>
-                    Watches
+                    {search
+                        ? `Search results for "${search}"`
+                        : category === "sports"
+                        ? "Sports Watches"
+                        : category === "casual"
+                        ? "Casual Watches"
+                        : "Watches"}
                 </h1>
 
                 <p className='text-gray-500 mt-3 max-w-xl'>
@@ -111,16 +130,19 @@ const Products = () => {
             </div>
 
 
-            {/* filters */}
+            {/* FILTERS */}
             <div className='px-6 md:px-10 lg:px-16 mt-8 flex flex-wrap gap-4'>
 
-                {/* Category */}
+                {/* CATEGORY */}
                 <select
                     value={category}
                     onChange={handleCategoryChange}
                     className='border border-gray-300 rounded-md px-4 py-2 text-sm outline-none'
                 >
-                    <option value=''>All Categories</option>
+
+                    <option value=''>
+                        All Categories
+                    </option>
 
                     <option value='sports'>
                         Sports
@@ -133,13 +155,16 @@ const Products = () => {
                 </select>
 
 
-                {/* Brand */}
+                {/* BRAND */}
                 <select
                     value={brand}
                     onChange={handleBrandChange}
                     className='border border-gray-300 rounded-md px-4 py-2 text-sm outline-none'
                 >
-                    <option value=''>All Brands</option>
+
+                    <option value=''>
+                        All Brands
+                    </option>
 
                     {brands.map((brandName) => (
                         <option
@@ -155,7 +180,7 @@ const Products = () => {
             </div>
 
 
-            {/* send filtered products to productgrid */}
+            {/* PRODUCTS */}
             <Productgrid products={filteredProducts} />
 
         </div>

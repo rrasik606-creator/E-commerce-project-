@@ -6,6 +6,7 @@ import {
   Heart,
   ShoppingBag,
   Package,
+  X,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../redux/slices/authslice";
@@ -22,6 +23,9 @@ const Navbar = () => {
 
   const [showAccount, setShowAccount] = useState(false);
   const [user, setUser] = useState(null);
+
+  // Search state
+  const [search, setSearch] = useState("");
 
   // Get cart from server
   const { data: cart } = useQuery({
@@ -59,6 +63,28 @@ const Navbar = () => {
     getUser();
   }, [userId]);
 
+  // Search
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const searchValue = search.trim();
+
+    if (!searchValue) {
+      navigate("/products");
+      return;
+    }
+
+    navigate(
+      `/products?search=${encodeURIComponent(searchValue)}`
+    );
+  };
+
+  // Clear search
+  const handleClearSearch = () => {
+    setSearch("");
+    navigate("/products");
+  };
+
   // Logout
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -86,16 +112,30 @@ const Navbar = () => {
         </div>
 
         {/* SEARCH */}
-        <div className="mx-5 hidden h-[43px] flex-1 items-center rounded-lg border border-gray-200 bg-gray-50 px-4 md:flex lg:mx-8">
+        <form
+          onSubmit={handleSearch}
+          className="mx-5 hidden h-[43px] flex-1 items-center rounded-lg border border-gray-200 bg-gray-50 px-4 md:flex lg:mx-8"
+        >
           <Search className="mr-3 h-[19px] w-[19px] text-gray-500" />
 
           <input
             type="text"
             placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
           />
 
-        </div>
+          {search && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="ml-2 text-gray-400 hover:text-gray-700"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </form>
 
         {/* RIGHT ICONS */}
         <nav className="ml-auto flex w-[320px] shrink-0 items-center justify-between text-xs text-gray-600">
@@ -258,18 +298,14 @@ const Navbar = () => {
             About Us
           </Link>
 
-          {/* <Link
-            to="/contact"
-            className="hover:text-gray-900"
-          >
-            Contact
-          </Link> */}
-
         </nav>
       </div>
 
       {/* MOBILE SEARCH */}
-      <div className="flex px-6 pb-4 md:hidden">
+      <form
+        onSubmit={handleSearch}
+        className="flex px-6 pb-4 md:hidden"
+      >
         <div className="flex h-[42px] w-full items-center rounded-lg border border-gray-200 bg-gray-50 px-4">
 
           <Search className="mr-3 h-[18px] w-[18px] text-gray-500" />
@@ -277,12 +313,23 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
           />
 
+          {search && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="ml-2 text-gray-400 hover:text-gray-700"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
 
         </div>
-      </div>
+      </form>
 
     </header>
   );

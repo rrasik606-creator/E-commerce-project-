@@ -21,8 +21,8 @@ const Approute = () => {
         <Route path='/products/:id' element={<Productdetails/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/wishlist' element={<Wishlist/>}/>
-        <Route path='/checkout' element={<Checkout/>}/>
-        <Route path='/orders' element={<Orders/>}/>
+        <Route path='/checkout' element={<Checkout/>} />
+        <Route path='/orders' element={<Orders/>} />
       </Routes>
     </div>
   )

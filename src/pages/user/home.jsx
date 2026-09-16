@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { ShieldCheck,Truck,RotateCcw,Headphones,ArrowRight,ArrowLeft,ChevronLeft,ChevronRight } from 'lucide-react'
+import { ShieldCheck,Truck,RotateCcw,Headphones,ArrowRight,ChevronLeft,ChevronRight } from 'lucide-react'
+import Footer from '../../components/footer';
 
 const trustBadges = [
   { icon: ShieldCheck, title: "100% Authentic", subtitle: "Original watches only" },
@@ -9,11 +10,8 @@ const trustBadges = [
 ];
 
 const categories = [
-  { name: "Men's Watches", image: "https://placehold.co/400x400/e7e3dc/1a1a1a?text=Men%27s+Watch" },
-  { name: "Women's Watches", image: "https://placehold.co/400x400/efe6da/1a1a1a?text=Women%27s+Watch" },
-  { name: "Smart Watches", image: "https://placehold.co/400x400/dcdcdc/1a1a1a?text=Smart+Watch" },
+  { name: "Sports Watches", image: "https://placehold.co/400x400/dcdcdc/1a1a1a?text=Smart+Watch" },
   { name: "Casual Watches", image: "https://placehold.co/400x400/e3ded2/1a1a1a?text=Casual+Watch" },
-  { name: "Premium Watches", image: "https://placehold.co/400x400/d9d9d9/1a1a1a?text=Premium+Watch" },
 ];
 
 const Home = () => {
@@ -126,6 +124,7 @@ const Home = () => {
           ))}
         </div>
       </section>
+      <Footer/>
     </div>
   )
 }

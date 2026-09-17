@@ -92,12 +92,6 @@ const Footer = () => {
               Phone: +91 98765 43210
             </p>
 
-            <p>
-              Monday - Saturday
-              <br />
-              9:00 AM - 6:00 PM
-            </p>
-
             {/* INSTAGRAM */}
             <div className="flex gap-5 pt-2">
               <a

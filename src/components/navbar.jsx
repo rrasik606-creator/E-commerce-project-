@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Search,
-  Mic,
   User,
   Heart,
   ShoppingBag,
@@ -14,6 +13,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { getcart } from "../services/cartService";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const Navbar = () => {
     enabled: !!userId,
   });
 
-  // Calculate cart count
+  //cart item count
   const cartCount =
     cart?.items?.reduce(
       (total, item) => total + item.quantity,
@@ -91,6 +91,7 @@ const Navbar = () => {
     dispatch(logout());
     setUser(null);
     setShowAccount(false);
+    toast.success("logout successfull")
     navigate("/");
   };
 
@@ -239,7 +240,7 @@ const Navbar = () => {
           >
             <ShoppingBag className="h-5 w-5" />
 
-            {/* CART COUNT */}
+            {/* cart count */}
             {cartCount > 0 && (
               <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-gray-900 px-1 text-[10px] font-medium text-white">
                 {cartCount}

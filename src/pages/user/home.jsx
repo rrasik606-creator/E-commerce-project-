@@ -10,8 +10,8 @@ const trustBadges = [
 ];
 
 const categories = [
-  { name: "Sports Watches", type: "sports", image: "https://placehold.co/400x400/dcdcdc/1a1a1a?text=Sports+Watch" },
-  { name: "Casual Watches", type: "casual", image: "https://placehold.co/400x400/e3ded2/1a1a1a?text=Casual+Watch" },
+  { name: "Sports Watches", type: "sports", image: "/watches/hom/sports.jpeg" },
+  { name: "Casual Watches", type: "casual", image: "/watches/hom/casual.jpeg" },
 ];
 
 const Home = () => {
@@ -53,7 +53,7 @@ const Home = () => {
 
           <div className="relative flex items-center justify-center">
             <img
-              src="https://placehold.co/600x500/f0ede6/1a1a1a?text=Featured+Watch"
+              src={`/watches/hom/featured${slide}.jpeg`}
               alt="Featured Velora watch"
               className="w-full max-w-lg rounded-xl object-cover shadow-xl"
             />

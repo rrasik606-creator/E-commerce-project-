@@ -22,7 +22,7 @@ const Productcrd = ({product}) => {
         enabled: !!userId
     })
 
-    // Check whether this product is already in wishlist
+    // Check whether product is already in wishlist
     const isWishlisted =
         userWishlist?.items?.some(
             (item) =>
@@ -30,7 +30,7 @@ const Productcrd = ({product}) => {
         ) || false
 
 
-    // Add wishlist
+    // add wishlist
     const addWishlistMutation = useMutation({
         mutationFn: (wishlistItem) =>
             addWishlist(wishlistItem),
@@ -69,7 +69,7 @@ const Productcrd = ({product}) => {
             return
         }
 
-        // If already wishlisted → remove
+        // if it already existing? for removing
         if (isWishlisted) {
 
             deleteWishlistMutation.mutate({
@@ -80,7 +80,7 @@ const Productcrd = ({product}) => {
             return
         }
 
-        // If not wishlisted → add
+        // if not wishlisted for add
         addWishlistMutation.mutate({
             userId: userId,
             productId: product.id,
@@ -130,7 +130,7 @@ const Productcrd = ({product}) => {
 
                 {/* product image */}
                 <img
-                    src={product.image}
+                    src={product.image[0]}
                     alt={product.name}
                     className='w-full h-full object-contain p-8 hover:scale-105 transition duration-500'
                 />

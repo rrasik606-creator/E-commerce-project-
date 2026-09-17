@@ -106,37 +106,6 @@ const Wishlist = () => {
     addCartMutation.mutate(item);
   };
 
-  // Not logged in
-  if (!userId) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-
-          <Heart
-            size={60}
-            className="mx-auto text-gray-300"
-          />
-
-          <h2 className="text-2xl font-semibold mt-4">
-            Please login
-          </h2>
-
-          <p className="text-gray-500 mt-2">
-            Login to view your wishlist
-          </p>
-
-          <button
-            onClick={() => navigate("/login")}
-            className="mt-6 bg-black text-white px-6 py-3 rounded-lg"
-          >
-            Login
-          </button>
-
-        </div>
-      </div>
-    );
-  }
-
   if (isLoading) {
     return (
       <div className="p-10 text-center">
@@ -199,7 +168,7 @@ const Wishlist = () => {
             </p>
 
             <Link
-              to="/collections"
+              to="/products"
               className="inline-block mt-6 bg-black text-white px-6 py-3 rounded-lg"
             >
               Continue Shopping

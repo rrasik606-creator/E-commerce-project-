@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {useNavigate,Link} from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { User } from 'lucide-react';
 
 const API_URL="http://localhost:3001/users";
 
@@ -80,12 +81,30 @@ const Register = () => {
       }
 
       try{
+
+          const res=await axios.get(API_URL);
+          
+          const emailexist =res.data.some((User)=>User.email.toLowerCase()===data.email.trim().toLowerCase())
+
+          if(emailexist){
+            toast.error("Email already exists...");
+            return
+          }
+
+          const userName=res.data.some((user)=>user.username.toLowerCase()===data.username.trim().toLowerCase())
+
+          if(userName){
+            toast.error("username already exist...")
+            return
+          }
+
           await axios.post(API_URL,userdata)
           toast.success("registeration successfully completed")
-          navigate("/login")
+          navigate("/login",{replace:true})
       }
       catch{
-          toast.error("sorry, an error occured...")
+        console.log(error)
+        toast.error("sorry, an error occured...")
       }
     }
 

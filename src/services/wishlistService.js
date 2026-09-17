@@ -34,7 +34,7 @@ export const addWishlist = async (wishlistItem) => {
         String(wishlistItem.productId)
     );
 
-    // Don't add duplicate
+    // check duplicate
     if (existingItem) {
       return userWishlist;
     }

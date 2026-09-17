@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate,Link, replace } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/slices/authslice'
 import toast from 'react-hot-toast'
@@ -75,7 +75,7 @@ const Login = () => {
         localStorage.setItem("user",check.id);
 
         toast.success("login successful!");
-        navigate('/');
+        navigate('/', {replace:true});
       }
       else{
         toast.error("Invalid username or password...")

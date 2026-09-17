@@ -10,7 +10,7 @@ const Products = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const category = searchParams.get("category") || "";
+    const type = searchParams.get("type") || "";
     const brand = searchParams.get("brand") || "";
     const search = searchParams.get("search") || "";
 
@@ -44,7 +44,7 @@ const Products = () => {
         )
     }
 
-    // Get unique brands
+    // get brands
     const brands = [
         ...new Set(
             products
@@ -53,11 +53,11 @@ const Products = () => {
         )
     ];
 
-    // Filter products
+    // filter products
     const filteredProducts = products.filter((product) => {
 
-        const categoryMatch = category
-            ? product.type === category
+        const typeMatch = type
+            ? product.type === type
             : true;
 
         const brandMatch = brand
@@ -73,19 +73,19 @@ const Products = () => {
                 .includes(search.toLowerCase())
             : true;
 
-        return categoryMatch && brandMatch && searchMatch;
+        return typeMatch && brandMatch && searchMatch;
     });
 
 
-    // Category change
+    // Type change
     const handleCategoryChange = (e) => {
 
         const value = e.target.value;
 
         if (value) {
-            searchParams.set("category", value);
+            searchParams.set("type", value);
         } else {
-            searchParams.delete("category");
+            searchParams.delete("type");
         }
 
         setSearchParams(searchParams);
@@ -113,15 +113,15 @@ const Products = () => {
             {/* PAGE HEADER */}
             <div className='px-6 md:px-10 lg:px-16 pt-10'>
 
-                <h1 className='text-4xl md:text-5xl font-semibold text-gray-900'>
+                {/* <h1 className='text-4xl md:text-5xl font-semibold text-gray-900'>
                     {search
                         ? `Search results for "${search}"`
-                        : category === "sports"
+                        : type === "sports"
                         ? "Sports Watches"
-                        : category === "casual"
+                        : type === "casual"
                         ? "Casual Watches"
                         : "Watches"}
-                </h1>
+                </h1> */}
 
                 <p className='text-gray-500 mt-3 max-w-xl'>
                     Discover timeless watches designed for every style and occasion.
@@ -135,7 +135,7 @@ const Products = () => {
 
                 {/* CATEGORY */}
                 <select
-                    value={category}
+                    value={type}
                     onChange={handleCategoryChange}
                     className='border border-gray-300 rounded-md px-4 py-2 text-sm outline-none'
                 >

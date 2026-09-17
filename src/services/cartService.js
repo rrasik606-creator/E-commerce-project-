@@ -172,7 +172,7 @@ export const deleteCart = async (
   cartId,
   productId
 ) => {
-  // Get current cart
+  // get current cart
   const response = await axios.get(
     `${API_URL}/${cartId}`
   );

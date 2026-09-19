@@ -15,8 +15,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import {
   getcart,
@@ -47,21 +48,22 @@ const Cart = () => {
   });
 
 
-  // Cart items
-  const cart = userCart?.items || [];
-
   // Cart id
   const cartId = userCart?.id;
 
 
-  // Update Redux
+  // Update Redux with the latest cart from the server
   useEffect(() => {
     if (userId) {
-      dispatch(setCart(cart));
+      dispatch(setCart(userCart?.items || []));
     } else {
       dispatch(setCart([]));
     }
-  }, [cart, userId, dispatch]);
+  }, [userCart, userId, dispatch]);
+
+
+  // Cart items — read from Redux so the UI reflects the store
+  const cart = useSelector((state) => state.cart.cart);
 
 
   // Update quantity
@@ -92,8 +94,24 @@ const Cart = () => {
         ["cart", userId],
         updatedCart
       );
+
+      toast.success("Item removed from cart");
     },
   });
+
+
+  // Confirm before removing an item
+  const handleDelete = (item) => {
+    const confirmDelete = window.confirm(
+      `Remove "${item.name}" from your cart?`
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    deleteMutation.mutate(item.productId);
+  };
 
 
   // Loading
@@ -286,9 +304,7 @@ const Cart = () => {
                           {/* Delete */}
                           <button
                             onClick={() =>
-                              deleteMutation.mutate(
-                                item.productId
-                              )
+                              handleDelete(item)
                             }
                             disabled={
                               deleteMutation.isPending

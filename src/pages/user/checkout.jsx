@@ -27,6 +27,9 @@ const Checkout = () => {
   // Payment
   const [paymentMethod, setPaymentMethod] = useState("");
 
+  // Validation errors
+  const [errors, setErrors] = useState({});
+
   // Get cart
   const {
     data: userCart = null,
@@ -52,10 +55,81 @@ const Checkout = () => {
 
   // Handle input
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setAddress({
       ...address,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Clear this field's error as soon as the user edits it
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
+    }
+  };
+
+  // Validate all fields, return true if the form is valid
+  const validate = () => {
+    const newErrors = {};
+
+    // Name
+    if (!address.name.trim()) {
+      newErrors.name = "Full name is required";
+    } else if (address.name.trim().length < 3) {
+      newErrors.name = "Name must be at least 3 characters";
+    }
+
+    // Phone (10 digit Indian mobile number)
+    if (!address.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[6-9]\d{9}$/.test(address.phone.trim())) {
+      newErrors.phone = "Enter a valid 10-digit phone number";
+    }
+
+    // Address
+    if (!address.address.trim()) {
+      newErrors.address = "Address is required";
+    } else if (address.address.trim().length < 10) {
+      newErrors.address = "Please enter a complete address";
+    }
+
+    // City
+    if (!address.city.trim()) {
+      newErrors.city = "City is required";
+    } else if (!/^[a-zA-Z\s]+$/.test(address.city.trim())) {
+      newErrors.city = "City name looks invalid";
+    }
+
+    // State
+    if (!address.state.trim()) {
+      newErrors.state = "State is required";
+    } else if (!/^[a-zA-Z\s]+$/.test(address.state.trim())) {
+      newErrors.state = "State name looks invalid";
+    }
+
+    // Pincode (6 digit Indian PIN code)
+    if (!address.pincode.trim()) {
+      newErrors.pincode = "PIN code is required";
+    } else if (!/^[1-9][0-9]{5}$/.test(address.pincode.trim())) {
+      newErrors.pincode = "Enter a valid 6-digit PIN code";
+    }
+
+    // Payment method
+    if (!paymentMethod) {
+      newErrors.payment = "Please select a payment method";
+    }
+
+    // Cart
+    if (cart.length === 0) {
+      newErrors.cart = "Your cart is empty";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   // Place order
@@ -103,28 +177,32 @@ const Checkout = () => {
       // Go to success page
       navigate("/orders");
     },
+
+    onError: () => {
+      setErrors((prev) => ({
+        ...prev,
+        submit: "Failed to place order. Please try again.",
+      }));
+    },
   });
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
 
-    if (
-      !address.name ||
-      !address.phone ||
-      !address.address ||
-      !address.city ||
-      !address.state ||
-      !address.pincode
-    ) {
-      return;
-    }
+    const isValid = validate();
 
-    if (cart.length === 0) {
+    if (!isValid) {
       return;
     }
 
     placeOrderMutation.mutate();
   };
+
+  // Small helper for input classes so the error state is visible
+  const inputClass = (field) =>
+    `border rounded-lg px-4 py-3 outline-none focus:border-black ${
+      errors[field] ? "border-red-500" : "border-gray-300"
+    }`;
 
   // Not logged in
   if (!userId) {
@@ -227,7 +305,13 @@ const Checkout = () => {
           </p>
         </div>
 
-        <form onSubmit={handlePlaceOrder}>
+        {errors.submit && (
+          <div className="mb-6 bg-red-50 border border-red-200 text-red-600 rounded-lg px-4 py-3">
+            {errors.submit}
+          </div>
+        )}
+
+        <form onSubmit={handlePlaceOrder} noValidate>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -251,65 +335,89 @@ const Checkout = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={address.name}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={address.name}
+                      onChange={handleChange}
+                      className={`w-full ${inputClass("name")}`}
+                    />
+                    {errors.name && (
+                      <p className="text-sm text-red-500 mt-1">{errors.name}</p>
+                    )}
+                  </div>
 
-                  <input
-                    type="text"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={address.phone}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder="Phone Number"
+                      value={address.phone}
+                      onChange={handleChange}
+                      className={`w-full ${inputClass("phone")}`}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+                    )}
+                  </div>
 
-                  <textarea
-                    name="address"
-                    placeholder="Full Address"
-                    value={address.address}
-                    onChange={handleChange}
-                    rows="3"
-                    className="md:col-span-2 border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div className="md:col-span-2">
+                    <textarea
+                      name="address"
+                      placeholder="Full Address"
+                      value={address.address}
+                      onChange={handleChange}
+                      rows="3"
+                      className={`w-full ${inputClass("address")}`}
+                    />
+                    {errors.address && (
+                      <p className="text-sm text-red-500 mt-1">{errors.address}</p>
+                    )}
+                  </div>
 
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    value={address.city}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder="City"
+                      value={address.city}
+                      onChange={handleChange}
+                      className={`w-full ${inputClass("city")}`}
+                    />
+                    {errors.city && (
+                      <p className="text-sm text-red-500 mt-1">{errors.city}</p>
+                    )}
+                  </div>
 
-                  <input
-                    type="text"
-                    name="state"
-                    placeholder="State"
-                    value={address.state}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      name="state"
+                      placeholder="State"
+                      value={address.state}
+                      onChange={handleChange}
+                      className={`w-full ${inputClass("state")}`}
+                    />
+                    {errors.state && (
+                      <p className="text-sm text-red-500 mt-1">{errors.state}</p>
+                    )}
+                  </div>
 
-                  <input
-                    type="text"
-                    name="pincode"
-                    placeholder="PIN Code"
-                    value={address.pincode}
-                    onChange={handleChange}
-                    className="border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-black"
-                    required
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      name="pincode"
+                      placeholder="PIN Code"
+                      value={address.pincode}
+                      onChange={handleChange}
+                      className={`w-full ${inputClass("pincode")}`}
+                    />
+                    {errors.pincode && (
+                      <p className="text-sm text-red-500 mt-1">{errors.pincode}</p>
+                    )}
+                  </div>
 
                 </div>
 
@@ -331,17 +439,21 @@ const Checkout = () => {
 
                 <div className="space-y-3">
 
-                  <label className="flex items-center gap-3 border border-gray-300 rounded-lg p-4 cursor-pointer">
+                  <label
+                    className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer ${
+                      errors.payment ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
 
                     <input
                       type="radio"
                       name="payment"
                       value="COD"
                       checked={paymentMethod === "COD"}
-                      onChange={(e) =>
-                        setPaymentMethod(e.target.value)
-                      }
-                      required
+                      onChange={(e) => {
+                        setPaymentMethod(e.target.value);
+                        setErrors((prev) => ({ ...prev, payment: undefined }));
+                      }}
                     />
 
                     <div>
@@ -356,17 +468,21 @@ const Checkout = () => {
 
                   </label>
 
-                  <label className="flex items-center gap-3 border border-gray-300 rounded-lg p-4 cursor-pointer">
+                  <label
+                    className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer ${
+                      errors.payment ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
 
                     <input
                       type="radio"
                       name="payment"
                       value="UPI"
                       checked={paymentMethod === "UPI"}
-                      onChange={(e) =>
-                        setPaymentMethod(e.target.value)
-                      }
-                      required
+                      onChange={(e) => {
+                        setPaymentMethod(e.target.value);
+                        setErrors((prev) => ({ ...prev, payment: undefined }));
+                      }}
                     />
 
                     <div>
@@ -381,17 +497,21 @@ const Checkout = () => {
 
                   </label>
 
-                  <label className="flex items-center gap-3 border border-gray-300 rounded-lg p-4 cursor-pointer">
+                  <label
+                    className={`flex items-center gap-3 border rounded-lg p-4 cursor-pointer ${
+                      errors.payment ? "border-red-500" : "border-gray-300"
+                    }`}
+                  >
 
                     <input
                       type="radio"
                       name="payment"
                       value="Card"
                       checked={paymentMethod === "Card"}
-                      onChange={(e) =>
-                        setPaymentMethod(e.target.value)
-                      }
-                      required
+                      onChange={(e) => {
+                        setPaymentMethod(e.target.value);
+                        setErrors((prev) => ({ ...prev, payment: undefined }));
+                      }}
                     />
 
                     <div>
@@ -405,6 +525,10 @@ const Checkout = () => {
                     </div>
 
                   </label>
+
+                  {errors.payment && (
+                    <p className="text-sm text-red-500">{errors.payment}</p>
+                  )}
 
                 </div>
 
@@ -545,4 +669,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-

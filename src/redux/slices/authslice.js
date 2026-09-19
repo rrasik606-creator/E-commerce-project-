@@ -19,9 +19,13 @@ const authSlice=createSlice({
             state.user=null;
             state.sessionId=null
             state.isLoggedIn=false;
+        },
+        setUser:(state,action)=>{
+            state.user=action.payload;
+            state.isLoggedIn=true;
         }
     }
 });
 
-export const {login,logout}=authSlice.actions;
+export const {login,logout,setUser}=authSlice.actions;
 export default authSlice.reducer;

@@ -12,7 +12,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   getWishlist,
@@ -42,14 +42,15 @@ const Wishlist = () => {
     enabled: !!userId,
   });
 
-  const wishlist = userWishlist?.items || [];
-
   const wishlistId = userWishlist?.id;
 
   // Store wishlist in Redux
   useEffect(() => {
-    dispatch(setWishlist(wishlist));
-  }, [wishlist, dispatch]);
+    dispatch(setWishlist(userWishlist?.items || []));
+  }, [userWishlist, dispatch]);
+
+  // Wishlist items — read from Redux so the UI reflects the store
+  const wishlist = useSelector((state) => state.wishlist.wishlist);
 
   // Delete product
   const deleteMutation = useMutation({
@@ -270,4 +271,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-

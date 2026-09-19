@@ -8,11 +8,14 @@ import {
   X,
 } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { logout } from "../redux/slices/authslice";
-import { useDispatch } from "react-redux";
+import { logout, setUser } from "../redux/slices/authslice";
+import { setCart, clearCart } from "../redux/slices/cartslice";
+import { setWishlist, clearWishlist } from "../redux/slices/wishlistslice";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { getcart } from "../services/cartService";
+import { getWishlist } from "../services/wishlistService";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
@@ -22,30 +25,45 @@ const Navbar = () => {
   const userId = localStorage.getItem("user");
 
   const [showAccount, setShowAccount] = useState(false);
-  const [user, setUser] = useState(null);
 
   // Search state
   const [search, setSearch] = useState("");
 
   // Get cart from server
-  const { data: cart } = useQuery({
+  const { data: cartData } = useQuery({
     queryKey: ["cart", userId],
     queryFn: getcart,
     enabled: !!userId,
   });
 
-  //cart item count
-  const cartCount =
-    cart?.items?.reduce(
-      (total, item) => total + item.quantity,
-      0
-    ) || 0;
+  // Get wishlist from server
+  const { data: wishlistData } = useQuery({
+    queryKey: ["wishlist", userId],
+    queryFn: getWishlist,
+    enabled: !!userId,
+  });
 
-  // Get user details
+  // Keep Redux in sync with the latest server data
+  useEffect(() => {
+    if (userId) {
+      dispatch(setCart(cartData?.items || []));
+      dispatch(setWishlist(wishlistData?.items || []));
+    } else {
+      dispatch(clearCart());
+      dispatch(clearWishlist());
+    }
+  }, [userId, cartData, wishlistData, dispatch]);
+
+  // Read counts and user details from Redux for display
+  const cartCount = useSelector((state) => state.cart.cartCount);
+  const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
+  const user = useSelector((state) => state.auth.user);
+
+  // Get user details and hydrate Redux with them
   useEffect(() => {
     const getUser = async () => {
       if (!userId) {
-        setUser(null);
+        dispatch(logout());
         return;
       }
 
@@ -54,14 +72,14 @@ const Navbar = () => {
           `http://localhost:3001/users/${userId}`
         );
 
-        setUser(response.data);
+        dispatch(setUser(response.data));
       } catch (error) {
         console.log(error);
       }
     };
 
     getUser();
-  }, [userId]);
+  }, [userId, dispatch]);
 
   // Search
   const handleSearch = (e) => {
@@ -87,9 +105,17 @@ const Navbar = () => {
 
   // Logout
   const handleLogout = () => {
+    const confirmlogout=window.confirm("Are you sure you want to logout?");
+
+    if(!confirmlogout){
+      return
+    }
+    
     localStorage.removeItem("user");
+    localStorage.removeItem("userRole")
     dispatch(logout());
-    setUser(null);
+    dispatch(clearCart());
+    dispatch(clearWishlist());
     setShowAccount(false);
     toast.success("logout successfull")
     navigate("/");
@@ -227,9 +253,17 @@ const Navbar = () => {
           {/* WISHLIST */}
           <Link
             to="/wishlist"
-            className="flex flex-col items-center gap-1 hover:text-gray-900"
+            className="relative flex flex-col items-center gap-1 hover:text-gray-900"
           >
             <Heart className="h-5 w-5" />
+
+            {/* wishlist count */}
+            {wishlistCount > 0 && (
+              <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-gray-900 px-1 text-[10px] font-medium text-white">
+                {wishlistCount}
+              </span>
+            )}
+
             <span>Wishlist</span>
           </Link>
 
@@ -356,4 +390,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

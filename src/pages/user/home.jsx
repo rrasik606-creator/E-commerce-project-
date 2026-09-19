@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect,useRef } from 'react'
 import { ShieldCheck,Truck,RotateCcw,Headphones,ArrowRight,ChevronLeft,ChevronRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,12 +18,19 @@ const Home = () => {
 
   const [slide, setSlide] = useState(1);
 
+  const trackRef=useRef(null)
+
   const navigate = useNavigate();
 
   const totalSlides = 3;
 
   const nextSlide = () => setSlide((s) => (s % totalSlides) + 1);
   const prevSlide = () => setSlide((s) => ((s - 2 + totalSlides) % totalSlides) + 1);
+
+  useEffect(()=>{
+    const timer=setTimeout(nextSlide,5000);
+    return()=>clearTimeout(timer)
+  },[slide]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
@@ -32,6 +39,7 @@ const Home = () => {
 
       <section className="relative bg-gradient-to-br from-stone-100 to-stone-200 overflow-hidden">
         <div className="grid md:grid-cols-2 items-center gap-8 px-6 md:px-16 py-16 md:py-24 max-w-7xl mx-auto">
+
           <div className="max-w-md">
             <p className="text-xs tracking-[0.2em] text-gray-500 mb-4">TIMELESS ELEGANCE</p>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-5">
@@ -51,13 +59,33 @@ const Home = () => {
             </button>
           </div>
 
-          <div className="relative flex items-center justify-center">
+          {/* <div className="relative flex items-center justify-center">
             <img
               src={`/watches/hom/featured${slide}.jpeg`}
               alt="Featured Velora watch"
               className="w-full max-w-lg rounded-xl object-cover shadow-xl"
             />
+          </div> */}
+
+          <div className="relative flex items-center justify-center">
+            <div className="relative overflow-hidden w-full max-w-lg rounded-xl shadow-xl">
+              <div
+                ref={trackRef}
+                className="flex h-full transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${(slide - 1) * 100}%)` }}
+              >
+                {Array.from({ length: totalSlides }, (_, i) => i + 1).map((n) => (
+                  <img
+                  key={n}
+                  src={`/watches/hom/featured${n}.jpeg`}
+                  alt="Featured Velora watch"
+                  className="w-full h-full object-cover shrink-0"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
+
         </div>
 
         <div className="absolute bottom-6 right-6 md:right-16 flex items-center gap-3 text-sm text-gray-500">
@@ -99,7 +127,7 @@ const Home = () => {
       </section>
 
       {/* Featured collection */}
-      
+
       <section className="max-w-7xl mx-auto px-6 md:px-10 py-14">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -121,14 +149,14 @@ const Home = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {categories.map((cat) => (
             <button
               key={cat.name}
               onClick={() => navigate(`/products?type=${cat.type}`)}
-              className="group text-left rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
+              className="group relative text-left rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="aspect-square bg-gray-100 overflow-hidden">
+              <div className="aspect-[16/10] bg-gray-100 overflow-hidden">
                 <img
                   src={cat.image}
                   alt={cat.name}
@@ -136,12 +164,17 @@ const Home = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between px-4 py-3">
-                <span className="text-sm font-medium text-gray-900">
+              {/* Gradient overlay + label on top of the image, like a hero card */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between px-5 py-4">
+                <span className="text-base font-semibold text-white">
                   {cat.name}
                 </span>
 
-                <ArrowRight className="h-4 w-4 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight className="h-4 w-4 text-gray-900" />
+                </span>
               </div>
             </button>
           ))}
@@ -153,4 +186,3 @@ const Home = () => {
 }
 
 export default Home
-

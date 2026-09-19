@@ -11,6 +11,8 @@ import Checkout from '../pages/user/checkout'
 import Orders from '../pages/user/orders'
 import About from '../pages/user/about'
 import ProtectedRoute from './protectedroute'
+import GuestRoute from './guestroute'
+import AdminProtectedRout from './adminprotectedrout'
 
 const Approute = () => {
   return (
@@ -19,9 +21,23 @@ const Approute = () => {
 
         <Route path='/' element={<Home/>}/>
 
-        <Route path='/login' element={<Login/>}/>
+        <Route
+          path='/login'
+          element={
+            <GuestRoute>
+              <Login/>
+            </GuestRoute>
+          }
+        />
 
-        <Route path='/register' element={<Register/>}/>
+        <Route
+          path='/register'
+          element={
+            <GuestRoute>
+              <Register/>
+            </GuestRoute>
+          }
+        />
 
         <Route path='/products' element={<Products/>}/>
 
@@ -66,6 +82,43 @@ const Approute = () => {
         />
 
         <Route path='/about' element={<About/>}/>
+
+        {/* admin protect route */}
+        <Route
+         path='/admin'
+         element={
+          <AdminProtectedRout>
+            <Dashboard/>
+          </AdminProtectedRout>
+         }
+        />
+
+        <Route 
+         path='/admin/product'
+         element={
+          <AdminProtectedRout>
+            <AdminProducts/>
+          </AdminProtectedRout>
+         }
+        />
+
+        <Route
+          path='/admin/user'
+          element={
+            <AdminProtectedRout>
+              <AdminUsers/>
+            </AdminProtectedRout>
+          }
+        />
+
+        <Route
+         path='/admin/orders'
+         element={
+          <AdminProtectedRout>
+          <AdminOrders/>
+          </AdminProtectedRout>
+         }
+        />
 
       </Routes>
     </div>

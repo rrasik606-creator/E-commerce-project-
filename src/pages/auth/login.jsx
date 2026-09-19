@@ -68,14 +68,22 @@ const Login = () => {
           id:check.id,
           name:check.name,
           username:check.username,
-          email:check.email
+          email:check.email,
+          role:check.role
         };
 
         dispatch(login({user:loggedUser}))
         localStorage.setItem("user",check.id);
+        localStorage.setItem("userRole",check.role)
 
         toast.success("login successful!");
+
+        if(check.role==="admin"){
+          navigate('/admin',{replace:true});
+        }
+        else{
         navigate('/', {replace:true});
+        }
       }
       else{
         toast.error("Invalid username or password...")

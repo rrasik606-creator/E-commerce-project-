@@ -384,27 +384,51 @@
   "cart": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [
-        {
-          "productId": "3",
-          "name": "Casio Unisex Vintage",
-          "price": 7499,
-          "image": [
-            "/watches/men/casual/casio3.png",
-            "/watches/men/casual/casio3a.png",
-            "/watches/men/casual/casio3b.png",
-            "/watches/men/casual/casio3c.png"
-          ],
-          "quantity": 1
-        }
-      ],
+      "items": [],
       "id": "4iOIiaoHiu4"
     }
   ],
   "wishlist": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [],
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "brand": "Casio",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ]
+        },
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "brand": "Casio",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ]
+        },
+        {
+          "productId": "12",
+          "name": "CASIO Youth ( AE-1200WH-1AVDF )",
+          "brand": "Casio",
+          "price": 2999,
+          "image": [
+            "/watches/men/sports/casio2.png",
+            "/watches/men/sports/casio2a.png",
+            "/watches/men/sports/casio2b.png",
+            "/watches/men/sports/casio2c.png"
+          ]
+        }
+      ],
       "id": "D8rW3N6B_RE"
     }
   ],
@@ -470,6 +494,68 @@
       "status": "Placed",
       "orderDate": "2026-09-17T07:40:30.574Z",
       "id": "T_aFDhFPsQ0"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "sdfgh",
+        "phone": "9111111111",
+        "address": "fghwertyuiol",
+        "city": "hjklsdfghjkl",
+        "state": "ertyui",
+        "pincode": "123654"
+      },
+      "paymentMethod": "UPI",
+      "subtotal": 2999,
+      "total": 2999,
+      "status": "Placed",
+      "orderDate": "2026-09-19T07:13:24.933Z",
+      "id": "1a54udRUWZE"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 7499,
+      "total": 7499,
+      "status": "Placed",
+      "orderDate": "2026-09-19T07:14:37.900Z",
+      "id": "es3B6i6sCko"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

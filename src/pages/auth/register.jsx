@@ -33,7 +33,8 @@ const Register = () => {
         name:data.name,
         username:data.username,
         email:data.email,
-        password:data.password
+        password:data.password,
+        role:"user"
       };
 
      if(data.name.trim()!==""){

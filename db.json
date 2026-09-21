@@ -1,34 +1,6 @@
 {
   "products": [
     {
-      "id": "1",
-      "name": "Casio",
-      "brand": "Casio",
-      "category": "men",
-      "type": "casual",
-      "price": 1994,
-      "originalPrice": 2500,
-      "discount": 18,
-      "rating": 4.5,
-      "reviews": 124,
-      "image": [
-        "/watches/men/casual/casio1.png",
-        "/watches/men/casual/casio1a.png",
-        "/watches/men/casual/casio1b.png",
-        "/watches/men/casual/casio1c.png"
-      ],
-      "description": "Water Resistant Case/Bezel : Resin / Chrome plated Resin Glass • Self Adjustable band • Countdown timer • 1/100-second stopwatch • 12/24-hour format • Regular timekeeping: Hour, minute, second, pm, date, day • Approx. battery life: 7 years on CR2016 • Daily alarm • Hourly time signal • Auto-calenda.",
-      "features": [
-        "Sleek Square Dial",
-        "Digital Precision",
-        "Stainless Steel Strap",
-        "Vintage Charm"
-      ],
-      "stock": 15,
-      "featured": true,
-      "isNew": true
-    },
-    {
       "id": "2",
       "name": "Dress Watch",
       "brand": "Casio",
@@ -55,7 +27,8 @@
       ],
       "stock": 25,
       "featured": true,
-      "isNew": true
+      "isNew": true,
+      "deleted": false
     },
     {
       "id": "3",
@@ -341,7 +314,8 @@
       ],
       "stock": 22,
       "featured": false,
-      "isNew": true
+      "isNew": true,
+      "deleted": false
     }
   ],
   "users": [

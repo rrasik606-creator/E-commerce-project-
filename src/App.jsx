@@ -9,7 +9,7 @@ const App = () => {
 
   const location=useLocation();
 
-  const hidenavbarfooter=location.pathname==="/login"||location.pathname==="/register";
+  const hidenavbarfooter=location.pathname==="/login"||location.pathname==="/register"||location.pathname.startsWith("/admin");
 
   return (
     <div>

@@ -13,6 +13,10 @@ import About from '../pages/user/about'
 import ProtectedRoute from './protectedroute'
 import GuestRoute from './guestroute'
 import AdminProtectedRout from './adminprotectedrout'
+import Dashboard from '../pages/admin/dashboard'
+import AdminOrders from '../pages/admin/orders'
+import AdminProducts from '../pages/admin/product'
+import AdminUsers from '../pages/admin/users'
 
 const Approute = () => {
   return (

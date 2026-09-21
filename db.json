@@ -350,35 +350,48 @@
       "username": "rashik",
       "email": "rashik@gmail.com",
       "password": "rashik123",
-      "id": "RTgv5cD5nDU"
+      "id": "RTgv5cD5nDU",
+      "role": "user"
     },
     {
       "name": "Aslam",
       "username": "aslu",
       "email": "rashik@gmail.com",
       "password": "aslu1234",
-      "id": "YkNQVtWO5qI"
+      "id": "YkNQVtWO5qI",
+      "role": "user"
     },
     {
       "name": "Aslam",
       "username": "rashik",
       "email": "rrasik606@gmail.com",
       "password": "12345678",
-      "id": "2k6nHiV-RX0"
+      "id": "2k6nHiV-RX0",
+      "role": "user"
     },
     {
       "name": "rashik",
       "username": "rashik",
       "email": "rrasik606@gmail.com",
       "password": "12345678",
-      "id": "x4P-8_dKz6M"
+      "id": "x4P-8_dKz6M",
+      "role": "user"
     },
     {
       "name": "MUHAMMED RASHIK V.P",
       "username": "rashi",
       "email": "muhammedrashik484@gmail.com",
       "password": "12345678",
-      "id": "gDG21i1JPj0"
+      "id": "gDG21i1JPj0",
+      "role": "user"
+    },
+    {
+      "name": "Admin",
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "password": "admin@123",
+      "role": "admin",
+      "id": "FY_RNHVbzwc"
     }
   ],
   "cart": [

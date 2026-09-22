@@ -28,6 +28,13 @@ const AdminProducts = () => {
     },[]);
 
     const handleDelete=async(id)=>{
+
+        const confirmdelete=window.confirm("Are you sure you want to delete?");
+
+        if(!confirmdelete){
+            return
+        }
+
         try{
             await softDeleteProduct(id);
             dispatch(softDeleteProductRedux(id));
@@ -49,12 +56,12 @@ const AdminProducts = () => {
 
     const handlePermanentDelete=async(id)=>{
 
-        const confirmdelete=window.confirm("Are you sure you want to permanently delete this product?")
+        const confirmpermanentdelete=window.confirm("Are you sure you want to permanently delete this product?")
 
-        if(!confirmdelete){
+        if(!confirmpermanentdelete){
             return
         }
-        
+
         try{
             await permanentDeleteProduct(id);
             dispatch(permanentDeleteProductRedux(id));
@@ -136,7 +143,7 @@ const AdminProducts = () => {
                                         </td>
 
                                         <td className='p-4'>
-                                            <button className='text-blue-600 mr-3'>
+                                            <button onClick={()=>navigate(`/admin/product/edit/${product.id}`)} className='text-blue-600 mr-3'>
                                                 Edit
                                             </button>
 

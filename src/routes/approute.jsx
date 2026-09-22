@@ -23,6 +23,7 @@ import AdminOrders from "../pages/admin/orders";
 import AdminProducts from "../pages/admin/product";
 import AdminUsers from "../pages/admin/users";
 import AddProduct from "../pages/admin/addproduct";
+import EditProduct from "../pages/admin/editproduct";
 
 const Approute = () => {
 
@@ -160,6 +161,15 @@ const Approute = () => {
                             <AddProduct />
                         </AdminProtectedRout>
                     }
+                />
+
+                <Route
+                path="/admin/product/edit/:id"
+                element={
+                  <AdminProtectedRout>
+                    <EditProduct/>
+                  </AdminProtectedRout>        
+                }
                 />
 
                 <Route

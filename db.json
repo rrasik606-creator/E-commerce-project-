@@ -315,7 +315,38 @@
       "stock": 22,
       "featured": false,
       "isNew": true,
-      "deleted": false
+      "deleted": true
+    },
+    {
+      "name": "Casio",
+      "brand": "casio",
+      "category": "men",
+      "type": "casual",
+      "price": 1949,
+      "originalPrice": 2999,
+      "discount": 35,
+      "rating": 4.5,
+      "reviews": 478,
+      "image": [
+        "/watches/men/casual/casio1.png",
+        "/watches/men/casual/casio1a.png",
+        "/watches/men/casual/casio1b.png",
+        "/watches/men/casual/casio1c.png"
+      ],
+      "description": "A stylish and reliable Casio watch designed for everyday wear. It features a durable case, comfortable strap, clear dial, and accurate quartz movement. With its classic design and practical functionality, this watch is suitable for both casual outings and daily use.",
+      "features": [
+        "Quartz Movement",
+        "Water Resistant",
+        "Durable Resin Case",
+        "Comfortable Strap",
+        "LED Light",
+        "Accurate Timekeeping"
+      ],
+      "stock": 15,
+      "featured": true,
+      "isNew": true,
+      "deleted": false,
+      "id": "kheVFCwPj2c"
     }
   ],
   "users": [
@@ -373,6 +404,24 @@
       "userId": "RTgv5cD5nDU",
       "items": [],
       "id": "4iOIiaoHiu4"
+    },
+    {
+      "userId": "FY_RNHVbzwc",
+      "items": [
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "id": "9GAHYLemyms"
     }
   ],
   "wishlist": [

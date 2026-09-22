@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import AdminSidbar from '../../components/adminsidebar'
 import AdminHeader from '../../components/adminheader'
 import { setProducts,softDeleteProduct as softDeleteProductRedux,restoreProduct as restoreProductRedux,permanentDeleteProduct as permanentDeleteProductRedux } from '../../redux/slices/adminproductslice'
@@ -8,6 +9,7 @@ import { getProduct,softDeleteProduct,restoreProduct,permanentDeleteProduct } fr
 const AdminProducts = () => {
 
     const dispatch=useDispatch();
+    const navigate=useNavigate();
 
     const products=useSelector((state)=>state.adminProduct.products);
 
@@ -72,7 +74,7 @@ const AdminProducts = () => {
                         Products
                     </h1>
 
-                    <button className='bg-black text-white px-4 py-2 rounded-lg'>
+                    <button onClick={()=>navigate("/admin/product/add")} className='bg-black text-white px-4 py-2 rounded-lg'>
                         Add Product
                     </button>
                 </div>

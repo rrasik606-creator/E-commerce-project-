@@ -48,6 +48,13 @@ const AdminProducts = () => {
     };
 
     const handlePermanentDelete=async(id)=>{
+
+        const confirmdelete=window.confirm("Are you sure you want to permanently delete this product?")
+
+        if(!confirmdelete){
+            return
+        }
+        
         try{
             await permanentDeleteProduct(id);
             dispatch(permanentDeleteProductRedux(id));
@@ -63,7 +70,7 @@ const AdminProducts = () => {
 
         <AdminSidbar/>
 
-        <div className='flex-1'>
+        <div className='flex-1 ml-64'>
 
             <AdminHeader/>
 

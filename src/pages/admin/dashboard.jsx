@@ -8,7 +8,7 @@
 
         <AdminSidbar/>
         
-        <div className='flex-1'>
+        <div className='flex-1 ml-64'>
 
             <AdminHeader/>
 

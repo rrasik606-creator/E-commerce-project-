@@ -24,6 +24,7 @@ import AdminProducts from "../pages/admin/product";
 import AdminUsers from "../pages/admin/users";
 import AddProduct from "../pages/admin/addproduct";
 import EditProduct from "../pages/admin/editproduct";
+import DeletedProduct from "../pages/admin/deletedproducts";
 
 const Approute = () => {
 
@@ -152,6 +153,15 @@ const Approute = () => {
                             <AdminProducts />
                         </AdminProtectedRout>
                     }
+                />
+                
+                <Route
+                path="/admin/product/deleted"
+                element={
+                  <AdminProtectedRout>
+                    <DeletedProduct/>
+                  </AdminProtectedRout>
+                }               
                 />
 
                 <Route

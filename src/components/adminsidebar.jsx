@@ -5,8 +5,8 @@ import {
     Package,
     Users,
     ShoppingCart, 
-    User,
-    LogOut
+    LogOut,
+    Trash2
 } from 'lucide-react';
 
 import { useDispatch } from 'react-redux';
@@ -67,7 +67,7 @@ const AdminSidbar = () => {
                     }`}
                 >
                     <Package size={20}/>
-                    Product        
+                    Products        
                 </Link>
 
                 <Link 
@@ -78,8 +78,8 @@ const AdminSidbar = () => {
                             : "hover:bg-gray-800"
                     }`}
                 >
-                    <User size={20}/>
-                    User        
+                    <Users size={20}/>
+                    Users        
                 </Link>
 
                 <Link 
@@ -92,6 +92,18 @@ const AdminSidbar = () => {
                 >
                     <ShoppingCart size={20}/>
                     Orders        
+                </Link>
+
+                <Link 
+                    to="/admin/product/deleted" 
+                    className={`flex items-center gap-3 p-3 rounded-lg ${
+                        location.pathname === "/admin/product/deleted"
+                            ? "bg-white text-black"
+                            : "hover:bg-gray-800"
+                    }`}
+                >
+                    <Trash2 size={20}/>
+                    Deleted Products
                 </Link>
 
             </nav>

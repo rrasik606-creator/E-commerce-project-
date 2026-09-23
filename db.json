@@ -403,7 +403,56 @@
   "cart": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [],
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "5",
+          "name": "Fastrack Vyb Nimbus with Quartz Analog",
+          "price": 1823,
+          "image": [
+            "/watches/men/casual/fastrack2.png",
+            "/watches/men/casual/fastrack2a.png",
+            "/watches/men/casual/fastrack2b.png",
+            "/watches/men/casual/fastrack2c.png"
+          ],
+          "quantity": 2
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "kheVFCwPj2c",
+          "name": "Casio",
+          "price": 1949,
+          "image": [
+            "/watches/men/casual/casio1.png",
+            "/watches/men/casual/casio1a.png",
+            "/watches/men/casual/casio1b.png",
+            "/watches/men/casual/casio1c.png"
+          ],
+          "quantity": 1
+        }
+      ],
       "id": "4iOIiaoHiu4"
     },
     {
@@ -463,6 +512,53 @@
             "/watches/men/sports/casio2a.png",
             "/watches/men/sports/casio2b.png",
             "/watches/men/sports/casio2c.png"
+          ]
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "brand": "Fastrack",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ]
+        },
+        {
+          "productId": "5",
+          "name": "Fastrack Vyb Nimbus with Quartz Analog",
+          "brand": "Fastrack",
+          "price": 1823,
+          "image": [
+            "/watches/men/casual/fastrack2.png",
+            "/watches/men/casual/fastrack2a.png",
+            "/watches/men/casual/fastrack2b.png",
+            "/watches/men/casual/fastrack2c.png"
+          ]
+        },
+        {
+          "productId": "8",
+          "name": "Fire-Boltt Axiom Round",
+          "brand": "Fire-Boltt",
+          "price": 2799,
+          "image": [
+            "/watches/men/casual/sonata1.png",
+            "/watches/men/casual/sonata1a.png",
+            "/watches/men/casual/sonata1b.png",
+            "/watches/men/casual/sonata1c.png"
+          ]
+        },
+        {
+          "productId": "9",
+          "name": "FOSSIL Bannon Analog Watch",
+          "brand": "FOSSIL",
+          "price": 999,
+          "image": [
+            "/watches/men/casual/titan1.png",
+            "/watches/men/casual/titan1a.png",
+            "/watches/men/casual/titan1b.png"
           ]
         }
       ],

@@ -64,6 +64,12 @@ const Login = () => {
       console.log(check);
 
       if(check){
+
+        if(check.blocked){
+          toast.error("Your account has been blocked...")
+          return
+        }
+        
         const loggedUser={
           id:check.id,
           name:check.name,

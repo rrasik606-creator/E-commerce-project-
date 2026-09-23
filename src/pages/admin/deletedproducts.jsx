@@ -237,6 +237,14 @@ const DeletedProduct = () => {
 
                         </table>
 
+                        {
+                            currentProducts.length===0&&(
+                                <div className='p-8 text-center text-gray-500'>
+                                    No deleted products found
+                                </div>
+                            )
+                        }
+
                     </div>
 
 

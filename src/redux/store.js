@@ -3,6 +3,7 @@ import authReducer from './slices/authslice';
 import cartReducer from './slices/cartslice'
 import wishlistReducer from './slices/wishlistslice';
 import adminProductReducer from './slices/adminproductslice';
+import adminUserReducer from './slices/adminuserslice';
 
 const store=configureStore({
     reducer:{
@@ -14,6 +15,8 @@ const store=configureStore({
         wishlist:wishlistReducer,
 
         adminProduct:adminProductReducer,
+
+        adminUser:adminUserReducer,
 
     }
 });

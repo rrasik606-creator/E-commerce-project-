@@ -58,7 +58,8 @@
       ],
       "stock": 12,
       "featured": true,
-      "isNew": false
+      "isNew": false,
+      "deleted": false
     },
     {
       "id": "4",
@@ -87,7 +88,8 @@
       ],
       "stock": 8,
       "featured": false,
-      "isNew": false
+      "isNew": false,
+      "deleted": false
     },
     {
       "id": "5",
@@ -116,7 +118,8 @@
       ],
       "stock": 20,
       "featured": true,
-      "isNew": false
+      "isNew": false,
+      "deleted": false
     },
     {
       "id": "6",
@@ -145,7 +148,8 @@
       ],
       "stock": 30,
       "featured": false,
-      "isNew": false
+      "isNew": false,
+      "deleted": false
     },
     {
       "id": "7",
@@ -172,7 +176,8 @@
       ],
       "stock": 10,
       "featured": true,
-      "isNew": true
+      "isNew": true,
+      "deleted": false
     },
     {
       "id": "8",
@@ -201,7 +206,8 @@
       ],
       "stock": 18,
       "featured": false,
-      "isNew": true
+      "isNew": true,
+      "deleted": false
     },
     {
       "id": "9",
@@ -229,7 +235,8 @@
       ],
       "stock": 7,
       "featured": true,
-      "isNew": true
+      "isNew": true,
+      "deleted": false
     },
     {
       "id": "10",
@@ -258,7 +265,8 @@
       ],
       "stock": 35,
       "featured": false,
-      "isNew": true
+      "isNew": true,
+      "deleted": true
     },
     {
       "id": "11",
@@ -286,7 +294,8 @@
       ],
       "stock": 14,
       "featured": true,
-      "isNew": true
+      "isNew": true,
+      "deleted": true
     },
     {
       "id": "12",
@@ -316,7 +325,7 @@
       "stock": 22,
       "featured": false,
       "isNew": true,
-      "deleted": true
+      "deleted": false
     },
     {
       "name": "Casio",

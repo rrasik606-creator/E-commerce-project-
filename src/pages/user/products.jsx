@@ -19,10 +19,12 @@ const Products = () => {
         return response.data;
     };
 
-    const { data: products = [], isLoading, isError } = useQuery({
+    const { data: allProducts = [], isLoading, isError } = useQuery({
         queryKey: ["products"],
         queryFn: getProduct
     });
+
+    const products=allProducts.filter((product)=>!product.deleted)
 
     if (isLoading) {
         return (

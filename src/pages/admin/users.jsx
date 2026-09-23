@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdminSidbar from '../../components/adminsidebar'
@@ -21,11 +22,31 @@ const AdminUsers = () => {
 
     const dispatch = useDispatch();
 
+    const[searchParams,setSearchParams]=useSearchParams();
+
+    const search=searchParams.get("search")||"";
+    const currentPage=Number(searchParams.get("page"))||1;
+
+    const usersPerPage=5;
+
     const allUsers = useSelector(
         (state) => state.adminUser.users
     );
 
-    const users=allUsers.filter((user)=>user.role!=="admin")
+    const users=allUsers
+    .filter((user)=>user.role!=="admin")
+    .filter((user)=>{
+      const searchMatch=
+      user.name.toLowerCase().includes(search.toLowerCase())||
+      user.username.toLowerCase().includes(search.toLowerCase())||
+      user.email.toLowerCase().includes(search.toLowerCase());
+
+      return searchMatch
+    })
+
+    const totalPages=Math.ceil(users.length/usersPerPage);
+    const startIndex=(currentPage-1)*usersPerPage;
+    const currentUsers=users.slice(startIndex,startIndex+usersPerPage);
 
 
     const fetchUsers = async () => {
@@ -101,6 +122,28 @@ const AdminUsers = () => {
                         Users
                     </h1>
 
+                    <div className='mb-6'>
+                      <input 
+                      type="text"
+                      placeholder='Search users...'
+                      value={search}
+                      onChange={(e)=>{
+                        const value=e.target.value;
+                        if(value){
+                          searchParams.set("search",value);
+                        }
+                        else{
+                          searchParams.delete("search");
+                        }
+
+                        searchParams.delete("page");
+
+                        setSearchParams(searchParams);                        
+                      }}
+                      className='border border-gray-300 rounded-lg px-4 py-2 w-full md:w-80 outline-none'
+                      />
+                    </div>
+
 
                     <div className='bg-white rounded-lg shadow overflow-x-auto'>
 
@@ -138,7 +181,7 @@ const AdminUsers = () => {
                             <tbody>
 
                                 {
-                                    users.map((user) => (
+                                    currentUsers.map((user) => (
 
                                         <tr
                                             key={user.id}
@@ -204,7 +247,7 @@ const AdminUsers = () => {
 
 
                         {
-                            users.length === 0 && (
+                            currentUsers.length === 0 && (
 
                                 <div className='p-8 text-center text-gray-500'>
                                     No users found
@@ -212,6 +255,54 @@ const AdminUsers = () => {
 
                             )
                         }
+
+                    </div>
+
+                    <div className='flex justify-center items-center gap-2 p-4'>
+
+                      <button 
+                      onClick={()=>setSearchParams({
+                        search,page:currentPage-1
+                      })}
+                      disabled={currentPage===1}
+                      className='px-4 py-2 border rounded-lg disabled:opacity-50'
+                      >
+                        Previous
+                      </button>
+
+                      {Array.from(
+                          { length: totalPages },
+                          (_, index) => (
+                              <button
+                                  key={index}
+                                  onClick={() => setSearchParams({
+                                      search,
+                                      page: index + 1
+                                  })}
+                                  className={`px-4 py-2 rounded-lg ${
+                                      currentPage === index + 1
+                                          ? 'bg-black text-white'
+                                          : 'border'
+                                  }`}
+                              >
+                                  {index + 1}
+                              </button>
+                          )
+                      )}
+
+                      <button
+                          onClick={() => setSearchParams({
+                              search,
+                              page: currentPage + 1
+                          })}
+                          disabled={
+                              currentPage === totalPages ||
+                              totalPages === 0
+                          }
+                          className='px-4 py-2 border rounded-lg disabled:opacity-50'
+                      >
+                          Next
+                      </button>
 
                     </div>
 

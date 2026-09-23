@@ -366,7 +366,8 @@
       "email": "rashik@gmail.com",
       "password": "rashik123",
       "id": "RTgv5cD5nDU",
-      "role": "user"
+      "role": "user",
+      "blocked": false
     },
     {
       "name": "Aslam",
@@ -374,7 +375,8 @@
       "email": "rashik@gmail.com",
       "password": "aslu1234",
       "id": "YkNQVtWO5qI",
-      "role": "user"
+      "role": "user",
+      "blocked": false
     },
     {
       "name": "Aslam",
@@ -382,7 +384,8 @@
       "email": "rrasik606@gmail.com",
       "password": "12345678",
       "id": "2k6nHiV-RX0",
-      "role": "user"
+      "role": "user",
+      "blocked": false
     },
     {
       "name": "rashik",
@@ -390,7 +393,8 @@
       "email": "rrasik606@gmail.com",
       "password": "12345678",
       "id": "x4P-8_dKz6M",
-      "role": "user"
+      "role": "user",
+      "blocked": false
     },
     {
       "name": "MUHAMMED RASHIK V.P",
@@ -398,7 +402,8 @@
       "email": "muhammedrashik484@gmail.com",
       "password": "12345678",
       "id": "gDG21i1JPj0",
-      "role": "user"
+      "role": "user",
+      "blocked": false
     },
     {
       "name": "Admin",

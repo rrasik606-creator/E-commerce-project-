@@ -27,5 +27,5 @@ const adminUserSlice=createSlice({
     }
 });
 
-export const {setUser,blockUser,unblockUser}=adminUserSlice.actions;
+export const {setUsers,blockUser,unblockUser}=adminUserSlice.actions;
 export default adminUserSlice.reducer;

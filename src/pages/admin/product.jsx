@@ -130,17 +130,17 @@ const AdminProducts = () => {
 
     };
 
-    const handleCategory=(e)=>{
+    // const handleCategory=(e)=>{
 
-        setSearchParams({
-            search:search,
-            brand:brand,
-            category:e.target.value,
-            type:type,
-            page:1
-        });
+    //     setSearchParams({
+    //         search:search,
+    //         brand:brand,
+    //         category:e.target.value,
+    //         type:type,
+    //         page:1
+    //     });
 
-    };
+    // };
 
     const handleType=(e)=>{
 

@@ -25,6 +25,7 @@ const AdminUsers = () => {
     const[searchParams,setSearchParams]=useSearchParams();
 
     const search=searchParams.get("search")||"";
+    const status=searchParams.get("status")||"";
     const currentPage=Number(searchParams.get("page"))||1;
 
     const usersPerPage=5;
@@ -37,11 +38,19 @@ const AdminUsers = () => {
     .filter((user)=>user.role!=="admin")
     .filter((user)=>{
       const searchMatch=
-      user.name.toLowerCase().includes(search.toLowerCase())||
-      user.username.toLowerCase().includes(search.toLowerCase())||
-      user.email.toLowerCase().includes(search.toLowerCase());
+            user.name.toLowerCase().includes(search.toLowerCase())||
+            user.username.toLowerCase().includes(search.toLowerCase())||
+            user.email.toLowerCase().includes(search.toLowerCase());
 
-      return searchMatch
+      const statusMatch=
+      status===""
+      ?true
+      :status==="active"
+      ?!user.blocked
+      :user.blocked      
+
+
+      return searchMatch&&statusMatch
     })
 
     const totalPages=Math.ceil(users.length/usersPerPage);
@@ -122,7 +131,7 @@ const AdminUsers = () => {
                         Users
                     </h1>
 
-                    <div className='mb-6'>
+                    <div className='mb-6 flex flex-wrap gap-3'>
                       <input 
                       type="text"
                       placeholder='Search users...'
@@ -142,6 +151,38 @@ const AdminUsers = () => {
                       }}
                       className='border border-gray-300 rounded-lg px-4 py-2 w-full md:w-80 outline-none'
                       />
+
+                      <select
+                      value={status}
+                      onChange={(e)=>{
+                        const value=e.target.value
+
+                        if(value){
+                            searchParams.set("status",value);
+                        }
+                        else{
+                            searchParams.delete("status");
+                        }
+
+                        searchParams.delete("page")
+
+                        setSearchParams(searchParams);
+                      }}
+                      className='border border-gray-300 rounded-lg px-4 py-2 outline-none ml-3'
+                      >
+                        <option value="">All Users</option>
+                        <option value="active">Active</option>
+                        <option value="blocked">Blocked</option>
+                      </select>
+
+                      <button 
+                      onClick={()=>{
+                        setSearchParams({});
+                      }}
+                      className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100'
+                      >
+                        Clear
+                      </button>
                     </div>
 
 
@@ -262,7 +303,9 @@ const AdminUsers = () => {
 
                       <button 
                       onClick={()=>setSearchParams({
-                        search,page:currentPage-1
+                        search,
+                        status,
+                        page:currentPage-1
                       })}
                       disabled={currentPage===1}
                       className='px-4 py-2 border rounded-lg disabled:opacity-50'
@@ -277,6 +320,7 @@ const AdminUsers = () => {
                                   key={index}
                                   onClick={() => setSearchParams({
                                       search,
+                                      status,
                                       page: index + 1
                                   })}
                                   className={`px-4 py-2 rounded-lg ${
@@ -293,6 +337,7 @@ const AdminUsers = () => {
                       <button
                           onClick={() => setSearchParams({
                               search,
+                              status,
                               page: currentPage + 1
                           })}
                           disabled={

@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 
 import AdminSidbar from '../../components/adminsidebar'
 import AdminHeader from '../../components/adminheader'
 
-import { setOrders,updateOrder as updateOrderRedux } from '../../redux/slices/adminordersslice'
-import { getOrders,updateOrder } from '../../services/adminorderservices'
+import {
+    setOrders,
+    updateOrder as updateOrderRedux
+} from '../../redux/slices/adminordersslice'
+
+import {
+    getOrders,
+    updateOrder
+} from '../../services/adminorderservices'
 
 const AdminOrders = () => {
 
@@ -17,7 +25,21 @@ const AdminOrders = () => {
 
     const [selectedOrder, setSelectedOrder] = useState(null);
 
-    const statuses=["Pending","Processing","Shipped","Delivered","Cancelled"];
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const search = searchParams.get("search") || "";
+    const status = searchParams.get("status") || "";
+    const currentPage = Number(searchParams.get("page")) || 1;
+
+    const ordersPerPage = 5;
+
+    const statuses = [
+        "Pending",
+        "Processing",
+        "Shipped",
+        "Delivered",
+        "Cancelled"
+    ];
 
     const fetchOrders = async () => {
         try {
@@ -40,18 +62,72 @@ const AdminOrders = () => {
         setSelectedOrder(null);
     };
 
-    const handleStatusChange=async(id,status)=>{
-      try{
-        const data=await updateOrder(id,{status});
-        dispatch(updateOrderRedux(data));
+    const handleStatusChange = async (id, status) => {
+        try {
+            const data = await updateOrder(id, { status });
 
-        if(selectedOrder&&selectedOrder.id===id){
-          setSelectedOrder(data);
+            dispatch(updateOrderRedux(data));
+
+            if (selectedOrder && selectedOrder.id === id) {
+                setSelectedOrder(data);
+            }
         }
-      }
-      catch(error){
-        console.log(error);
-      }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    // Search and filter orders
+    const filteredOrders = orders.filter((order) => {
+
+        const searchMatch =
+            order.id.toLowerCase().includes(search.toLowerCase()) ||
+            order.userId.toLowerCase().includes(search.toLowerCase()) ||
+            order.address.name.toLowerCase().includes(search.toLowerCase());
+        const statusMatch =
+            status === ""
+                ? true
+                : order.status === status;
+
+        return searchMatch && statusMatch;
+    });
+
+    // Pagination
+    const totalPages = Math.ceil(
+        filteredOrders.length / ordersPerPage
+    );
+
+    const startIndex =
+        (currentPage - 1) * ordersPerPage;
+
+    const currentOrders = filteredOrders.slice(
+        startIndex,
+        startIndex + ordersPerPage
+    );
+
+    // Search change
+    const handleSearch = (e) => {
+        setSearchParams({
+            search: e.target.value,
+            status: status,
+            page: 1
+        });
+    };
+
+    // Status filter
+    const handleStatusFilter = (e) => {
+        setSearchParams({
+            search: search,
+            status: e.target.value,
+            page: 1
+        });
+    };
+
+    // Clear filters
+    const handleClearFilters = () => {
+        setSearchParams({
+            page: 1
+        });
     };
 
     return (
@@ -61,8 +137,6 @@ const AdminOrders = () => {
 
             <div className='flex-1 ml-64'>
 
-                <AdminHeader />
-
                 <main className='p-6'>
 
                     <div className='mb-6'>
@@ -71,28 +145,99 @@ const AdminOrders = () => {
                         </h1>
                     </div>
 
+                    {/* Search and Filter */}
+
+                    <div className='bg-white p-4 rounded-lg shadow mb-6'>
+
+                        <div className='flex flex-col md:flex-row gap-4'>
+
+                            <input
+                                type='text'
+                                placeholder='Search orders... '
+                                value={search}
+                                onChange={handleSearch}
+                                className='w-full md:flex-1 border rounded-lg px-4 py-2'
+                            />
+
+                            <select
+                                value={status}
+                                onChange={handleStatusFilter}
+                                className='border rounded-lg px-4 py-2'
+                            >
+                                <option value=''>
+                                    All Status
+                                </option>
+
+                                {statuses.map((status) => (
+                                    <option
+                                        key={status}
+                                        value={status}
+                                    >
+                                        {status}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <button
+                                onClick={handleClearFilters}
+                                className='px-5 py-2 border rounded-lg'
+                            >
+                                Clear
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {/* Orders Table */}
+
                     <div className='bg-white rounded-lg shadow overflow-x-auto'>
 
                         <table className='w-full'>
 
                             <thead>
+
                                 <tr className='border-b text-left'>
 
-                                    <th className='p-4'>Order</th>
-                                    <th className='p-4'>User ID</th>
-                                    <th className='p-4'>Customer</th>
-                                    <th className='p-4'>Date</th>
-                                    <th className='p-4'>Total</th>
-                                    <th className='p-4'>Payment</th>
-                                    <th className='p-4'>Status</th>
-                                    <th className='p-4'>Action</th>
+                                    <th className='p-4'>
+                                        Order
+                                    </th>
+
+                                    <th className='p-4'>
+                                        User ID
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Customer
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Date
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Total
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Payment
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Status
+                                    </th>
+
+                                    <th className='p-4'>
+                                        Action
+                                    </th>
 
                                 </tr>
+
                             </thead>
 
                             <tbody>
 
-                                {orders.map((order) => (
+                                {currentOrders.map((order) => (
 
                                     <tr
                                         key={order.id}
@@ -112,6 +257,7 @@ const AdminOrders = () => {
                                         </td>
 
                                         <td className='p-4'>
+
                                             {new Date(
                                                 order.orderDate
                                             ).toLocaleDateString(
@@ -122,6 +268,7 @@ const AdminOrders = () => {
                                                     year: 'numeric'
                                                 }
                                             )}
+
                                         </td>
 
                                         <td className='p-4'>
@@ -133,21 +280,39 @@ const AdminOrders = () => {
                                         </td>
 
                                         <td className='p-4'>
-                                            <select 
-                                            value={order.status}
-                                            onChange={(e)=>handleStatusChange(order.id,e.target.value)}
-                                            className='border rounded-lg px-3 py-2'
+
+                                            <select
+                                                value={order.status}
+                                                onChange={(e) =>
+                                                    handleStatusChange(
+                                                        order.id,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className='border rounded-lg px-3 py-2'
                                             >
-                                              {statuses.map((status)=>(
-                                                <option key={status} value={status}>{status}</option>
-                                              ))}
+
+                                                {statuses.map((status) => (
+
+                                                    <option
+                                                        key={status}
+                                                        value={status}
+                                                    >
+                                                        {status}
+                                                    </option>
+
+                                                ))}
+
                                             </select>
+
                                         </td>
 
                                         <td className='p-4'>
 
                                             <button
-                                                onClick={() => handleViewOrder(order)}
+                                                onClick={() =>
+                                                    handleViewOrder(order)
+                                                }
                                                 className='text-blue-600'
                                             >
                                                 View
@@ -163,10 +328,75 @@ const AdminOrders = () => {
 
                         </table>
 
-                        {orders.length === 0 && (
+                        {currentOrders.length === 0 && (
                             <div className='p-8 text-center text-gray-500'>
                                 No orders found
                             </div>
+                        )}
+
+                        {/* Pagination */}
+
+                        {totalPages > 0 && (
+
+                            <div className='flex justify-center items-center gap-2 p-4'>
+
+                                <button
+                                    onClick={() =>
+                                        setSearchParams({
+                                            search: search,
+                                            status: status,
+                                            page: currentPage - 1
+                                        })
+                                    }
+                                    disabled={currentPage === 1}
+                                    className='px-4 py-2 border rounded-lg disabled:opacity-50'
+                                >
+                                    Previous
+                                </button>
+
+                                {Array.from(
+                                    { length: totalPages },
+                                    (_, index) => (
+
+                                        <button
+                                            key={index}
+                                            onClick={() =>
+                                                setSearchParams({
+                                                    search: search,
+                                                    status: status,
+                                                    page: index + 1
+                                                })
+                                            }
+                                            className={`px-4 py-2 rounded-lg ${
+                                                currentPage === index + 1
+                                                    ? 'bg-black text-white'
+                                                    : 'border'
+                                            }`}
+                                        >
+                                            {index + 1}
+                                        </button>
+
+                                    )
+                                )}
+
+                                <button
+                                    onClick={() =>
+                                        setSearchParams({
+                                            search: search,
+                                            status: status,
+                                            page: currentPage + 1
+                                        })
+                                    }
+                                    disabled={
+                                        currentPage === totalPages
+                                    }
+                                    className='px-4 py-2 border rounded-lg disabled:opacity-50'
+                                >
+                                    Next
+                                </button>
+
+                            </div>
+
                         )}
 
                     </div>
@@ -175,210 +405,237 @@ const AdminOrders = () => {
 
             </div>
 
-          {/* Order Details Modal */}
 
-          {selectedOrder && (
-              <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+            {/* Order Details Modal */}
 
-                  <div className='bg-white w-full max-w-2xl rounded-xl shadow-xl max-h-[90vh] overflow-y-auto'>
+            {selectedOrder && (
 
-                      {/* Modal Header */}
+                <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
 
-                      <div className='flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white'>
+                    <div className='bg-white w-full max-w-2xl rounded-xl shadow-xl max-h-[90vh] overflow-y-auto'>
 
-                          <div>
-                              <h2 className='text-xl font-bold'>
-                                  Order Details
-                              </h2>
+                        {/* Modal Header */}
 
-                              <p className='text-sm text-gray-500'>
-                                  Order ID: {selectedOrder.id}
-                              </p>
-                          </div>
+                        <div className='flex justify-between items-center px-6 py-4 border-b sticky top-0 bg-white'>
 
-                          <button
-                              onClick={handleCloseDetails}
-                              className='text-2xl text-gray-500 hover:text-black'
-                          >
-                              ×
-                          </button>
+                            <div>
 
-                      </div>
+                                <h2 className='text-xl font-bold'>
+                                    Order Details
+                                </h2>
 
+                                <p className='text-sm text-gray-500'>
+                                    Order ID: {selectedOrder.id}
+                                </p>
 
-                      {/* Customer Details */}
+                            </div>
 
-                      <div className='p-6'>
+                            <button
+                                onClick={handleCloseDetails}
+                                className='text-2xl text-gray-500 hover:text-black'
+                            >
+                                ×
+                            </button>
 
-                          <h3 className='font-semibold text-lg mb-4'>
-                              Customer Details
-                          </h3>
-
-                          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-
-                              <div>
-                                  <p className='text-sm text-gray-500'>
-                                      User ID
-                                  </p>
-
-                                  <p className='font-medium'>
-                                      {selectedOrder.userId}
-                                  </p>
-                              </div>
-
-                              <div>
-                                  <p className='text-sm text-gray-500'>
-                                      Customer Name
-                                  </p>
-
-                                  <p className='font-medium'>
-                                      {selectedOrder.address.name}
-                                  </p>
-                              </div>
-
-                              <div>
-                                  <p className='text-sm text-gray-500'>
-                                      Phone
-                                  </p>
-
-                                  <p className='font-medium'>
-                                      {selectedOrder.address.phone}
-                                  </p>
-                              </div>
-
-                              <div>
-                                  <p className='text-sm text-gray-500'>
-                                      Payment
-                                  </p>
-
-                                  <p className='font-medium'>
-                                      {selectedOrder.paymentMethod}
-                                  </p>
-                              </div>
-
-                          </div>
-
-                          <div className='mt-4'>
-
-                              <p className='text-sm text-gray-500'>
-                                  Address
-                              </p>
-
-                              <p className='font-medium'>
-                                  {selectedOrder.address.address},
-                                  {' '}
-                                  {selectedOrder.address.city},
-                                  {' '}
-                                  {selectedOrder.address.state}
-                                  {' - '}
-                                  {selectedOrder.address.pincode}
-                              </p>
-
-                          </div>
-
-                      </div>
+                        </div>
 
 
-                      {/* Ordered Products */}
+                        {/* Customer Details */}
 
-                      <div className='px-6 pb-6'>
+                        <div className='p-6'>
 
-                          <h3 className='font-semibold text-lg mb-4'>
-                              Ordered Products
-                          </h3>
+                            <h3 className='font-semibold text-lg mb-4'>
+                                Customer Details
+                            </h3>
 
-                          <div className='space-y-3'>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
-                              {selectedOrder.items.map((item) => (
+                                <div>
 
-                                  <div
-                                      key={item.productId}
-                                      className='flex items-center gap-4 border rounded-lg p-4'
-                                  >
+                                    <p className='text-sm text-gray-500'>
+                                        User ID
+                                    </p>
 
-                                      <img
-                                          src={item.image[0]}
-                                          alt={item.name}
-                                          className='w-16 h-16 object-contain'
-                                      />
+                                    <p className='font-medium'>
+                                        {selectedOrder.userId}
+                                    </p>
 
-                                      <div className='flex-1'>
+                                </div>
 
-                                          <p className='font-medium'>
-                                              {item.name}
-                                          </p>
+                                <div>
 
-                                          <p className='text-sm text-gray-500'>
-                                              Product ID: {item.productId}
-                                          </p>
+                                    <p className='text-sm text-gray-500'>
+                                        Customer Name
+                                    </p>
 
-                                          <p className='text-sm text-gray-500'>
-                                              Quantity: {item.quantity}
-                                          </p>
+                                    <p className='font-medium'>
+                                        {selectedOrder.address.name}
+                                    </p>
 
-                                      </div>
+                                </div>
 
-                                      <p className='font-semibold'>
-                                          ₹{item.price.toLocaleString()}
-                                      </p>
+                                <div>
 
-                                  </div>
+                                    <p className='text-sm text-gray-500'>
+                                        Phone
+                                    </p>
 
-                              ))}
+                                    <p className='font-medium'>
+                                        {selectedOrder.address.phone}
+                                    </p>
 
-                          </div>
+                                </div>
 
-                      </div>
+                                <div>
+
+                                    <p className='text-sm text-gray-500'>
+                                        Payment
+                                    </p>
+
+                                    <p className='font-medium'>
+                                        {selectedOrder.paymentMethod}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <div className='mt-4'>
+
+                                <p className='text-sm text-gray-500'>
+                                    Address
+                                </p>
+
+                                <p className='font-medium'>
+
+                                    {selectedOrder.address.address}
+                                    {', '}
+                                    {selectedOrder.address.city}
+                                    {', '}
+                                    {selectedOrder.address.state}
+                                    {' - '}
+                                    {selectedOrder.address.pincode}
+
+                                </p>
+
+                            </div>
+
+                        </div>
 
 
-                      {/* Order Summary */}
+                        {/* Ordered Products */}
 
-                      <div className='px-6 py-5 border-t bg-gray-50'>
+                        <div className='px-6 pb-6'>
 
-                          <div className='flex justify-between mb-2'>
-                              <span>Subtotal</span>
+                            <h3 className='font-semibold text-lg mb-4'>
+                                Ordered Products
+                            </h3>
 
-                              <span>
-                                  ₹{selectedOrder.subtotal.toLocaleString()}
-                              </span>
-                          </div>
+                            <div className='space-y-3'>
 
-                          <div className='flex justify-between mb-2'>
-                              <span>Payment</span>
+                                {selectedOrder.items.map((item) => (
 
-                              <span>
-                                  {selectedOrder.paymentMethod}
-                              </span>
-                          </div>
+                                    <div
+                                        key={item.productId}
+                                        className='flex items-center gap-4 border rounded-lg p-4'
+                                    >
 
-                          <div className='flex justify-between text-lg font-bold'>
-                              <span>Total</span>
+                                        <img
+                                            src={item.image[0]}
+                                            alt={item.name}
+                                            className='w-16 h-16 object-contain'
+                                        />
 
-                              <span>
-                                  ₹{selectedOrder.total.toLocaleString()}
-                              </span>
-                          </div>
+                                        <div className='flex-1'>
 
-                      </div>
+                                            <p className='font-medium'>
+                                                {item.name}
+                                            </p>
+
+                                            <p className='text-sm text-gray-500'>
+                                                Product ID: {item.productId}
+                                            </p>
+
+                                            <p className='text-sm text-gray-500'>
+                                                Quantity: {item.quantity}
+                                            </p>
+
+                                        </div>
+
+                                        <p className='font-semibold'>
+                                            ₹{item.price.toLocaleString()}
+                                        </p>
+
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        </div>
 
 
-                      {/* Modal Footer */}
+                        {/* Order Summary */}
 
-                      <div className='flex justify-end px-6 py-4 border-t'>
+                        <div className='px-6 py-5 border-t bg-gray-50'>
 
-                          <button
-                              onClick={handleCloseDetails}
-                              className='px-5 py-2 bg-black text-white rounded-lg'
-                          >
-                              Close
-                          </button>
+                            <div className='flex justify-between mb-2'>
 
-                      </div>
+                                <span>
+                                    Subtotal
+                                </span>
 
-                  </div>
+                                <span>
+                                    ₹{selectedOrder.subtotal.toLocaleString()}
+                                </span>
 
-              </div>
-          )}
+                            </div>
+
+                            <div className='flex justify-between mb-2'>
+
+                                <span>
+                                    Payment
+                                </span>
+
+                                <span>
+                                    {selectedOrder.paymentMethod}
+                                </span>
+
+                            </div>
+
+                            <div className='flex justify-between text-lg font-bold'>
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <span>
+                                    ₹{selectedOrder.total.toLocaleString()}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Modal Footer */}
+
+                        <div className='flex justify-end px-6 py-4 border-t'>
+
+                            <button
+                                onClick={handleCloseDetails}
+                                className='px-5 py-2 bg-black text-white rounded-lg'
+                            >
+                                Close
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            )}
 
         </div>
     )

@@ -123,15 +123,13 @@ const AdminUsers = () => {
 
             <div className='flex-1 ml-64'>
 
-                <AdminHeader />
-
                 <main className='p-6'>
 
                     <h1 className='text-2xl font-bold mb-6'>
                         Users
                     </h1>
 
-                    <div className='mb-6 flex flex-wrap gap-3'>
+                    <div className='bg-white rounded-lg shadow p-4 mb-6 flex flex-wrap gap-3'>
                       <input 
                       type="text"
                       placeholder='Search users...'

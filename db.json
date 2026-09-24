@@ -607,7 +607,7 @@
       "paymentMethod": "COD",
       "subtotal": 1994,
       "total": 1994,
-      "status": "Pending",
+      "status": "Shipped",
       "orderDate": "2026-09-16T19:21:17.117Z",
       "id": "QjBq5RWEAck"
     },
@@ -700,7 +700,7 @@
       "paymentMethod": "COD",
       "subtotal": 7499,
       "total": 7499,
-      "status": "Placed",
+      "status": "Delivered",
       "orderDate": "2026-09-19T07:14:37.900Z",
       "id": "es3B6i6sCko"
     },
@@ -767,7 +767,7 @@
       "paymentMethod": "COD",
       "subtotal": 16705,
       "total": 16705,
-      "status": "Placed",
+      "status": "Processing",
       "orderDate": "2026-09-24T06:15:35.477Z",
       "id": "ADpKLb1wy94"
     }

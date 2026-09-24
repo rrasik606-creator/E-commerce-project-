@@ -169,8 +169,6 @@ const AdminProducts = () => {
 
         <div className='flex-1 ml-64'>
 
-            <AdminHeader/>
-
             <main className='p-6'>
 
                 <div className='flex justify-between items-center mb-6'>

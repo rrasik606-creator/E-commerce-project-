@@ -8,3 +8,8 @@ export const getOrder=async()=>{
     const response=await axios.get(`${API_URL}?userId=${userId}`);
     return response.data;
 }
+
+export const updateOrder=async(id,order)=>{
+    const response=await axios.patch(`${API_URL}/${id}`,order);
+    return response.data;
+}

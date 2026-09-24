@@ -1,14 +1,32 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
+import { getOrder,updateOrder } from "../../services/order";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
-
-import { getOrder } from "../../services/order";
 
 const Orders = () => {
   const navigate = useNavigate();
 
   const userId = localStorage.getItem("user");
+
+  const queryclient=useQueryClient();
+
+  const cancelOrderMutation=useMutation({
+    mutationFn:(orderId)=>updateOrder(orderId,{status:"Cancelled"}),
+    onSuccess:()=>{
+      queryclient.invalidateQueries({
+        queryKey:["orders",userId]
+      });
+    },
+  });
+
+  const handleCancelOrder=(orderId)=>{
+    const confirmCancel=window.confirm("Are you sure you want to cancel this order?");
+    if(!confirmCancel){
+      return
+    }
+    cancelOrderMutation.mutate(orderId);
+  };
 
   const {
     data: orders = [],
@@ -227,6 +245,25 @@ const Orders = () => {
                 </span>
 
               </div>
+
+              {/* Cancel order */}
+              {
+                order.status!=="Delivered"&&order.status!=="Cancelled"&&(
+                  <div className="flex justify-end mt-5">
+                    <button 
+                    onClick={()=>handleCancelOrder(order.id)}
+                    disabled={cancelOrderMutation.isPending}
+                    className="px-5 py-2.5 text-sm font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 hover:border-red-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {
+                        cancelOrderMutation.isPending
+                        ? "Cancelling..."
+                        : "Cancel order"
+                      }
+                    </button>
+                  </div>
+                )
+              }
 
             </div>
           ))}

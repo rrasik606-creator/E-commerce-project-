@@ -607,7 +607,7 @@
       "paymentMethod": "COD",
       "subtotal": 1994,
       "total": 1994,
-      "status": "Shipped",
+      "status": "Cancelled",
       "orderDate": "2026-09-16T19:21:17.117Z",
       "id": "QjBq5RWEAck"
     },
@@ -638,7 +638,7 @@
       "paymentMethod": "COD",
       "subtotal": 22495,
       "total": 22495,
-      "status": "Placed",
+      "status": "Cancelled",
       "orderDate": "2026-09-17T07:40:30.574Z",
       "id": "T_aFDhFPsQ0"
     },

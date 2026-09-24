@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import AdminSidbar from '../../components/adminsidebar'
 import AdminHeader from '../../components/adminheader'
 
-import { setOrders } from '../../redux/slices/adminordersslice'
-import { getOrders } from '../../services/adminorderservices'
+import { setOrders,updateOrder as updateOrderRedux } from '../../redux/slices/adminordersslice'
+import { getOrders,updateOrder } from '../../services/adminorderservices'
 
 const AdminOrders = () => {
 
@@ -16,6 +16,8 @@ const AdminOrders = () => {
     );
 
     const [selectedOrder, setSelectedOrder] = useState(null);
+
+    const statuses=["Pending","Processing","Shipped","Delivered","Cancelled"];
 
     const fetchOrders = async () => {
         try {
@@ -36,6 +38,20 @@ const AdminOrders = () => {
 
     const handleCloseDetails = () => {
         setSelectedOrder(null);
+    };
+
+    const handleStatusChange=async(id,status)=>{
+      try{
+        const data=await updateOrder(id,{status});
+        dispatch(updateOrderRedux(data));
+
+        if(selectedOrder&&selectedOrder.id===id){
+          setSelectedOrder(data);
+        }
+      }
+      catch(error){
+        console.log(error);
+      }
     };
 
     return (
@@ -117,7 +133,15 @@ const AdminOrders = () => {
                                         </td>
 
                                         <td className='p-4'>
-                                            {order.status}
+                                            <select 
+                                            value={order.status}
+                                            onChange={(e)=>handleStatusChange(order.id,e.target.value)}
+                                            className='border rounded-lg px-3 py-2'
+                                            >
+                                              {statuses.map((status)=>(
+                                                <option key={status} value={status}>{status}</option>
+                                              ))}
+                                            </select>
                                         </td>
 
                                         <td className='p-4'>

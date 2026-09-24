@@ -417,7 +417,56 @@
   "cart": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [],
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "5",
+          "name": "Fastrack Vyb Nimbus with Quartz Analog",
+          "price": 1823,
+          "image": [
+            "/watches/men/casual/fastrack2.png",
+            "/watches/men/casual/fastrack2a.png",
+            "/watches/men/casual/fastrack2b.png",
+            "/watches/men/casual/fastrack2c.png"
+          ],
+          "quantity": 2
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "kheVFCwPj2c",
+          "name": "Casio",
+          "price": 1949,
+          "image": [
+            "/watches/men/casual/casio1.png",
+            "/watches/men/casual/casio1a.png",
+            "/watches/men/casual/casio1b.png",
+            "/watches/men/casual/casio1c.png"
+          ],
+          "quantity": 2
+        }
+      ],
       "id": "4iOIiaoHiu4"
     },
     {
@@ -558,7 +607,7 @@
       "paymentMethod": "COD",
       "subtotal": 1994,
       "total": 1994,
-      "status": "Placed",
+      "status": "Pending",
       "orderDate": "2026-09-16T19:21:17.117Z",
       "id": "QjBq5RWEAck"
     },

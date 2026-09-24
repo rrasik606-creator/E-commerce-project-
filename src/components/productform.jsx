@@ -43,9 +43,9 @@ const ProductForm = ({
             newErrors.brand = "Brand is required";
         }
 
-        if (!formData.category) {
-            newErrors.category = "Category is required";
-        }
+        // if (!formData.category) {
+        //     newErrors.category = "Category is required";
+        // }
 
         if (!formData.type) {
             newErrors.type = "Type is required";
@@ -74,22 +74,22 @@ const ProductForm = ({
                 "Discount must be between 0 and 100";
         }
 
-        if (!formData.rating) {
-            newErrors.rating = "Rating is required";
-        } else if (
-            Number(formData.rating) < 0 ||
-            Number(formData.rating) > 5
-        ) {
-            newErrors.rating =
-                "Rating must be between 0 and 5";
-        }
+        // if (!formData.rating) {
+        //     newErrors.rating = "Rating is required";
+        // } else if (
+        //     Number(formData.rating) < 0 ||
+        //     Number(formData.rating) > 5
+        // ) {
+        //     newErrors.rating =
+        //         "Rating must be between 0 and 5";
+        // }
 
-        if (!formData.reviews) {
-            newErrors.reviews = "Reviews is required";
-        } else if (Number(formData.reviews) < 0) {
-            newErrors.reviews =
-                "Reviews cannot be negative";
-        }
+        // if (!formData.reviews) {
+        //     newErrors.reviews = "Reviews is required";
+        // } else if (Number(formData.reviews) < 0) {
+        //     newErrors.reviews =
+        //         "Reviews cannot be negative";
+        // }
 
         if (!formData.image1.trim()) {
             newErrors.image1 = "Image 1 is required";
@@ -202,7 +202,7 @@ const ProductForm = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div>
+                {/* <div>
 
                     <label className="block mb-2 font-medium">
                         Category
@@ -235,7 +235,7 @@ const ProductForm = ({
                         </p>
                     )}
 
-                </div>
+                </div> */}
 
 
                 <div>
@@ -358,7 +358,7 @@ const ProductForm = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div>
+                {/* <div>
 
                     <label className="block mb-2 font-medium">
                         Rating
@@ -380,9 +380,9 @@ const ProductForm = ({
                         </p>
                     )}
 
-                </div>
+                </div> */}
 
-
+{/* 
                 <div>
 
                     <label className="block mb-2 font-medium">
@@ -404,7 +404,7 @@ const ProductForm = ({
                         </p>
                     )}
 
-                </div>
+                </div> */}
 
             </div>
 

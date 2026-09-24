@@ -135,6 +135,27 @@ const Checkout = () => {
   // Place order
   const placeOrderMutation = useMutation({
     mutationFn: async () => {
+
+      // Check stock first
+      const products = [];
+
+      for (const item of cart) {
+        const response = await axios.get(
+          `${API_URL}/products/${item.productId}`
+        );
+
+        const product = response.data;
+
+        if (Number(product.stock) < Number(item.quantity)) {
+          throw new Error(
+            `${product.name} does not have enough stock`
+          );
+        }
+
+        products.push(product);
+      }
+
+      // Create order
       const order = {
         userId: userId,
         items: cart,
@@ -150,6 +171,21 @@ const Checkout = () => {
         `${API_URL}/orders`,
         order
       );
+
+      // Decrease stock
+      for (const item of cart) {
+        const product = products.find(
+          (product) => product.id === item.productId
+        );
+
+        await axios.patch(
+          `${API_URL}/products/${item.productId}`,
+          {
+            stock:
+              Number(product.stock) - Number(item.quantity),
+          }
+        );
+      }
 
       return response.data;
     },

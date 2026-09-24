@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
 import { getOrder,updateOrder } from "../../services/order";
 import { useNavigate } from "react-router-dom";
@@ -11,21 +12,46 @@ const Orders = () => {
 
   const queryclient=useQueryClient();
 
-  const cancelOrderMutation=useMutation({
-    mutationFn:(orderId)=>updateOrder(orderId,{status:"Cancelled"}),
-    onSuccess:()=>{
+  const cancelOrderMutation = useMutation({
+    mutationFn: async (order) => {
+
+      // Restore product stock
+      for (const item of order.items) {
+
+        const response = await axios.get(
+          `http://localhost:3001/products/${item.productId}`
+        );
+
+        const product = response.data;
+
+        await axios.patch(
+          `http://localhost:3001/products/${item.productId}`,
+          {
+            stock:
+              Number(product.stock) + Number(item.quantity),
+          }
+        );
+      }
+
+      // Update order status
+      return updateOrder(order.id, {
+        status: "Cancelled",
+      });
+    },
+
+    onSuccess: () => {
       queryclient.invalidateQueries({
-        queryKey:["orders",userId]
+        queryKey: ["orders", userId],
       });
     },
   });
 
-  const handleCancelOrder=(orderId)=>{
+  const handleCancelOrder=(order)=>{
     const confirmCancel=window.confirm("Are you sure you want to cancel this order?");
     if(!confirmCancel){
       return
     }
-    cancelOrderMutation.mutate(orderId);
+    cancelOrderMutation.mutate(order);
   };
 
   const {
@@ -251,7 +277,7 @@ const Orders = () => {
                 order.status!=="Delivered"&&order.status!=="Cancelled"&&(
                   <div className="flex justify-end mt-5">
                     <button 
-                    onClick={()=>handleCancelOrder(order.id)}
+                    onClick={()=>handleCancelOrder(order)}
                     disabled={cancelOrderMutation.isPending}
                     className="px-5 py-2.5 text-sm font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 hover:border-red-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >

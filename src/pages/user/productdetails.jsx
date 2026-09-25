@@ -8,6 +8,8 @@ import {
   Truck,
 } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 import axios from "axios";
 
 import {
@@ -79,7 +81,8 @@ const Productdetails = () => {
         updatedCart
       );
 
-      navigate("/cart");
+      // navigate("/cart");
+      toast.success("Product added to cart!");
     },
   });
 
@@ -133,6 +136,7 @@ const Productdetails = () => {
         ["wishlist", userId],
         updatedWishlist
       );
+      toast.success("Product added to wishlist!");
     },
   });
 
@@ -155,6 +159,7 @@ const Productdetails = () => {
         ["wishlist", userId],
         updatedWishlist
       );
+      toast.success("Product removed from wishlist!");
     },
   });
 
@@ -369,6 +374,18 @@ const Productdetails = () => {
 
           </p>
 
+          {
+            product.stock>0?(
+              <p className="text-green-600 font-medium mt-3">
+                In Stock
+              </p>
+            ):(
+              <p className="text-red-600 font-medium mt-3">
+                Out of Stock
+              </p>
+            )
+          }
+
           {/* price */}
           <div className="flex items-center gap-4 mt-5">
              
@@ -440,10 +457,13 @@ const Productdetails = () => {
 
 
               <button
-                onClick={() =>
+                onClick={() =>{
+                  if(quantity<Number(product.stock)){
                   setQuantity(
                     quantity + 1
                   )
+                }
+                }
                 }
 
                 className="p-3"
@@ -464,7 +484,7 @@ const Productdetails = () => {
             onClick={handleAddToCart}
 
             disabled={
-              addToCartMutation.isPending
+              addToCartMutation.isPending||Number(product.stock)<=0
             }
 
             className="w-full mt-8 flex items-center justify-center gap-3 bg-black text-white py-4 rounded-lg"
@@ -474,7 +494,9 @@ const Productdetails = () => {
 
             {addToCartMutation.isPending
               ? "Adding..."
-              : "Add to Cart"}
+              : product.stock<=0
+              ?"Out of Stock"
+              :"Add to Cart"}
 
           </button>
 

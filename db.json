@@ -26,7 +26,7 @@
         "Case Material: Stainless Steel",
         "Water Resistant"
       ],
-      "stock": 500,
+      "stock": 552,
       "featured": true,
       "isNew": true,
       "deleted": false
@@ -83,12 +83,12 @@
         "Chronograph",
         "chain Strap",
         "Quartz Movement",
-        "analog ",
+        "analog",
         "Water Resistant"
       ],
-      "stock": 8,
-      "featured": false,
-      "isNew": false,
+      "stock": 0,
+      "featured": true,
+      "isNew": true,
       "deleted": false
     },
     {
@@ -437,6 +437,36 @@
         }
       ],
       "id": "9GAHYLemyms"
+    },
+    {
+      "userId": "2k6nHiV-RX0",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 35
+        },
+        {
+          "productId": "5",
+          "name": "Fastrack Vyb Nimbus with Quartz Analog",
+          "price": 1823,
+          "image": [
+            "/watches/men/casual/fastrack2.png",
+            "/watches/men/casual/fastrack2a.png",
+            "/watches/men/casual/fastrack2b.png",
+            "/watches/men/casual/fastrack2c.png"
+          ],
+          "quantity": 14
+        }
+      ],
+      "id": "d8ogwDKbU1w"
     }
   ],
   "wishlist": [
@@ -528,6 +558,72 @@
         }
       ],
       "id": "D8rW3N6B_RE"
+    },
+    {
+      "userId": "2k6nHiV-RX0",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "brand": "Casio",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ]
+        },
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "brand": "Casio",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ]
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "brand": "Fastrack",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ]
+        },
+        {
+          "productId": "6",
+          "name": "Titan Maritime Pro",
+          "brand": "Titan",
+          "price": 2499,
+          "image": [
+            "/watches/men/casual/Fire-Boltt1.png",
+            "/watches/men/casual/Fire-Boltt1a.png",
+            "/watches/men/casual/Fire-Boltt1b.png",
+            "/watches/men/casual/Fire-Boltt1c.png"
+          ]
+        },
+        {
+          "productId": "8",
+          "name": "Fire-Boltt Axiom Round",
+          "brand": "Fire-Boltt",
+          "price": 2799,
+          "image": [
+            "/watches/men/casual/sonata1.png",
+            "/watches/men/casual/sonata1a.png",
+            "/watches/men/casual/sonata1b.png",
+            "/watches/men/casual/sonata1c.png"
+          ]
+        }
+      ],
+      "id": "LV5k3a_QhUk"
     }
   ],
   "orders": [
@@ -620,7 +716,7 @@
       "paymentMethod": "UPI",
       "subtotal": 2999,
       "total": 2999,
-      "status": "Cancelled",
+      "status": "Placed",
       "orderDate": "2026-09-19T07:13:24.933Z",
       "id": "1a54udRUWZE"
     },
@@ -819,6 +915,130 @@
       "status": "Placed",
       "orderDate": "2026-09-24T10:37:51.486Z",
       "id": "Rqa21qDKNPw"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "UPI",
+      "subtotal": 1662,
+      "total": 1662,
+      "status": "Cancelled",
+      "orderDate": "2026-09-24T10:54:19.861Z",
+      "id": "adkBr0D6tNg"
+    },
+    {
+      "userId": "2k6nHiV-RX0",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ],
+          "quantity": 52
+        }
+      ],
+      "address": {
+        "name": "Aslam",
+        "phone": "9321546987",
+        "address": "asdfghjkl;ertyuiodfghjk",
+        "city": "sdfghjkl",
+        "state": "dfghjkl",
+        "pincode": "215463"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 155948,
+      "total": 155948,
+      "status": "Cancelled",
+      "orderDate": "2026-09-25T14:03:08.558Z",
+      "id": "tD1DKsWdIY4"
+    },
+    {
+      "userId": "2k6nHiV-RX0",
+      "items": [
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 8
+        }
+      ],
+      "address": {
+        "name": "Ramshad",
+        "phone": "6542163251",
+        "address": "asdfghjkl;'lkjhgfdsdfghjkl",
+        "city": "dfghjklkhg",
+        "state": "hgsgssjj",
+        "pincode": "784521"
+      },
+      "paymentMethod": "Card",
+      "subtotal": 13296,
+      "total": 13296,
+      "status": "Placed",
+      "orderDate": "2026-09-25T14:46:36.267Z",
+      "id": "Zw3xgLrYaX0"
+    },
+    {
+      "userId": "2k6nHiV-RX0",
+      "items": [
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 2
+        }
+      ],
+      "address": {
+        "name": "ramsha",
+        "phone": "9215463874",
+        "address": "asdfghjklpoiuytrewq",
+        "city": "asdfghjk",
+        "state": "qwertyui",
+        "pincode": "645123"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 3324,
+      "total": 3324,
+      "status": "Placed",
+      "orderDate": "2026-09-25T15:07:14.900Z",
+      "id": "sbtkahM3wiM"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -2,6 +2,7 @@ import React from 'react'
 import { Heart } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 import {
     getWishlist,
     addWishlist,
@@ -40,6 +41,7 @@ const Productcrd = ({product}) => {
                 ["wishlist", userId],
                 updatedWishlist
             )
+            toast.success("Product added to wishlist!")
         }
     })
 
@@ -54,6 +56,7 @@ const Productcrd = ({product}) => {
                 ["wishlist", userId],
                 updatedWishlist
             )
+            toast.success("Product removed from wishlist!")
         }
     })
 
@@ -149,6 +152,19 @@ const Productcrd = ({product}) => {
                 <h2 className='text-xl font-semibold text-gray-900 mt-2'>
                     {product.name}
                 </h2>
+
+                {/* stock */}
+                {
+                    product.stock>0?(
+                        <p className='text-green-600 font-medium mt-2'>
+                            In Stock
+                        </p>
+                    ):(
+                        <p className='text-red-600 font-medium mt-2'>
+                            Out of Stock
+                        </p>
+                    )
+                }
 
                 {/* product price */}
                 <div className='flex items-center flex-wrap gap-3 mt-4'>

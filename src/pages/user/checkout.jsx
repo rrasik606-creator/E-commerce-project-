@@ -214,10 +214,10 @@ const Checkout = () => {
       navigate("/orders");
     },
 
-    onError: () => {
+    onError: (error) => {
       setErrors((prev) => ({
         ...prev,
-        submit: "Failed to place order. Please try again.",
+        submit: error.message,
       }));
     },
   });

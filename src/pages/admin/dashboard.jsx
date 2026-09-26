@@ -1,4 +1,5 @@
  import React,{useEffect,useState} from 'react'
+ import { useNavigate } from 'react-router-dom'
  import { useSelector,useDispatch } from 'react-redux'
 
  import { AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts'
@@ -17,6 +18,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
  
  const Dashboard = () => {
     const dispatch=useDispatch();
+    const navigate=useNavigate();
 
     const[period,setPeriod]=useState("monthly")
 
@@ -38,9 +40,15 @@ import { setOrders } from '../../redux/slices/adminordersslice'
     }, [dispatch]);
 
     const products=useSelector((state)=>state.adminProduct.products);
+
     const users=useSelector((state)=>state.adminUser.users);
+    const totalUsers =users.filter((user)=>user.role!=="admin").length;
+    const activeUsers =users.filter((user)=>user.role!=="admin"&&!user.blocked).length;
+    const blockedUsers =users.filter((user)=>user.role!=="admin"&&user.blocked).length;
     const orders=useSelector((state)=>state.adminOrder.orders);
     const revenue=orders.reduce((total,order)=>total+Number(order.total),0);
+
+    const recentOrders =[...orders].sort((a,b)=>new Date(b.orderDate)-new Date(a.orderDate)).slice(0,5);
 
     let chartData = [];
 
@@ -224,9 +232,26 @@ import { setOrders } from '../../redux/slices/adminordersslice'
                     </div>
 
                     <div className='bg-white p-5 rounded-lg shadow'>
-                        <p className='text-gray-500'>Users</p>
+                        <p className='text-gray-500'>Total Users</p>
+
                         <h2 className='text-3xl font-bold mt-2'>
-                            {users.filter((user) => user.role !== "admin").length}
+                            {totalUsers}
+                        </h2>
+                    </div>
+
+                    <div className='bg-white p-5 rounded-lg shadow'>
+                        <p className='text-gray-500'>Active Users</p>
+
+                        <h2 className='text-3xl font-bold mt-2'>
+                            {activeUsers}
+                        </h2>
+                    </div>
+
+                    <div className='bg-white p-5 rounded-lg shadow'>
+                        <p className='text-gray-500'>Blocked Users</p>
+
+                        <h2 className='text-3xl font-bold mt-2'>
+                            {blockedUsers}
                         </h2>
                     </div>
 
@@ -292,6 +317,78 @@ import { setOrders } from '../../redux/slices/adminordersslice'
                             </ResponsiveContainer>
 
                         </div>
+
+                    </div>
+
+                </div>
+
+                <div className='bg-white p-5 rounded-lg shadow mt-6'>
+                    
+                    <div className='flex justify-between items-center mb-5'>
+                        <h2 className='text-xl font-semibold'>
+                        Recent Orders
+                        </h2>
+
+                        <button
+                        onClick={() => navigate("/admin/orders")}
+                        className="bg-black text-white px-4 py-2 rounded-md"
+                        >
+                        View Orders
+                        </button>
+                    </div>
+
+                    <div className='overflow-x-auto'>
+
+                        <table className='w-full'>
+
+                            <thead>
+                                <tr className='border-b'>
+                                    <th className='text-left py-3'>Order ID</th>
+                                    <th className='text-left py-3'>Customer</th>
+                                    <th className='text-left py-3'>Total</th>
+                                    <th className='text-left py-3'>Status</th>
+                                    <th className='text-left py-3'>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {recentOrders.map((order) => (
+
+                                    <tr
+                                        key={order.id}
+                                        className='border-b'
+                                    >
+
+                                        <td className='py-3'>
+                                            {order.id}
+                                        </td>
+
+                                        <td className='py-3'>
+                                            {order.address.name}
+                                        </td>
+
+                                        <td className='py-3'>
+                                            ₹ {Number(order.total).toLocaleString()}
+                                        </td>
+
+                                        <td className='py-3'>
+                                            {order.status}
+                                        </td>
+
+                                        <td className='py-3'>
+                                            {new Date(
+                                                order.orderDate
+                                            ).toLocaleDateString()}
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+
+                            </tbody>
+
+                        </table>
 
                     </div>
 

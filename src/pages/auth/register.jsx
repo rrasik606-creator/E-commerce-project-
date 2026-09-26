@@ -3,13 +3,16 @@ import { useState } from 'react';
 import {useNavigate,Link} from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { User } from 'lucide-react';
+import { Eye,EyeOff } from 'lucide-react';
 
 const API_URL="http://localhost:3001/users";
 
 const Register = () => {
     // const [error,setError]=useState({name:"",username:"",email:"",password:"",confirmpassword:""});
     const[data,setData]=useState({name:"",username:"",email:"",password:"",confirmpassword:""});
+    const[showPassword,setShowPassword]=useState(false);
+    const[showConfirmPassword,setShowConfirmPassword]=useState(false);
+
 
     const navigate=useNavigate();
     
@@ -226,18 +229,28 @@ const Register = () => {
                 Password
               </label>
 
-              <input
-                type="password"
-                placeholder="Enter your password"
-                name="password"
-                value={data.password}
-                onChange={handleChange}
-                className={`w-full rounded-lg border px-4 py-3 text-sm outline-none transition ${
-                  error.password
-                    ? "border-red-400 focus:border-red-500"
-                    : "border-gray-300 focus:border-gray-900"
-                }`}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  name="password"
+                  value={data.password}
+                  onChange={handleChange}
+                  className={`w-full rounded-lg border px-4 py-3 pr-12 text-sm outline-none transition ${
+                    error.password
+                      ? "border-red-400 focus:border-red-500"
+                      : "border-gray-300 focus:border-gray-900"
+                  }`}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
 
               {error.password && (
                 <p className="mt-2 text-xs leading-5 text-red-500">
@@ -245,25 +258,35 @@ const Register = () => {
                 </p>
               )}
             </div>
-
+            
             {/* CONFIRM PASSWORD */}
             <div className="mb-6">
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
 
-              <input
-                type="password"
-                placeholder="Confirm your password"
-                name="confirmpassword"
-                value={data.confirmpassword}
-                onChange={handleChange}
-                className={`w-full rounded-lg border px-4 py-3 text-sm outline-none transition ${
-                  error.confirmpassword
-                    ? "border-red-400 focus:border-red-500"
-                    : "border-gray-300 focus:border-gray-900"
-                }`}
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  name="confirmpassword"
+                  value={data.confirmpassword}
+                  onChange={handleChange}
+                  className={`w-full rounded-lg border px-4 py-3 pr-12 text-sm outline-none transition ${
+                    error.confirmpassword
+                      ? "border-red-400 focus:border-red-500"
+                      : "border-gray-300 focus:border-gray-900"
+                  }`}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
 
               {error.confirmpassword && (
                 <p className="mt-2 text-xs text-red-500">

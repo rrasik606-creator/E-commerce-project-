@@ -417,7 +417,20 @@
   "cart": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [],
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 7
+        }
+      ],
       "id": "4iOIiaoHiu4"
     },
     {
@@ -486,18 +499,6 @@
           ]
         },
         {
-          "productId": "2",
-          "name": "Dress Watch",
-          "brand": "Casio",
-          "price": 2999,
-          "image": [
-            "/watches/men/casual/casio2.png",
-            "/watches/men/casual/casio2a.png",
-            "/watches/men/casual/casio2b.png",
-            "/watches/men/casual/casio2c.png"
-          ]
-        },
-        {
           "productId": "12",
           "name": "CASIO Youth ( AE-1200WH-1AVDF )",
           "brand": "Casio",
@@ -554,6 +555,18 @@
             "/watches/men/casual/titan1.png",
             "/watches/men/casual/titan1a.png",
             "/watches/men/casual/titan1b.png"
+          ]
+        },
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "brand": "Casio",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
           ]
         }
       ],

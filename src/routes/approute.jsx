@@ -33,7 +33,7 @@ const Approute = () => {
 
             <Routes>
 
-                {/* LOGIN */}
+                {/* AUTH */}
 
                 <Route
                     path="/login"
@@ -43,9 +43,6 @@ const Approute = () => {
                         </GuestRoute>
                     }
                 />
-
-
-                {/* REGISTER */}
 
                 <Route
                     path="/register"
@@ -57,7 +54,7 @@ const Approute = () => {
                 />
 
 
-                {/* USER ROUTES */}
+                {/* PUBLIC USER PAGES */}
 
                 <Route
                     path="/"
@@ -96,46 +93,46 @@ const Approute = () => {
                 />
 
 
-                {/* USER PROTECTED ROUTES */}
+                {/* LOGIN REQUIRED USER PAGES */}
 
                 <Route
                     path="/cart"
                     element={
-                        <UserProtectedRoute>
+                        <ProtectedRoute>
                             <Cart />
-                        </UserProtectedRoute>
+                        </ProtectedRoute>
                     }
                 />
 
                 <Route
                     path="/wishlist"
                     element={
-                        <UserProtectedRoute>
+                        <ProtectedRoute>
                             <Wishlist />
-                        </UserProtectedRoute>
+                        </ProtectedRoute>
                     }
                 />
 
                 <Route
                     path="/checkout"
                     element={
-                        <UserProtectedRoute>
+                        <ProtectedRoute>
                             <Checkout />
-                        </UserProtectedRoute>
+                        </ProtectedRoute>
                     }
                 />
 
                 <Route
                     path="/orders"
                     element={
-                        <UserProtectedRoute>
+                        <ProtectedRoute>
                             <Orders />
-                        </UserProtectedRoute>
+                        </ProtectedRoute>
                     }
                 />
 
 
-                {/* ADMIN ROUTES */}
+                {/* ADMIN */}
 
                 <Route
                     path="/admin"
@@ -154,14 +151,14 @@ const Approute = () => {
                         </AdminProtectedRout>
                     }
                 />
-                
+
                 <Route
-                path="/admin/product/deleted"
-                element={
-                  <AdminProtectedRout>
-                    <DeletedProduct/>
-                  </AdminProtectedRout>
-                }               
+                    path="/admin/product/deleted"
+                    element={
+                        <AdminProtectedRout>
+                            <DeletedProduct />
+                        </AdminProtectedRout>
+                    }
                 />
 
                 <Route
@@ -174,12 +171,12 @@ const Approute = () => {
                 />
 
                 <Route
-                path="/admin/product/edit/:id"
-                element={
-                  <AdminProtectedRout>
-                    <EditProduct/>
-                  </AdminProtectedRout>        
-                }
+                    path="/admin/product/edit/:id"
+                    element={
+                        <AdminProtectedRout>
+                            <EditProduct />
+                        </AdminProtectedRout>
+                    }
                 />
 
                 <Route

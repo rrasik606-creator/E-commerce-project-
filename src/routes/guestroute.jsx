@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 const GuestRoute = ({ children }) => {
-
     const userId = localStorage.getItem("user");
     const userRole = localStorage.getItem("userRole");
 
@@ -10,7 +9,7 @@ const GuestRoute = ({ children }) => {
         return <Navigate to="/admin" replace />;
     }
 
-    if (userId) {
+    if (userId && userRole === "user") {
         return <Navigate to="/" replace />;
     }
 

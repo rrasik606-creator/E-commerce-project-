@@ -118,7 +118,7 @@ const Navbar = () => {
     dispatch(clearWishlist());
     setShowAccount(false);
     toast.success("logout successfull")
-    navigate("/");
+    navigate("/login");
   };
 
   return (

@@ -5,11 +5,13 @@ import { useNavigate,Link, replace } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/slices/authslice'
 import toast from 'react-hot-toast'
+import { Eye,EyeOff } from 'lucide-react'
 
 const API_URL="http://localhost:3001/users";
 
 const Login = () => {
   const[data,setData]=useState({username:"",password:""})
+  const[showPassword,setShowPassword]=useState(false)
   // const[error,setError]=useState({})
 
   const navigate=useNavigate();
@@ -165,9 +167,9 @@ const Login = () => {
               <label className="mb-2 block text-sm font-medium text-gray-700">
                 Password
               </label>
-
+              <div className='relative'>
               <input
-                type="password"
+                type={showPassword?"text":"password"}
                 placeholder="Enter your password"
                 onChange={handleChange}
                 name="password"
@@ -178,6 +180,14 @@ const Login = () => {
                     : "border-gray-300 focus:border-gray-900"
                 }`}
               />
+              <button
+              type='button'
+              onClick={()=>setShowPassword(!showPassword)}
+              className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500'
+              >
+                {showPassword?<EyeOff size={20}/>:<Eye size={20}/>}
+              </button>
+              </div>
 
               {error.password && (
                 <p className="mt-2 text-xs leading-5 text-red-500">

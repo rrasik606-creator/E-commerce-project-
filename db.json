@@ -26,7 +26,7 @@
         "Case Material: Stainless Steel",
         "Water Resistant"
       ],
-      "stock": 552,
+      "stock": 545,
       "featured": true,
       "isNew": true,
       "deleted": false
@@ -56,7 +56,7 @@
         "Water Resistant",
         "Date Display"
       ],
-      "stock": 12,
+      "stock": 6,
       "featured": true,
       "isNew": false,
       "deleted": false
@@ -322,7 +322,7 @@
         "Sports Tracking",
         "Large Display"
       ],
-      "stock": 22,
+      "stock": 21,
       "featured": false,
       "isNew": true,
       "deleted": false
@@ -417,20 +417,7 @@
   "cart": [
     {
       "userId": "RTgv5cD5nDU",
-      "items": [
-        {
-          "productId": "3",
-          "name": "Casio Unisex Vintage",
-          "price": 7499,
-          "image": [
-            "/watches/men/casual/casio3.png",
-            "/watches/men/casual/casio3a.png",
-            "/watches/men/casual/casio3b.png",
-            "/watches/men/casual/casio3c.png"
-          ],
-          "quantity": 7
-        }
-      ],
+      "items": [],
       "id": "4iOIiaoHiu4"
     },
     {
@@ -487,42 +474,6 @@
       "userId": "RTgv5cD5nDU",
       "items": [
         {
-          "productId": "3",
-          "name": "Casio Unisex Vintage",
-          "brand": "Casio",
-          "price": 7499,
-          "image": [
-            "/watches/men/casual/casio3.png",
-            "/watches/men/casual/casio3a.png",
-            "/watches/men/casual/casio3b.png",
-            "/watches/men/casual/casio3c.png"
-          ]
-        },
-        {
-          "productId": "12",
-          "name": "CASIO Youth ( AE-1200WH-1AVDF )",
-          "brand": "Casio",
-          "price": 2999,
-          "image": [
-            "/watches/men/sports/casio2.png",
-            "/watches/men/sports/casio2a.png",
-            "/watches/men/sports/casio2b.png",
-            "/watches/men/sports/casio2c.png"
-          ]
-        },
-        {
-          "productId": "4",
-          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
-          "brand": "Fastrack",
-          "price": 1662,
-          "image": [
-            "/watches/men/casual/fastrack1.png",
-            "/watches/men/casual/fastrack1a.png",
-            "/watches/men/casual/fastrack1b.png",
-            "/watches/men/casual/fastrack1c.png"
-          ]
-        },
-        {
           "productId": "5",
           "name": "Fastrack Vyb Nimbus with Quartz Analog",
           "brand": "Fastrack",
@@ -544,17 +495,6 @@
             "/watches/men/casual/sonata1a.png",
             "/watches/men/casual/sonata1b.png",
             "/watches/men/casual/sonata1c.png"
-          ]
-        },
-        {
-          "productId": "9",
-          "name": "FOSSIL Bannon Analog Watch",
-          "brand": "FOSSIL",
-          "price": 999,
-          "image": [
-            "/watches/men/casual/titan1.png",
-            "/watches/men/casual/titan1a.png",
-            "/watches/men/casual/titan1b.png"
           ]
         },
         {
@@ -667,7 +607,7 @@
       "paymentMethod": "COD",
       "subtotal": 1994,
       "total": 1994,
-      "status": "Cancelled",
+      "status": "Delivered",
       "orderDate": "2026-09-16T19:21:17.117Z",
       "id": "QjBq5RWEAck"
     },
@@ -1052,6 +992,104 @@
       "status": "Placed",
       "orderDate": "2026-09-25T15:07:14.900Z",
       "id": "sbtkahM3wiM"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 6
+        },
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ],
+          "quantity": 7
+        },
+        {
+          "productId": "12",
+          "name": "CASIO Youth ( AE-1200WH-1AVDF )",
+          "price": 2999,
+          "image": [
+            "/watches/men/sports/casio2.png",
+            "/watches/men/sports/casio2a.png",
+            "/watches/men/sports/casio2b.png",
+            "/watches/men/sports/casio2c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 70648,
+      "total": 70648,
+      "status": "Placed",
+      "orderDate": "2026-09-26T15:45:12.658Z",
+      "id": "NXKsuHt1nWo"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 6
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "COD",
+      "subtotal": 44994,
+      "total": 44994,
+      "status": "Cancelled",
+      "orderDate": "2026-09-26T16:27:26.646Z",
+      "id": "SzS8EvYi2RQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

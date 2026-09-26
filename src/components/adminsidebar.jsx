@@ -12,6 +12,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/authslice';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const AdminSidbar = () => {
 
@@ -19,11 +20,18 @@ const AdminSidbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleLogout = () => {
+    const handleLogout = async() => {
 
-        const confirmLogout = window.confirm("Are you sure you want to logout?");
-
-        if (!confirmLogout) {
+        const confirmLogout=await Swal.fire({
+            title:"Are you sure?",
+            text:"You will be logged out.",
+            icon:"warning",
+            showCancelButton:true,
+            confirmButtonText:"Yes,Logout",
+            cancelButtonText:"Cancel"
+        })
+        
+        if (!confirmLogout.isConfirmed) {
             return;
         }
 

@@ -4,6 +4,7 @@ import { useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
 import { getOrder,updateOrder } from "../../services/order";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
+import Swal from "sweetalert2";
 
 const Orders = () => {
   const navigate = useNavigate();
@@ -46,9 +47,16 @@ const Orders = () => {
     },
   });
 
-  const handleCancelOrder=(order)=>{
-    const confirmCancel=window.confirm("Are you sure you want to cancel this order?");
-    if(!confirmCancel){
+  const handleCancelOrder=async(order)=>{
+    const confirmCancel= await Swal.fire({
+      title:"Cancel order?",
+      text:`Are you sure you want to cancel order "${order.id}"?`,
+      icon:"warning",
+      showCancelButton:true,
+      confirmButtonText:"Yes,Cancel",
+      cancelButtonText:"Keep Order"
+    })
+    if(!confirmCancel.isConfirmed){
       return
     }
     cancelOrderMutation.mutate(order);

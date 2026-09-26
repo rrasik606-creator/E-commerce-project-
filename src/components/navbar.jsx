@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getcart } from "../services/cartService";
 import { getWishlist } from "../services/wishlistService";
 import toast from "react-hot-toast";
+import Swal from 'sweetalert2'
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -104,10 +105,17 @@ const Navbar = () => {
   };
 
   // Logout
-  const handleLogout = () => {
-    const confirmlogout=window.confirm("Are you sure you want to logout?");
+  const handleLogout = async() => {
+    const confirmlogout=await Swal.fire({
+      title:"Are you sure?",
+      text:"You will be logged out.",
+      icon:"warning",
+      showCancelButton:true,
+      confirmButtonText:"Yes,Logout",
+      cancelButtonText:"Cancel"
+    });
 
-    if(!confirmlogout){
+    if(!confirmlogout.isConfirmed){
       return
     }
     

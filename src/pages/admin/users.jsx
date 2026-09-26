@@ -177,7 +177,7 @@ const AdminUsers = () => {
                       onClick={()=>{
                         setSearchParams({});
                       }}
-                      className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100'
+                      className='px-4 py-2 border border-gray-300 rounded-lg bg-black text-white'
                       >
                         Clear
                       </button>

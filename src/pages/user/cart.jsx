@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 import {
   getcart,
@@ -26,7 +27,9 @@ import {
 } from "../../services/cartService";
 
 import { setCart } from "../../redux/slices/cartslice";
+import axios from "axios";
 
+const API_URL="http://localhost:3001/products";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -35,7 +38,10 @@ const Cart = () => {
 
   const userId = localStorage.getItem("user");
 
-
+const getProduct=async()=>{
+  const response=await axios.get(API_URL)
+  return response.data
+}
   // Get user's cart
   const {
     data: userCart = null,
@@ -45,6 +51,14 @@ const Cart = () => {
     queryKey: ["cart", userId],
     queryFn: getcart,
     enabled: !!userId,
+  });
+
+  //get product
+  const {
+    data: products = [],
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProduct,
   });
 
 
@@ -101,12 +115,17 @@ const Cart = () => {
 
 
   // Confirm before removing an item
-  const handleDelete = (item) => {
-    const confirmDelete = window.confirm(
-      `Remove "${item.name}" from your cart?`
-    );
+  const handleDelete = async(item) => {
+    const confirmDelete = await Swal.fire({
+      title:"Remove item?",
+      text:`Remove "${item.name}" from your cart?`,
+      icon:"warning",
+      showCancelButton:true,
+      confirmButtonText:"Yes,Remove",
+      cancelButtonText:"Cancel"
+    });
 
-    if (!confirmDelete) {
+    if (!confirmDelete.isConfirmed) {
       return;
     }
 
@@ -262,7 +281,11 @@ const Cart = () => {
               {/* Items */}
               <div>
 
-                {cart.map((item) => (
+                {cart.map((item) =>{
+                  const product=products.find((product)=>
+                  product.id===item.productId)
+                
+                return (
 
                   <div
                     key={item.productId}
@@ -375,10 +398,11 @@ const Cart = () => {
                               }
 
                               disabled={
-                                updateMutation.isPending
+                                updateMutation.isPending||
+                                item.quantity>=(product?.stock||0)
                               }
 
-                              className="p-2.5 hover:bg-gray-100"
+                              className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
                             >
                               <Plus size={16} />
                             </button>
@@ -403,7 +427,8 @@ const Cart = () => {
 
                   </div>
 
-                ))}
+                );
+                })}
 
               </div>
 

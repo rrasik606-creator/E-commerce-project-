@@ -1,8 +1,8 @@
 import React,{useEffect} from 'react'
+import Swal from 'sweetalert2'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate,useSearchParams } from 'react-router-dom'
 import AdminSidbar from '../../components/adminsidebar'
-import AdminHeader from '../../components/adminheader'
 import { setProducts,softDeleteProduct as softDeleteProductRedux } from '../../redux/slices/adminproductslice'
 import { getProduct,softDeleteProduct } from '../../services/adminproductservices'
 
@@ -89,11 +89,16 @@ const AdminProducts = () => {
 
     const handleDelete=async(id)=>{
 
-        const confirmdelete=window.confirm(
-            "Are you sure you want to delete?"
-        );
+        const confirmdelete=await Swal.fire({
+            title:"Are you sure?",
+            text:"The product will be deleted.",
+            icon:"warning",
+            showCancelButton:true,
+            confirmButtonText:"Yes,Delete",
+            cancelButtonText:"Cancel"
+        })
 
-        if(!confirmdelete){
+        if(!confirmdelete.isConfirmed){
             return
         }
 
@@ -270,7 +275,7 @@ const AdminProducts = () => {
 
                         <button
                             onClick={clearFilters}
-                            className='border px-4 py-2 rounded-lg'
+                            className='border bg-black text-white px-4 py-2 rounded-lg'
                         >
                             Clear
                         </button>

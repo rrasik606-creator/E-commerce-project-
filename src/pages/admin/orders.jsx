@@ -180,7 +180,7 @@ const AdminOrders = () => {
 
                             <button
                                 onClick={handleClearFilters}
-                                className='px-5 py-2 border rounded-lg'
+                                className='px-5 py-2 border rounded-lg bg-black text-white'
                             >
                                 Clear
                             </button>

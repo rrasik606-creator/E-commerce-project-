@@ -235,6 +235,7 @@ const Productdetails = () => {
       image: product.image,
 
       quantity: quantity,
+      
     };
 
 
@@ -440,8 +441,9 @@ const Productdetails = () => {
                   }
 
                 }}
+                disabled={product.stock<=0||quantity<=1}
 
-                className="p-3"
+                className="p-3 hover:bg-gray-100 disabled:opacity-40"
               >
 
                 <Minus size={18} />
@@ -465,8 +467,9 @@ const Productdetails = () => {
                 }
                 }
                 }
+                disabled={quantity>=Number(product.stock)||product.stock<=0}
 
-                className="p-3"
+                className="p-3 hover:bg-gray-100 disabled:opacity-40"
               >
 
                 <Plus size={18} />

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import toast from "react-hot-toast";
+
 import {
   Heart,
   Trash2,
@@ -76,6 +78,7 @@ const Wishlist = () => {
     e.stopPropagation();
 
     deleteMutation.mutate(productId);
+    toast.success("Product removed from wishlist!")
   };
 
   // Add to cart
@@ -98,6 +101,7 @@ const Wishlist = () => {
         ["cart", userId],
         updatedCart
       );
+      toast.success("Product added to cart!")
     },
   });
 

@@ -1,98 +1,18 @@
 import React from 'react'
 import { Heart } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
-import {
-    getWishlist,
-    addWishlist,
-    deleteWishlist
-} from '../services/wishlistService'
+import useWishlist from '../hooks/useWishlist'
 
 const Productcrd = ({product}) => {
 
     const navigate = useNavigate()
-    const queryClient = useQueryClient()
 
-    const userId = localStorage.getItem("user")
-
-    // Get user's wishlist
-    const { data: userWishlist = null } = useQuery({
-        queryKey: ["wishlist", userId],
-        queryFn: getWishlist,
-        enabled: !!userId
-    })
-
-    // Check whether product is already in wishlist
-    const isWishlisted =
-        userWishlist?.items?.some(
-            (item) =>
-                String(item.productId) === String(product.id)
-        ) || false
-
-
-    // add wishlist
-    const addWishlistMutation = useMutation({
-        mutationFn: (wishlistItem) =>
-            addWishlist(wishlistItem),
-
-        onSuccess: (updatedWishlist) => {
-            queryClient.setQueryData(
-                ["wishlist", userId],
-                updatedWishlist
-            )
-            toast.success("Product added to wishlist!")
-        }
-    })
-
-
-    // Delete wishlist
-    const deleteWishlistMutation = useMutation({
-        mutationFn: ({ wishlistId, productId }) =>
-            deleteWishlist(wishlistId, productId),
-
-        onSuccess: (updatedWishlist) => {
-            queryClient.setQueryData(
-                ["wishlist", userId],
-                updatedWishlist
-            )
-            toast.success("Product removed from wishlist!")
-        }
-    })
-
-
-    // Wishlist button
-    const handleWishlist = (e) => {
-
-        e.stopPropagation()
-        e.preventDefault()
-
-        if (!userId) {
-            navigate("/login")
-            return
-        }
-
-        // if it already existing? for removing
-        if (isWishlisted) {
-
-            deleteWishlistMutation.mutate({
-                wishlistId: userWishlist.id,
-                productId: product.id
-            })
-
-            return
-        }
-
-        // if not wishlisted for add
-        addWishlistMutation.mutate({
-            userId: userId,
-            productId: product.id,
-            name: product.name,
-            brand: product.brand,
-            price: product.price,
-            image: product.image
-        })
-    }
+    const {
+        isWishlisted,
+        handleWishlist,
+        addWishlistMutation,
+        deleteWishlistMutation
+    } = useWishlist(product)
 
 
     return (

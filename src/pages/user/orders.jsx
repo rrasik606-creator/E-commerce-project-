@@ -19,6 +19,8 @@ const Orders = () => {
       // Restore product stock
       for (const item of order.items) {
 
+        try{
+
         const response = await axios.get(
           `http://localhost:3001/products/${item.productId}`
         );
@@ -33,6 +35,15 @@ const Orders = () => {
           }
         );
       }
+      catch(error){
+        if(error.response?.status === 404){
+          continue;
+        }
+        throw error
+      }
+      }
+
+
 
       // Update order status
       return updateOrder(order.id, {

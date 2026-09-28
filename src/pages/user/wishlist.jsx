@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import toast from "react-hot-toast";
 
@@ -25,6 +26,8 @@ import { setWishlist } from "../../redux/slices/wishlistslice";
 
 import { Link, useNavigate } from "react-router-dom";
 
+import useCart from "../../hooks/useCart";
+
 const Wishlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,6 +35,13 @@ const Wishlist = () => {
   const queryClient = useQueryClient();
 
   const userId = localStorage.getItem("user");
+
+  const [addingProductId, setAddingProductId] = useState(null);
+
+  const {
+    handleAddToCart: addToCart,
+    addToCartMutation,
+  } = useCart();
 
   // Get wishlist
   const {
@@ -45,6 +55,15 @@ const Wishlist = () => {
   });
 
   const wishlistId = userWishlist?.id;
+
+  // Get products (for stock lookup)
+  const { data: products = [] } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const response = await axios.get("http://localhost:3001/products");
+      return response.data;
+    },
+  });
 
   // Store wishlist in Redux
   useEffect(() => {
@@ -82,33 +101,25 @@ const Wishlist = () => {
   };
 
   // Add to cart
-  const addCartMutation = useMutation({
-    mutationFn: async (item) => {
-      const response = await import("../../services/cartService");
-
-      return response.addCart({
-        userId: userId,
-        productId: item.productId,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        quantity: 1,
-      });
-    },
-
-    onSuccess: (updatedCart) => {
-      queryClient.setQueryData(
-        ["cart", userId],
-        updatedCart
-      );
-      toast.success("Product added to cart!")
-    },
-  });
-
   const handleAddToCart = (e, item) => {
     e.stopPropagation();
 
-    addCartMutation.mutate(item);
+    const product = products.find(
+      (product) => product.id === item.productId
+    );
+
+    if (!product || Number(product.stock) <= 0) {
+      toast.error("This product is out of stock");
+      return;
+    }
+
+    setAddingProductId(item.productId);
+
+    addToCart(product, 1);
+
+    setTimeout(() => {
+      setAddingProductId(null);
+    }, 500);
   };
 
   if (isLoading) {
@@ -251,12 +262,28 @@ const Wishlist = () => {
                       handleAddToCart(e, item)
                     }
                     disabled={
-                      addCartMutation.isPending
+                      addingProductId === item.productId ||
+                      Number(
+                        products.find(
+                          (product) =>
+                            product.id === item.productId
+                        )?.stock
+                      ) <= 0
                     }
                     className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg"
                   >
                     <ShoppingBag size={18} />
-                    Add to Cart
+
+                    {addingProductId === item.productId
+                      ? "Adding..."
+                      : Number(
+                          products.find(
+                            (product) =>
+                              product.id === item.productId
+                          )?.stock
+                        ) <= 0
+                      ? "Out of Stock"
+                      : "Add to Cart"}
                   </button>
 
                 </div>

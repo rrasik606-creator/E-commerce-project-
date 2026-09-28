@@ -1,10 +1,8 @@
-import React from 'react';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
-import Productgrid from '../../components/productgrid';
-
-const API_URL = "http://localhost:3001/products";
+import React from "react";
+import Productgrid from "../../components/productgrid";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 const Products = () => {
 
@@ -15,16 +13,86 @@ const Products = () => {
     const search = searchParams.get("search") || "";
 
     const getProduct = async () => {
-        const response = await axios.get(API_URL);
+        const response = await axios.get(
+            "http://localhost:3001/products"
+        );
+
         return response.data;
     };
 
-    const { data: allProducts = [], isLoading, isError } = useQuery({
+    const {
+        data: allProducts = [],
+        isLoading,
+        isError,
+    } = useQuery({
         queryKey: ["products"],
-        queryFn: getProduct
+        queryFn: getProduct,
     });
 
-    const products=allProducts.filter((product)=>!product.deleted)
+    const products = allProducts.filter(
+        (product) => !product.deleted
+    );
+
+    const brands = [
+        ...new Set(
+            products
+                .map((product) => product.brand)
+                .filter(Boolean)
+        ),
+    ];
+
+    const filteredProducts = products.filter((product) => {
+
+        const typeMatch = type
+            ? product.type === type
+            : true;
+
+        const brandMatch = brand
+            ? product.brand === brand
+            : true;
+
+        const searchMatch = search
+            ? product.name
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+              product.brand
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            : true;
+
+        return (
+            typeMatch &&
+            brandMatch &&
+            searchMatch
+        );
+    });
+
+    const handleCategoryChange = (e) => {
+
+        const value = e.target.value;
+
+        if (value) {
+            searchParams.set("type", value);
+        } else {
+            searchParams.delete("type");
+        }
+
+        setSearchParams(searchParams);
+    };
+
+    const handleBrandChange = (e) => {
+
+        const value = e.target.value;
+
+        if (value) {
+            searchParams.set("brand", value);
+        } else {
+            searchParams.delete("brand");
+        }
+
+        setSearchParams(searchParams);
+    };
+
 
     if (isLoading) {
         return (
@@ -45,68 +113,6 @@ const Products = () => {
             </div>
         )
     }
-
-    // get brands
-    const brands = [
-        ...new Set(
-            products
-                .map((product) => product.brand)
-                .filter(Boolean)
-        )
-    ];
-
-    // filter products
-    const filteredProducts = products.filter((product) => {
-
-        const typeMatch = type
-            ? product.type === type
-            : true;
-
-        const brandMatch = brand
-            ? product.brand === brand
-            : true;
-
-        const searchMatch = search
-            ? product.name
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              product.brand
-                .toLowerCase()
-                .includes(search.toLowerCase())
-            : true;
-
-        return typeMatch && brandMatch && searchMatch;
-    });
-
-
-    // Type change
-    const handleCategoryChange = (e) => {
-
-        const value = e.target.value;
-
-        if (value) {
-            searchParams.set("type", value);
-        } else {
-            searchParams.delete("type");
-        }
-
-        setSearchParams(searchParams);
-    };
-
-
-    // Brand change
-    const handleBrandChange = (e) => {
-
-        const value = e.target.value;
-
-        if (value) {
-            searchParams.set("brand", value);
-        } else {
-            searchParams.delete("brand");
-        }
-
-        setSearchParams(searchParams);
-    };
 
 
     return (

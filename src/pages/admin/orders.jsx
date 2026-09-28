@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
 import AdminSidbar from '../../components/adminsidebar'
-import AdminHeader from '../../components/adminheader'
 
 import {
     setOrders,

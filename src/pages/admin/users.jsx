@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdminSidbar from '../../components/adminsidebar'
-import AdminHeader from '../../components/adminheader'
 
 import {
     setUsers,
@@ -35,22 +34,22 @@ const AdminUsers = () => {
     );
 
     const users=allUsers
-    .filter((user)=>user.role!=="admin")
-    .filter((user)=>{
-      const searchMatch=
-            user.name.toLowerCase().includes(search.toLowerCase())||
-            user.username.toLowerCase().includes(search.toLowerCase())||
-            user.email.toLowerCase().includes(search.toLowerCase());
+        .filter((user)=>user.role!=="admin")
+        .filter((user)=>{
+        const searchMatch=
+                user.name.toLowerCase().includes(search.toLowerCase())||
+                user.username.toLowerCase().includes(search.toLowerCase())||
+                user.email.toLowerCase().includes(search.toLowerCase());
 
-      const statusMatch=
-      status===""
-      ?true
-      :status==="active"
-      ?!user.blocked
-      :user.blocked      
+        const statusMatch=
+        status===""
+        ?true
+        :status==="active"
+        ?!user.blocked
+        :user.blocked      
 
 
-      return searchMatch&&statusMatch
+        return searchMatch&&statusMatch
     })
 
     const totalPages=Math.ceil(users.length/usersPerPage);

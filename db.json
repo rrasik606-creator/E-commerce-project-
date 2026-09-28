@@ -26,10 +26,10 @@
         "Case Material: Stainless Steel",
         "Water Resistant"
       ],
-      "stock": 545,
+      "stock": 550,
       "featured": true,
       "isNew": true,
-      "deleted": false
+      "deleted": true
     },
     {
       "id": "3",
@@ -56,7 +56,7 @@
         "Water Resistant",
         "Date Display"
       ],
-      "stock": 6,
+      "stock": 0,
       "featured": true,
       "isNew": false,
       "deleted": false
@@ -86,7 +86,7 @@
         "analog",
         "Water Resistant"
       ],
-      "stock": 0,
+      "stock": 4,
       "featured": true,
       "isNew": true,
       "deleted": false
@@ -116,7 +116,7 @@
         "Metal bracelet",
         "Water Resistant"
       ],
-      "stock": 20,
+      "stock": 42,
       "featured": true,
       "isNew": false,
       "deleted": false
@@ -146,7 +146,7 @@
         "Two Piece Strap",
         "Water Resistant"
       ],
-      "stock": 30,
+      "stock": 60,
       "featured": false,
       "isNew": false,
       "deleted": false
@@ -233,7 +233,7 @@
         "water resistant",
         "Waterproof"
       ],
-      "stock": 7,
+      "stock": 14,
       "featured": true,
       "isNew": true,
       "deleted": false
@@ -292,7 +292,7 @@
         "Precision Timekeeping",
         "Water Resistant"
       ],
-      "stock": 14,
+      "stock": 24,
       "featured": true,
       "isNew": true,
       "deleted": true
@@ -352,7 +352,7 @@
         "LED Light",
         "Accurate Timekeeping"
       ],
-      "stock": 15,
+      "stock": 17,
       "featured": true,
       "isNew": true,
       "deleted": false,
@@ -385,7 +385,7 @@
       "password": "12345678",
       "id": "2k6nHiV-RX0",
       "role": "user",
-      "blocked": false
+      "blocked": true
     },
     {
       "name": "rashik",
@@ -486,18 +486,6 @@
           ]
         },
         {
-          "productId": "8",
-          "name": "Fire-Boltt Axiom Round",
-          "brand": "Fire-Boltt",
-          "price": 2799,
-          "image": [
-            "/watches/men/casual/sonata1.png",
-            "/watches/men/casual/sonata1a.png",
-            "/watches/men/casual/sonata1b.png",
-            "/watches/men/casual/sonata1c.png"
-          ]
-        },
-        {
           "productId": "2",
           "name": "Dress Watch",
           "brand": "Casio",
@@ -507,6 +495,52 @@
             "/watches/men/casual/casio2a.png",
             "/watches/men/casual/casio2b.png",
             "/watches/men/casual/casio2c.png"
+          ]
+        },
+        {
+          "productId": "9",
+          "name": "FOSSIL Bannon Analog Watch",
+          "brand": "FOSSIL",
+          "price": 999,
+          "image": [
+            "/watches/men/casual/titan1.png",
+            "/watches/men/casual/titan1a.png",
+            "/watches/men/casual/titan1b.png"
+          ]
+        },
+        {
+          "productId": "7",
+          "name": "Titan Maestro",
+          "brand": "Titan",
+          "price": 5999,
+          "image": [
+            "/watches/men/casual/fossil1.png",
+            "/watches/men/casual/fossil1a.png",
+            "/watches/men/casual/fossil1b.png"
+          ]
+        },
+        {
+          "productId": "6",
+          "name": "Titan Maritime Pro",
+          "brand": "Titan",
+          "price": 2499,
+          "image": [
+            "/watches/men/casual/Fire-Boltt1.png",
+            "/watches/men/casual/Fire-Boltt1a.png",
+            "/watches/men/casual/Fire-Boltt1b.png",
+            "/watches/men/casual/Fire-Boltt1c.png"
+          ]
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "brand": "Fastrack",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
           ]
         }
       ],
@@ -638,7 +672,7 @@
       "paymentMethod": "COD",
       "subtotal": 22495,
       "total": 22495,
-      "status": "Cancelled",
+      "status": "Shipped",
       "orderDate": "2026-09-17T07:40:30.574Z",
       "id": "T_aFDhFPsQ0"
     },
@@ -669,7 +703,7 @@
       "paymentMethod": "UPI",
       "subtotal": 2999,
       "total": 2999,
-      "status": "Placed",
+      "status": "Shipped",
       "orderDate": "2026-09-19T07:13:24.933Z",
       "id": "1a54udRUWZE"
     },
@@ -700,7 +734,7 @@
       "paymentMethod": "COD",
       "subtotal": 7499,
       "total": 7499,
-      "status": "Delivered",
+      "status": "Processing",
       "orderDate": "2026-09-19T07:14:37.900Z",
       "id": "es3B6i6sCko"
     },
@@ -767,7 +801,7 @@
       "paymentMethod": "COD",
       "subtotal": 16705,
       "total": 16705,
-      "status": "Processing",
+      "status": "Pending",
       "orderDate": "2026-09-24T06:15:35.477Z",
       "id": "ADpKLb1wy94"
     },
@@ -834,7 +868,7 @@
       "paymentMethod": "COD",
       "subtotal": 16705,
       "total": 16705,
-      "status": "Placed",
+      "status": "Processing",
       "orderDate": "2026-09-24T10:06:03.653Z",
       "id": "lJl2dpTn3mw"
     },
@@ -865,7 +899,7 @@
       "paymentMethod": "COD",
       "subtotal": 2999,
       "total": 2999,
-      "status": "Placed",
+      "status": "Processing",
       "orderDate": "2026-09-24T10:37:51.486Z",
       "id": "Rqa21qDKNPw"
     },
@@ -896,7 +930,7 @@
       "paymentMethod": "UPI",
       "subtotal": 1662,
       "total": 1662,
-      "status": "Cancelled",
+      "status": "Processing",
       "orderDate": "2026-09-24T10:54:19.861Z",
       "id": "adkBr0D6tNg"
     },
@@ -927,7 +961,7 @@
       "paymentMethod": "COD",
       "subtotal": 155948,
       "total": 155948,
-      "status": "Cancelled",
+      "status": "Delivered",
       "orderDate": "2026-09-25T14:03:08.558Z",
       "id": "tD1DKsWdIY4"
     },
@@ -958,7 +992,7 @@
       "paymentMethod": "Card",
       "subtotal": 13296,
       "total": 13296,
-      "status": "Placed",
+      "status": "Delivered",
       "orderDate": "2026-09-25T14:46:36.267Z",
       "id": "Zw3xgLrYaX0"
     },
@@ -989,7 +1023,7 @@
       "paymentMethod": "COD",
       "subtotal": 3324,
       "total": 3324,
-      "status": "Placed",
+      "status": "Cancelled",
       "orderDate": "2026-09-25T15:07:14.900Z",
       "id": "sbtkahM3wiM"
     },
@@ -1056,7 +1090,7 @@
       "paymentMethod": "COD",
       "subtotal": 70648,
       "total": 70648,
-      "status": "Placed",
+      "status": "Cancelled",
       "orderDate": "2026-09-26T15:45:12.658Z",
       "id": "NXKsuHt1nWo"
     },
@@ -1090,6 +1124,180 @@
       "status": "Cancelled",
       "orderDate": "2026-09-26T16:27:26.646Z",
       "id": "SzS8EvYi2RQ"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 2
+        },
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ],
+          "quantity": 1
+        },
+        {
+          "productId": "5",
+          "name": "Fastrack Vyb Nimbus with Quartz Analog",
+          "price": 1823,
+          "image": [
+            "/watches/men/casual/fastrack2.png",
+            "/watches/men/casual/fastrack2a.png",
+            "/watches/men/casual/fastrack2b.png",
+            "/watches/men/casual/fastrack2c.png"
+          ],
+          "quantity": 20
+        },
+        {
+          "productId": "9",
+          "name": "FOSSIL Bannon Analog Watch",
+          "price": 999,
+          "image": [
+            "/watches/men/casual/titan1.png",
+            "/watches/men/casual/titan1a.png",
+            "/watches/men/casual/titan1b.png"
+          ],
+          "quantity": 7
+        },
+        {
+          "productId": "6",
+          "name": "Titan Maritime Pro",
+          "price": 2499,
+          "image": [
+            "/watches/men/casual/Fire-Boltt1.png",
+            "/watches/men/casual/Fire-Boltt1a.png",
+            "/watches/men/casual/Fire-Boltt1b.png",
+            "/watches/men/casual/Fire-Boltt1c.png"
+          ],
+          "quantity": 30
+        },
+        {
+          "productId": "4",
+          "name": "Fastrack Vyb Drift with Quartz Analog Watch",
+          "price": 1662,
+          "image": [
+            "/watches/men/casual/fastrack1.png",
+            "/watches/men/casual/fastrack1a.png",
+            "/watches/men/casual/fastrack1b.png",
+            "/watches/men/casual/fastrack1c.png"
+          ],
+          "quantity": 1
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "Card",
+      "subtotal": 138082,
+      "total": 138082,
+      "status": "Cancelled",
+      "orderDate": "2026-09-27T15:11:47.030Z",
+      "id": "I6RhS1gMUM4"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "3",
+          "name": "Casio Unisex Vintage",
+          "price": 7499,
+          "image": [
+            "/watches/men/casual/casio3.png",
+            "/watches/men/casual/casio3a.png",
+            "/watches/men/casual/casio3b.png",
+            "/watches/men/casual/casio3c.png"
+          ],
+          "quantity": 10
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "UPI",
+      "subtotal": 74990,
+      "total": 74990,
+      "status": "Placed",
+      "orderDate": "2026-09-27T16:18:32.972Z",
+      "id": "LMdcyKupabk"
+    },
+    {
+      "userId": "RTgv5cD5nDU",
+      "items": [
+        {
+          "productId": "2",
+          "name": "Dress Watch",
+          "price": 2999,
+          "image": [
+            "/watches/men/casual/casio2.png",
+            "/watches/men/casual/casio2a.png",
+            "/watches/men/casual/casio2b.png",
+            "/watches/men/casual/casio2c.png"
+          ],
+          "quantity": 101
+        },
+        {
+          "productId": "7",
+          "name": "Titan Maestro",
+          "price": 5999,
+          "image": [
+            "/watches/men/casual/fossil1.png",
+            "/watches/men/casual/fossil1a.png",
+            "/watches/men/casual/fossil1b.png"
+          ],
+          "quantity": 10
+        },
+        {
+          "productId": "9",
+          "name": "FOSSIL Bannon Analog Watch",
+          "price": 999,
+          "image": [
+            "/watches/men/casual/titan1.png",
+            "/watches/men/casual/titan1a.png",
+            "/watches/men/casual/titan1b.png"
+          ],
+          "quantity": 14
+        }
+      ],
+      "address": {
+        "name": "MUHAMMED ASLAM. V.P",
+        "phone": "6238713324",
+        "address": "vallikkunnu parambil house",
+        "city": "kozhikode",
+        "state": "kerala",
+        "pincode": "673019"
+      },
+      "paymentMethod": "UPI",
+      "subtotal": 376875,
+      "total": 376875,
+      "status": "Cancelled",
+      "orderDate": "2026-09-27T16:36:35.009Z",
+      "id": "XyT0nElz-wA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

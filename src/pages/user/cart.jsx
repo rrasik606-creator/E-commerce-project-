@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Plus,
   Minus,
@@ -9,128 +9,25 @@ import {
   ShoppingCart,
 } from "lucide-react";
 
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import Swal from "sweetalert2";
 
-import {
-  getcart,
-  updateCart,
-  deleteCart,
-} from "../../services/cartService";
-
-import { setCart } from "../../redux/slices/cartslice";
-import axios from "axios";
-
-const API_URL="http://localhost:3001/products";
+import useCart from "../../hooks/useCart";
 
 const Cart = () => {
-  const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("user");
-
-const getProduct=async()=>{
-  const response=await axios.get(API_URL)
-  return response.data
-}
-  // Get user's cart
   const {
-    data: userCart = null,
+    userId,
+    products,
+    cart,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ["cart", userId],
-    queryFn: getcart,
-    enabled: !!userId,
-  });
-
-  //get product
-  const {
-    data: products = [],
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: getProduct,
-  });
-
-
-  // Cart id
-  const cartId = userCart?.id;
-
-
-  // Update Redux with the latest cart from the server
-  useEffect(() => {
-    if (userId) {
-      dispatch(setCart(userCart?.items || []));
-    } else {
-      dispatch(setCart([]));
-    }
-  }, [userCart, userId, dispatch]);
-
-
-  // Cart items — read from Redux so the UI reflects the store
-  const cart = useSelector((state) => state.cart.cart);
-
-
-  // Update quantity
-  const updateMutation = useMutation({
-    mutationFn: ({ productId, quantity }) =>
-      updateCart(cartId, productId, quantity),
-
-    onSuccess: (updatedCart) => {
-      dispatch(setCart(updatedCart.items));
-
-      queryClient.setQueryData(
-        ["cart", userId],
-        updatedCart
-      );
-    },
-  });
-
-
-  // Delete item
-  const deleteMutation = useMutation({
-    mutationFn: (productId) =>
-      deleteCart(cartId, productId),
-
-    onSuccess: (updatedCart) => {
-      dispatch(setCart(updatedCart.items));
-
-      queryClient.setQueryData(
-        ["cart", userId],
-        updatedCart
-      );
-
-      toast.success("Item removed from cart");
-    },
-  });
-
-
-  // Confirm before removing an item
-  const handleDelete = async(item) => {
-    const confirmDelete = await Swal.fire({
-      title:"Remove item?",
-      text:`Remove "${item.name}" from your cart?`,
-      icon:"warning",
-      showCancelButton:true,
-      confirmButtonText:"Yes,Remove",
-      cancelButtonText:"Cancel"
-    });
-
-    if (!confirmDelete.isConfirmed) {
-      return;
-    }
-
-    deleteMutation.mutate(item.productId);
-  };
+    updateMutation,
+    deleteMutation,
+    handleDelete,
+    subtotal,
+    total,
+  } = useCart();
 
 
   // Loading
@@ -188,7 +85,7 @@ const getProduct=async()=>{
       <div className="min-h-screen flex flex-col items-center justify-center px-6">
 
         <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-          <span className="text-3xl"><ShoppingCart/></span>
+          <span className="text-3xl"><ShoppingCart /></span>
         </div>
 
         <h2 className="text-2xl font-semibold mb-2">
@@ -209,18 +106,6 @@ const getProduct=async()=>{
       </div>
     );
   }
-
-
-  // Subtotal
-  const subtotal = cart.reduce(
-    (total, item) =>
-      total + item.price * item.quantity,
-    0
-  );
-
-
-  // Total
-  const total = subtotal ;
 
 
   return (
@@ -281,143 +166,148 @@ const getProduct=async()=>{
               {/* Items */}
               <div>
 
-                {cart.map((item) =>{
-                  const product=products.find((product)=>
-                  product.id===item.productId)
-                
-                return (
+                {cart.map((item) => {
 
-                  <div
-                    key={item.productId}
-                    className="p-6 border-b last:border-b-0"
-                  >
+                  const product = products.find(
+                    (product) =>
+                      product.id === item.productId
+                  );
 
-                    <div className="flex gap-5">
+                  return (
 
+                    <div
+                      key={item.productId}
+                      className="p-6 border-b last:border-b-0"
+                    >
 
-                      {/* Image */}
-                      <div className="w-28 h-28 md:w-36 md:h-36 bg-gray-50 rounded-xl flex-shrink-0 flex items-center justify-center">
-
-                        <img
-                          src={
-                            item.image?.[0] ||
-                            item.image
-                          }
-                          alt={item.name}
-                          className="w-full h-full object-contain p-3"
-                        />
-
-                      </div>
+                      <div className="flex gap-5">
 
 
-                      {/* Details */}
-                      <div className="flex-1 min-w-0">
+                        {/* Image */}
+                        <div className="w-28 h-28 md:w-36 md:h-36 bg-gray-50 rounded-xl flex-shrink-0 flex items-center justify-center">
 
-                        <div className="flex justify-between gap-4">
-
-                          <div>
-
-                            <h3 className="text-lg font-medium">
-                              {item.name}
-                            </h3>
-
-                          </div>
-
-
-                          {/* Delete */}
-                          <button
-                            onClick={() =>
-                              handleDelete(item)
+                          <img
+                            src={
+                              item.image?.[0] ||
+                              item.image
                             }
-                            disabled={
-                              deleteMutation.isPending
-                            }
-                            className="text-gray-400 hover:text-red-500 transition"
-                          >
-                            <Trash2 size={20} />
-                          </button>
+                            alt={item.name}
+                            className="w-full h-full object-contain p-3"
+                          />
 
                         </div>
 
 
-                        {/* Price */}
-                        <p className="text-lg font-semibold mt-3">
-                          ₹{item.price.toLocaleString("en-IN")}
-                        </p>
+                        {/* Details */}
+                        <div className="flex-1 min-w-0">
+
+                          <div className="flex justify-between gap-4">
+
+                            <div>
+
+                              <h3 className="text-lg font-medium">
+                                {item.name}
+                              </h3>
+
+                            </div>
 
 
-                        {/* Bottom */}
-                        <div className="flex items-center justify-between mt-5">
-
-
-                          {/* Quantity */}
-                          <div className="flex items-center border rounded-lg">
-
+                            {/* Delete */}
                             <button
-                              onClick={() => {
+                              onClick={() =>
+                                handleDelete(item)
+                              }
+                              disabled={
+                                deleteMutation.isPending
+                              }
+                              className="text-gray-400 hover:text-red-500 transition"
+                            >
+                              <Trash2 size={20} />
+                            </button>
 
-                                if (item.quantity > 1) {
+                          </div>
 
+
+                          {/* Price */}
+                          <p className="text-lg font-semibold mt-3">
+                            ₹{item.price.toLocaleString("en-IN")}
+                          </p>
+
+
+                          {/* Bottom */}
+                          <div className="flex items-center justify-between mt-5">
+
+
+                            {/* Quantity */}
+                            <div className="flex items-center border rounded-lg">
+
+                              <button
+                                onClick={() => {
+
+                                  if (item.quantity > 1) {
+
+                                    updateMutation.mutate({
+                                      productId:
+                                        item.productId,
+
+                                      quantity:
+                                        item.quantity - 1,
+                                    });
+
+                                  }
+
+                                }}
+
+                                disabled={
+                                  updateMutation.isPending ||
+                                  item.quantity <= 1
+                                }
+
+                                className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
+                              >
+                                <Minus size={16} />
+                              </button>
+
+
+                              <span className="w-10 text-center text-sm font-medium">
+                                {item.quantity}
+                              </span>
+
+
+                              <button
+                                onClick={() =>
                                   updateMutation.mutate({
                                     productId:
                                       item.productId,
 
                                     quantity:
-                                      item.quantity - 1,
-                                  });
-
+                                      item.quantity + 1,
+                                  })
                                 }
 
-                              }}
+                                disabled={
+                                  updateMutation.isPending ||
+                                  item.quantity >= (product?.stock || 0)
+                                }
 
-                              disabled={
-                                updateMutation.isPending ||
-                                item.quantity <= 1
-                              }
+                                className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
+                              >
+                                <Plus size={16} />
+                              </button>
 
-                              className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
-                            >
-                              <Minus size={16} />
-                            </button>
-
-
-                            <span className="w-10 text-center text-sm font-medium">
-                              {item.quantity}
-                            </span>
+                            </div>
 
 
-                            <button
-                              onClick={() =>
-                                updateMutation.mutate({
-                                  productId:
-                                    item.productId,
-
-                                  quantity:
-                                    item.quantity + 1,
-                                })
-                              }
-
-                              disabled={
-                                updateMutation.isPending||
-                                item.quantity>=(product?.stock||0)
-                              }
-
-                              className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
-                            >
-                              <Plus size={16} />
-                            </button>
+                            {/* Item total */}
+                            <p className="font-semibold">
+                              ₹
+                              {(
+                                item.price *
+                                item.quantity
+                              ).toLocaleString("en-IN")}
+                            </p>
 
                           </div>
-
-
-                          {/* Item total */}
-                          <p className="font-semibold">
-                            ₹
-                            {(
-                              item.price *
-                              item.quantity
-                            ).toLocaleString("en-IN")}
-                          </p>
 
                         </div>
 
@@ -425,9 +315,7 @@ const getProduct=async()=>{
 
                     </div>
 
-                  </div>
-
-                );
+                  );
                 })}
 
               </div>

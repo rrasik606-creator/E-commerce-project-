@@ -1,22 +1,22 @@
- import React,{useEffect,useState} from 'react'
- import { useNavigate } from 'react-router-dom'
- import { useSelector,useDispatch } from 'react-redux'
+import React,{useEffect,useState} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector,useDispatch } from 'react-redux'
 
- import { AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts'
+import { AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts'
 
- import AdminSidbar from '../../components/adminsidebar'
- import AdminHeader from '../../components/adminheader'
+import AdminSidbar from '../../components/adminsidebar'
+import AdminHeader from '../../components/adminheader'
 
- import { getProduct } from '../../services/adminproductservices'
- import { getUsers } from '../../services/adminuserservices'
+import { getProduct } from '../../services/adminproductservices'
+import { getUsers } from '../../services/adminuserservices'
 import { getOrders } from '../../services/adminorderservices'
 
 import { setProducts } from '../../redux/slices/adminproductslice'
 import { setUsers } from '../../redux/slices/adminuserslice'
 import { setOrders } from '../../redux/slices/adminordersslice'
 
- 
- const Dashboard = () => {
+
+const Dashboard = () => {
     const dispatch=useDispatch();
     const navigate=useNavigate();
 
@@ -45,8 +45,18 @@ import { setOrders } from '../../redux/slices/adminordersslice'
     const totalUsers =users.filter((user)=>user.role!=="admin").length;
     const activeUsers =users.filter((user)=>user.role!=="admin"&&!user.blocked).length;
     const blockedUsers =users.filter((user)=>user.role!=="admin"&&user.blocked).length;
+
     const orders=useSelector((state)=>state.adminOrder.orders);
-    const revenue=orders.reduce((total,order)=>total+Number(order.total),0);
+
+    const validOrders = orders.filter(
+        (order) => order.status !== "Cancelled"
+    );
+
+    const revenue = validOrders
+    .reduce(
+        (total, order) => total + Number(order.total),
+        0
+    );
 
     const recentOrders =[...orders].sort((a,b)=>new Date(b.orderDate)-new Date(a.orderDate)).slice(0,5);
 
@@ -56,7 +66,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
 
         chartData = Array.from({ length: 12 }, (_, index) => {
 
-            const revenue = orders
+            const revenue = validOrders
                 .filter((order) => {
                     const date = new Date(order.orderDate);
 
@@ -81,7 +91,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
 
         const years = [
             ...new Set(
-                orders.map((order) => {
+                validOrders.map((order) => {
                     return new Date(order.orderDate).getFullYear();
                 })
             )
@@ -89,7 +99,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
 
         chartData = years.map((year) => {
 
-            const revenue = orders
+            const revenue = validOrders
                 .filter((order) => {
                     const date = new Date(order.orderDate);
 
@@ -130,7 +140,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
 
                 const weekNumber = index + 1;
 
-                const revenue = orders
+                const revenue = validOrders
                     .filter((order) => {
 
                         const date = new Date(order.orderDate);
@@ -182,7 +192,7 @@ import { setOrders } from '../../redux/slices/adminordersslice'
 
                 const day = index + 1;
 
-                const revenue = orders
+                const revenue = validOrders
                     .filter((order) => {
                         const date = new Date(order.orderDate);
 
@@ -403,4 +413,3 @@ import { setOrders } from '../../redux/slices/adminordersslice'
  }
  
  export default Dashboard
- 

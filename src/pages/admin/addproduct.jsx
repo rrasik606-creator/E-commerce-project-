@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import ProductForm from "../../components/productform";
 
@@ -73,6 +74,8 @@ const AddProduct = () => {
             const data = await addProduct(newProduct);
 
             dispatch(addProductRedux(data));
+
+            toast.success("New product added");
 
             navigate("/admin/product");
 

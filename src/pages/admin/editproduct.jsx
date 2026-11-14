@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import ProductForm from "../../components/productform";
 
@@ -121,6 +122,8 @@ const EditProduct = () => {
             );
 
             dispatch(updateProductRedux(data));
+
+            toast.success("product updated")
 
             navigate("/admin/product");
 

@@ -89,7 +89,7 @@ const Footer = () => {
             </p>
 
             <p>
-              Phone: +91 98765 43210
+              Phone: +91 6238713324
             </p>
 
             {/* INSTAGRAM */}

@@ -1,0 +1,110 @@
+import mongoose from "mongoose";
+
+const orderItemSchema = new mongoose.Schema(
+    {
+        productId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Product",
+            required:true
+        },
+        name:{
+            type:String,
+            required:true,
+            trim:true
+        },
+        price:{
+            type:Number,
+            required:true,
+            min:0
+        },
+        image:{
+            type:[String],
+            default:[]
+        },
+        quantity:{
+            type:Number,
+            required:true,
+            min:1
+        },
+    }
+);
+
+const orderSchema = new mongoose.Schema(
+    {
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User",
+            required:true,
+        },
+        items:{
+            type:[orderItemSchema],
+            required:true
+        },
+        address:{
+            name:{
+                type:String,
+                required:true,
+                trim:true
+            },
+            phone:{
+                type:String,
+                required:true,
+                trim:true
+            },
+            address:{
+                type:String,
+                required:true,
+                trim:true
+            },
+            city:{
+                type:String,
+                required:true,
+                trim:true
+            },
+            state:{
+                type:String,
+                required:true,
+                trim:true
+            },
+            pincode:{
+                type:String,
+                required:true,
+                trim:true
+            }
+        },
+        paymentMethod:{
+            type:String,
+            enum:["COD","UPI"],
+            required:true
+        },
+        subtotal:{
+            type:Number,
+            required:true,
+            min:0
+        },
+        shippingCharge:{
+            type:Number,
+            default:0,
+            min:0
+        },
+        total:{
+            type:Number,
+            required:true,
+            min:0
+        },
+        status:{
+            type:String,
+            enum:["Pending","Processing","Shipped","Delivered","Cancelled"],
+            default:"Pending"
+        },
+        orderDate:{
+            type:Date,
+            default:Date.now
+        }
+    },
+    {timestamps:true}
+);
+
+const Order = mongoose.model("Order",orderSchema);
+
+export default Order;

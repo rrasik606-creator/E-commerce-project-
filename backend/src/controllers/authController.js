@@ -13,6 +13,14 @@ const refreshCookieOptions={
     path:"/auth"
 }
 
+const accessCookieOptions={
+    httpOnly:true,
+    secure:process.env.NODE_ENV==="production",
+    sameSite:"lax",
+    maxAge:15*60*1000,
+    path:"/"
+}
+
 export const register=async(req,res)=>{
     try{
         const {name,username,email,password}=req.body;
@@ -86,6 +94,12 @@ export const login=async(req,res)=>{
         });
 
         res.cookie(
+            "accessToken",
+            accessToken,
+            accessCookieOptions
+        )
+
+        res.cookie(
             "refreshToken",
             refreshToken,
             refreshCookieOptions
@@ -94,7 +108,6 @@ export const login=async(req,res)=>{
         return res.status(200).json({
             success:true,
             message:"Login successful",
-            accessToken,
             user:{
                 id:user._id,
                 name:user.name,
@@ -166,6 +179,12 @@ export const refresh=async(req,res)=>{
 
 
         res.cookie(
+            "accessToken",
+            newAccessToken,
+            accessCookieOptions
+        )
+
+        res.cookie(
             "refreshToken",
             newRefreshToken,
             refreshCookieOptions
@@ -174,7 +193,6 @@ export const refresh=async(req,res)=>{
         return res.status(200).json({
             success:true,
             message:"Token refreshed successfully",
-            accessToken:newAccessToken,
             user:{
                 id:user._id,
                 name:user.name,
@@ -199,6 +217,11 @@ export const logout=async(req,res)=>{
 
             await Session.findOneAndDelete({refreshTokenHash})
         }
+
+        res.clearCookie(
+            "accessToken",
+            {...accessCookieOptions,maxAge:undefined}
+        )
 
         res.clearCookie(
             "refreshToken",

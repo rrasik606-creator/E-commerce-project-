@@ -10,7 +10,7 @@ import { Eye,EyeOff } from 'lucide-react'
 const API_URL="http://localhost:3001/users";
 
 const Login = () => {
-  const[data,setData]=useState({username:"",password:""})
+  const[data,setData]=useState({email:"",password:""})
   const[showPassword,setShowPassword]=useState(false)
   // const[error,setError]=useState({})
 
@@ -26,12 +26,12 @@ const Login = () => {
 
   const error={
     password:"",
-    username:""
+    email:""
   };
 
-  if(data.username.trim()!==""){
-    if(data.username.trim().length<=2||data.username.trim().length>20){
-      error.username="Username must be between 3 and 20 characters..."
+  if(data.email.trim()!==""){
+    if(data.email.trim().length<=2||data.email.trim().length>20){
+      error.email="Username must be between 3 and 20 characters..."
     }
   }
 
@@ -44,12 +44,12 @@ const Login = () => {
   const loginHandler=async(e)=>{
     e.preventDefault();
 
-    if(data.username.trim()===""||data.password.trim()===""){
-      toast.error("Please fill all...")
+    if(data.email.trim()===""||data.password.trim()===""){
+      toast.error("Please fill all fields...")
       return
     }
 
-    if(error.username||error.password){
+    if(error.email||error.password){
       toast.error("Enter valid details...");
       return
     }
@@ -136,28 +136,28 @@ const Login = () => {
           {/* FORM */}
           <form onSubmit={loginHandler}>
 
-            {/* USERNAME */}
+            {/* EMAIL */}
             <div className="mb-5">
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Username
+                Email 
               </label>
 
               <input
-                type="text"
-                placeholder="Enter your username"
+                type="email"
+                placeholder="Enter your email"
                 onChange={handleChange}
-                name="username"
-                value={data.username}
+                name="email"
+                value={data.email}
                 className={`w-full rounded-lg border px-4 py-3 text-sm outline-none transition ${
-                  error.username
+                  error.email
                     ? "border-red-400 focus:border-red-500"
                     : "border-gray-300 focus:border-gray-900"
                 }`}
               />
 
-              {error.username && (
+              {error.email && (
                 <p className="mt-2 text-xs text-red-500">
-                  {error.username}
+                  {error.email}
                 </p>
               )}
             </div>

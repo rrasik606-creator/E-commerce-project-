@@ -29,14 +29,17 @@ export const register=async(req,res)=>{
             return res.status(400).json({success:false,message:"All fields are required"});
         }
 
-        const existingUser=await User.findOne({$or:[{email:email.toLowerCase().trim()},{username:username.trim()}]});
+        const existingUser=await User.findOne({email:email.toLowerCase().trim()});
 
         if(existingUser){
-            return res.status(409).json({success:false,message:"Email or username already exists"});
+            return res.status(409).json({success:false,message:"Email already exists"});
         }
 
         const user = await User.create({
-            name,username,email,password
+            name:name.trim(),
+            username:username.trim(),
+            email:email.toLowerCase().trim(),
+            password:password
         });
 
 
@@ -53,6 +56,9 @@ export const register=async(req,res)=>{
         });
     }
     catch(error){
+        if(error.code===11000){
+            return res.status(409).json({success:false,message:"Email already exists"})
+        }
         return res.status(500).json({success:false,message:"Internal server error",error:error.message});
     }
 };
@@ -235,6 +241,36 @@ export const logout=async(req,res)=>{
             success:false,
             message:"Internal server error",
             error:error.message
+        });
+    }
+};
+
+export const profile=async(req,res)=>{
+    try{
+        const user=await User.findById(req.user.userId).select("-password");
+
+        if(!user||user.blocked){
+            return res.status(401).json({
+                success:false,
+                message:"User not found or account blocked"
+            });
+        }
+
+        return res.status(200).json({
+            success:true,
+            user:{
+                id:user._id,
+                name:user.name,
+                username:user.username,
+                email:user.email,
+                role:user.role
+            }
+        });
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:"Internal server error"
         });
     }
 };

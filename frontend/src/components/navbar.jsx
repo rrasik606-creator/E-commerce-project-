@@ -8,22 +8,23 @@ import {
   X,
 } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { logout, setUser } from "../redux/slices/authslice";
+import { logout } from "../redux/slices/authslice";
 import { setCart, clearCart } from "../redux/slices/cartslice";
 import { setWishlist, clearWishlist } from "../redux/slices/wishlistslice";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { getcart } from "../services/cartService";
 import { getWishlist } from "../services/wishlistService";
 import toast from "react-hot-toast";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { logoutUser } from "../services/authService";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("user");
+  const user=useSelector((state)=>state.auth.user);
+  const userId=user?.id||user?._id;
 
   const [showAccount, setShowAccount] = useState(false);
 
@@ -58,29 +59,7 @@ const Navbar = () => {
   // Read counts and user details from Redux for display
   const cartCount = useSelector((state) => state.cart.cartCount);
   const wishlistCount = useSelector((state) => state.wishlist.wishlistCount);
-  const user = useSelector((state) => state.auth.user);
 
-  // Get user details and hydrate Redux with them
-  useEffect(() => {
-    const getUser = async () => {
-      if (!userId) {
-        dispatch(logout());
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/users/${userId}`
-        );
-
-        dispatch(setUser(response.data));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUser();
-  }, [userId, dispatch]);
 
   // Search
   const handleSearch = (e) => {
@@ -118,15 +97,26 @@ const Navbar = () => {
     if(!confirmlogout.isConfirmed){
       return
     }
+
+    try{
+
+    await logoutUser();
     
-    localStorage.removeItem("user");
-    localStorage.removeItem("userRole")
     dispatch(logout());
     dispatch(clearCart());
     dispatch(clearWishlist());
+
     setShowAccount(false);
-    toast.success("logout successfull")
+
+    toast.success("Logout successful")
+    
     navigate("/login");
+
+    }
+    catch(err){
+      console.log(err);
+      toast.error(err.response?.data?.message|| "Logout failed. Please try again.")
+    }
   };
 
   return (
@@ -302,7 +292,7 @@ const Navbar = () => {
           </Link>
 
           {/* LOGIN BUTTON */}
-          {!userId && (
+          {!user && (
             <Link
               to="/login"
               className="flex flex-col items-center gap-1 hover:text-gray-900"

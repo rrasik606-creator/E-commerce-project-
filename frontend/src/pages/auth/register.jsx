@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 import {useNavigate,Link} from 'react-router-dom';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Eye,EyeOff } from 'lucide-react';
 
-const API_URL="http://localhost:3001/users";
+import { registerUser } from '../../services/authService';
+
 
 const Register = () => {
     // const [error,setError]=useState({name:"",username:"",email:"",password:"",confirmpassword:""});
@@ -32,13 +32,6 @@ const Register = () => {
         confirmpassword:""
       };
 
-      const userdata={
-        name:data.name,
-        username:data.username,
-        email:data.email,
-        password:data.password,
-        role:"user"
-      };
 
      if(data.name.trim()!==""){
          if(data.name.trim().length<=2){
@@ -59,13 +52,13 @@ const Register = () => {
      }
 
      if(data.password.trim()!==""){
-        if(data.password.trim().length<8){
+        if(data.password.length<8){
            error.password="Password must be at least 8 characters...";
         }
      }
 
-     if(data.confirmpassword.trim()!==""){
-        if(data.password.trim()!==data.confirmpassword.trim()){
+     if(data.confirmpassword!==""){
+        if(data.password!==data.confirmpassword){
            error.confirmpassword="Password do not match...";
         }
      }
@@ -74,7 +67,7 @@ const Register = () => {
 
       e.preventDefault();
 
-      if(data.name.trim()===""||data.username.trim()===""||data.email.trim()===""||data.password.trim()===""||data.confirmpassword.trim()===""){
+      if(data.name.trim()===""||data.username.trim()===""||data.email.trim()===""||data.password===""||data.confirmpassword===""){
         toast.error("Please fill all...")
         return
       }
@@ -86,29 +79,19 @@ const Register = () => {
 
       try{
 
-          const res=await axios.get(API_URL);
+          const res=await registerUser({
+            name:data.name.trim(),
+            username:data.username.trim(),
+            email:data.email.trim().toLowerCase(),
+            password:data.password
+          });
           
-          const emailexist =res.data.some((User)=>User.email.toLowerCase()===data.email.trim().toLowerCase())
-
-          if(emailexist){
-            toast.error("Email already exists...");
-            return
-          }
-
-          const userName=res.data.some((user)=>user.username.toLowerCase()===data.username.trim().toLowerCase())
-
-          if(userName){
-            toast.error("username already exist...")
-            return
-          }
-
-          await axios.post(API_URL,userdata)
-          toast.success("registeration successfully completed")
+          toast.success(res.message||"registeration successfully completed")
           navigate("/login",{replace:true})
       }
-      catch{
-        console.log(error)
-        toast.error("sorry, an error occured...")
+      catch(err){
+        console.log(err)
+        toast.error(err.response?.data?.message||"sorry, an error occured...")
       }
     }
 

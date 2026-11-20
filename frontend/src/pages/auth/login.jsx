@@ -1,13 +1,12 @@
 import React from 'react'
-import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate,Link, replace } from 'react-router-dom'
+import { useNavigate,Link} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/slices/authslice'
+import { loginUser } from '../../services/authService'
 import toast from 'react-hot-toast'
 import { Eye,EyeOff } from 'lucide-react'
 
-const API_URL="http://localhost:3001/users";
 
 const Login = () => {
   const[data,setData]=useState({email:"",password:""})
@@ -30,13 +29,13 @@ const Login = () => {
   };
 
   if(data.email.trim()!==""){
-    if(data.email.trim().length<=2||data.email.trim().length>20){
-      error.email="Username must be between 3 and 20 characters..."
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())){
+      error.email="Enter a valid email address..."
     }
   }
 
-  if(data.password.trim()!==""){
-    if(data.password.trim().length<8){
+  if(data.password!==""){
+    if(data.password.length<8){
       error.password="Password must be at least 8 characters...";
     }
   }
@@ -55,51 +54,24 @@ const Login = () => {
     }
 
     try{
-      const res=await axios.get(API_URL);
+      const res=await loginUser({email:data.email,password:data.password});
 
-      const check=res.data.find(
-        (user)=>
-          user.username===data.username &&
-          user.password===data.password
-      );
+      const loggedUser=res.user;
 
-      console.log(check);
+      dispatch(login({user:loggedUser}))
 
-      if(check){
+      toast.success("login successful!");
 
-        if(check.blocked){
-          toast.error("Your account has been blocked...")
-          return
-        }
-        
-        const loggedUser={
-          id:check.id,
-          name:check.name,
-          username:check.username,
-          email:check.email,
-          role:check.role
-        };
-
-        dispatch(login({user:loggedUser}))
-        localStorage.setItem("user",check.id);
-        localStorage.setItem("userRole",check.role)
-
-        toast.success("login successful!");
-
-        if(check.role==="admin"){
-          navigate('/admin',{replace:true});
-        }
-        else{
+      if(loggedUser.role==="admin"){
+        navigate('/admin',{replace:true});
+      }
+      else{
         navigate('/', {replace:true});
         }
       }
-      else{
-        toast.error("Invalid username or password...")
-      }
-    }
     catch(error){
       console.log(error)
-      toast.error("Something went wrong...");
+      toast.error(error.response?.data?.message||"Something went wrong...");
     }
   }  
 

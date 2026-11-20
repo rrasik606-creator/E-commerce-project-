@@ -4,6 +4,7 @@ import Approute from './routes/approute'
 import Footer from './components/footer'
 import { useLocation } from 'react-router-dom'
 import {Toaster} from 'react-hot-toast'
+import AuthInitializer from './components/AuthInitializer.jsx'
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
   const hidenavbarfooter=location.pathname==="/login"||location.pathname==="/register"||location.pathname.startsWith("/admin");
 
   return (
+    <AuthInitializer>
     <div>
       <Toaster position='top-right'/>
       {!hidenavbarfooter&&<Navbar/>}
@@ -20,6 +22,7 @@ const App = () => {
       </div>
       {!hidenavbarfooter&&<Footer/>}
     </div>
+    </AuthInitializer>
   )
 }
 

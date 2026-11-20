@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js"
 import errorMiddleware from "./src/middlewares/errorMiddleware.js";
 
 
@@ -28,6 +29,7 @@ app.get("/",(req,res)=>{
 });
 
 app.use("/auth",authRoutes)
+app.use("/products",productRoutes)
 
 app.use(errorMiddleware);
 

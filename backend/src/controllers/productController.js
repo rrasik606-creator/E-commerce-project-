@@ -3,7 +3,38 @@ import Product from "../models/Product.js";
 
 export const getAllProduct =async(req,res,next)=>{
     try{
-        const products=await Product.find({deleted:{$ne:true}});
+        const {type,brand,search}=req.query;
+
+        const filter={
+            deleted:{$ne:true}
+        };
+
+        if(type){
+            filter.type=type;
+        }
+        if(brand){
+            filter.brand=brand
+        }
+
+        if(search){
+            filter.$or=[
+                {
+                    name:{
+                        $regex:search,
+                        $options:"i"
+                    }
+                },
+                {
+                    brand:{
+                        $regex:search,
+                        $options:"i"
+                    }
+                }
+            ];
+        }
+
+        const products=await products.find(filter);
+
         return res.status(200).json({success:true,count:products.length,products})
     }
     catch(error){

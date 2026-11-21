@@ -440,7 +440,19 @@
             "/watches/men/casual/sonata1b.png",
             "/watches/men/casual/sonata1c.png"
           ],
-          "quantity": 2
+          "quantity": 28
+        },
+        {
+          "productId": "kheVFCwPj2c",
+          "name": "Casio",
+          "price": 1949,
+          "image": [
+            "/watches/men/casual/casio1.png",
+            "/watches/men/casual/casio1a.png",
+            "/watches/men/casual/casio1b.png",
+            "/watches/men/casual/casio1c.png"
+          ],
+          "quantity": 14
         }
       ],
       "id": "4iOIiaoHiu4"

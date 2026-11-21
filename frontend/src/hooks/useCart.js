@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import axios from "axios";
 
 import {
   getcart,
@@ -20,21 +19,14 @@ import {
 
 import { setCart } from "../redux/slices/cartslice";
 
-const API_URL = "http://localhost:3001/products";
-
 const useCart = () => {
 
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("user");
-
-
-  const getProduct = async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
-  };
+  const user=useSelector((state)=>state.auth.user);
+  const userId=user?.id
 
 
   // Get user's cart
@@ -49,24 +41,10 @@ const useCart = () => {
   });
 
 
-  // Get products
-  const {
-    data: products = [],
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: getProduct,
-  });
-
-
-  // Cart id
-  const cartId = userCart?.id;
-
-
   // Add to cart
   const addToCartMutation = useMutation({
 
-    mutationFn: (cartItem) =>
-      addCart(cartItem),
+    mutationFn: (cartItem) =>addCart(cartItem),
 
     onSuccess: (updatedCart) => {
 
@@ -82,30 +60,17 @@ const useCart = () => {
   });
 
 
-  // Add product to cart
-  const handleAddToCart = (product, quantity) => {
+  // Handle adding product
+  const handleAddToCart = (product, quantity=1) => {
 
     if (!userId) {
-
       navigate("/login");
-
       return;
     }
 
     const cartItem = {
-
-      userId: userId,
-
-      productId: product.id,
-
-      name: product.name,
-
-      price: product.price,
-
-      image: product.image,
-
-      quantity: quantity,
-
+      productId: product._id,
+      quantity,
     };
 
     addToCartMutation.mutate(cartItem);
@@ -133,10 +98,9 @@ const useCart = () => {
   const updateMutation = useMutation({
 
     mutationFn: ({ productId, quantity }) =>
-      updateCart(cartId, productId, quantity),
+      updateCart(productId, quantity),
 
     onSuccess: (updatedCart) => {
-
       dispatch(setCart(updatedCart.items));
 
       queryClient.setQueryData(
@@ -151,9 +115,8 @@ const useCart = () => {
 
   // Delete item
   const deleteMutation = useMutation({
-
     mutationFn: (productId) =>
-      deleteCart(cartId, productId),
+      deleteCart(productId),
 
     onSuccess: (updatedCart) => {
 
@@ -171,23 +134,17 @@ const useCart = () => {
   });
 
 
-  // Confirm before removing item
+  //Delete handler
   const handleDelete = async (item) => {
+    const product=item.productId;
 
     const confirmDelete = await Swal.fire({
-
       title: "Remove item?",
-
-      text: `Remove "${item.name}" from your cart?`,
-
+      text: `Remove "${product.name}" from your cart?`,
       icon: "warning",
-
       showCancelButton: true,
-
       confirmButtonText: "Yes,Remove",
-
       cancelButtonText: "Cancel"
-
     });
 
 
@@ -196,7 +153,7 @@ const useCart = () => {
     }
 
 
-    deleteMutation.mutate(item.productId);
+    deleteMutation.mutate(product._id);
 
   };
 
@@ -204,7 +161,7 @@ const useCart = () => {
   // Subtotal
   const subtotal = cart.reduce(
     (total, item) =>
-      total + item.price * item.quantity,
+      total + item.productId.price * item.quantity,
     0
   );
 
@@ -216,7 +173,6 @@ const useCart = () => {
   return {
     userId,
     userCart,
-    products,
     cart,
     isLoading,
     isError,

@@ -18,7 +18,6 @@ const Cart = () => {
 
   const {
     userId,
-    products,
     cart,
     isLoading,
     isError,
@@ -168,15 +167,12 @@ const Cart = () => {
 
                 {cart.map((item) => {
 
-                  const product = products.find(
-                    (product) =>
-                      product.id === item.productId
-                  );
+                  const product = item.productId;
 
                   return (
 
                     <div
-                      key={item.productId}
+                      key={product._id}
                       className="p-6 border-b last:border-b-0"
                     >
 
@@ -188,10 +184,10 @@ const Cart = () => {
 
                           <img
                             src={
-                              item.image?.[0] ||
-                              item.image
+                              product.image?.[0] ||
+                              product.image
                             }
-                            alt={item.name}
+                            alt={product.name}
                             className="w-full h-full object-contain p-3"
                           />
 
@@ -206,7 +202,7 @@ const Cart = () => {
                             <div>
 
                               <h3 className="text-lg font-medium">
-                                {item.name}
+                                {product.name}
                               </h3>
 
                             </div>
@@ -230,7 +226,7 @@ const Cart = () => {
 
                           {/* Price */}
                           <p className="text-lg font-semibold mt-3">
-                            ₹{item.price.toLocaleString("en-IN")}
+                            ₹{product.price.toLocaleString("en-IN")}
                           </p>
 
 
@@ -247,11 +243,8 @@ const Cart = () => {
                                   if (item.quantity > 1) {
 
                                     updateMutation.mutate({
-                                      productId:
-                                        item.productId,
-
-                                      quantity:
-                                        item.quantity - 1,
+                                      productId:product._id,
+                                      quantity:item.quantity - 1,
                                     });
 
                                   }
@@ -277,17 +270,14 @@ const Cart = () => {
                               <button
                                 onClick={() =>
                                   updateMutation.mutate({
-                                    productId:
-                                      item.productId,
-
-                                    quantity:
-                                      item.quantity + 1,
+                                    productId:product._id,
+                                    quantity:item.quantity + 1,
                                   })
                                 }
 
                                 disabled={
                                   updateMutation.isPending ||
-                                  item.quantity >= (product?.stock || 0)
+                                  item.quantity >= (product.stock)
                                 }
 
                                 className="p-2.5 hover:bg-gray-100 disabled:opacity-40"
@@ -302,7 +292,7 @@ const Cart = () => {
                             <p className="font-semibold">
                               ₹
                               {(
-                                item.price *
+                                product.price *
                                 item.quantity
                               ).toLocaleString("en-IN")}
                             </p>
@@ -380,22 +370,16 @@ const Cart = () => {
 
               {/* Subtotal */}
               <div className="flex justify-between text-gray-600 mb-4">
-
-                <span>
-                  Subtotal
-                </span>
+                <span>Subtotal</span>
 
                 <span>
                   ₹{subtotal.toLocaleString("en-IN")}
                 </span>
-
               </div>
 
 
               <div className="border-t pt-5">
-
                 <div className="flex justify-between items-center">
-
                   <span className="text-lg font-semibold">
                     Total
                   </span>
@@ -403,17 +387,13 @@ const Cart = () => {
                   <span className="text-2xl font-semibold">
                     ₹{total.toLocaleString("en-IN")}
                   </span>
-
                 </div>
-
               </div>
 
 
               {/* Checkout */}
               <button
-                onClick={() =>
-                  navigate("/checkout")
-                }
+                onClick={() =>navigate("/checkout")}
                 className="w-full bg-black text-white py-4 rounded-xl mt-6 font-medium hover:bg-gray-800 transition"
               >
                 Proceed to Checkout
@@ -422,16 +402,13 @@ const Cart = () => {
 
               {/* Continue shopping */}
               <button
-                onClick={() =>
-                  navigate("/products")
-                }
+                onClick={() =>navigate("/products")}
                 className="w-full border border-gray-300 py-4 rounded-xl mt-3 font-medium hover:bg-gray-50 transition"
               >
                 Continue Shopping
               </button>
-
             </div>
-
+            
           </div>
 
         </div>

@@ -8,8 +8,6 @@ import {
   Truck,
 } from "lucide-react";
 
-import axios from "axios";
-
 import {
   useParams,
 } from "react-router-dom";
@@ -21,25 +19,16 @@ import {
 import useWishlist from "../../hooks/useWishlist";
 import useCart from "../../hooks/useCart";
 
+import { getSingleProduct } from "../../services/productService";
+
 const Productdetails = () => {
 
-  const { id } = useParams();
+  const { id }=useParams();
 
-  const [quantity, setQuantity] =
-    useState(1);
+  const [quantity,setQuantity]=useState(1);
 
-  const [selectimage, setSelectedImage] =
-    useState(0);
+  const [selectimage,setSelectedImage]=useState(0);
 
-  // Get product
-  const getProduct = async () => {
-
-    const response = await axios.get(
-      `http://localhost:3001/products/${id}`
-    );
-
-    return response.data;
-  };
 
   // Product query
   const {
@@ -50,7 +39,7 @@ const Productdetails = () => {
 
     queryKey: ["product", id],
 
-    queryFn: getProduct,
+    queryFn: ()=>getSingleProduct(id),
 
     enabled: !!id,
   });

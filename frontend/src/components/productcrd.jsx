@@ -17,7 +17,7 @@ const Productcrd = ({product}) => {
 
     return (
         <div
-            onClick={() => navigate(`/products/${product.id}`)}
+            onClick={() => navigate(`/products/${product._id}`)}
             className='w-full bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition duration-300'
         >
 

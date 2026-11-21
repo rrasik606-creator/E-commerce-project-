@@ -1,8 +1,8 @@
 import React from "react";
 import Productgrid from "../../components/productgrid";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { getAllProducts } from "../../services/productService.js";
 
 const Products = () => {
 
@@ -12,60 +12,33 @@ const Products = () => {
     const brand = searchParams.get("brand") || "";
     const search = searchParams.get("search") || "";
 
-    const getProduct = async () => {
-        const response = await axios.get(
-            "http://localhost:3001/products"
-        );
-
-        return response.data;
-    };
-
+   //fetching all products
     const {
         data: allProducts = [],
-        isLoading,
-        isError,
     } = useQuery({
-        queryKey: ["products"],
-        queryFn: getProduct,
+        queryKey: ["products","filter-options"],
+        queryFn: ()=>getAllProducts(),
     });
 
-    const products = allProducts.filter(
-        (product) => !product.deleted
-    );
+    //fetching filtered products
+    const {
+        data:filteredProducts =[],
+        isLoading,
+        isError
+    }=useQuery({
+        queryKey:["products",{type,brand,search}],
+        queryFn:()=>getAllProducts({type,brand,search})
+    });
+
 
     const brands = [
         ...new Set(
-            products
+            allProducts
                 .map((product) => product.brand)
                 .filter(Boolean)
         ),
     ];
 
-    const filteredProducts = products.filter((product) => {
-
-        const typeMatch = type
-            ? product.type === type
-            : true;
-
-        const brandMatch = brand
-            ? product.brand === brand
-            : true;
-
-        const searchMatch = search
-            ? product.name
-                .toLowerCase()
-                .includes(search.toLowerCase()) ||
-              product.brand
-                .toLowerCase()
-                .includes(search.toLowerCase())
-            : true;
-
-        return (
-            typeMatch &&
-            brandMatch &&
-            searchMatch
-        );
-    });
 
     const handleCategoryChange = (e) => {
 
@@ -189,7 +162,13 @@ const Products = () => {
 
 
             {/* PRODUCTS */}
-            <Productgrid products={filteredProducts} />
+            {filteredProducts.length>0?(
+             <Productgrid products={filteredProducts} />
+            ):(
+             <div className="py-20 text-center text-gray-500">
+                No products found.
+             </div>   
+            )}
 
         </div>
     )

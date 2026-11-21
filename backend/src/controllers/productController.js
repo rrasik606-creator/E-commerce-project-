@@ -33,11 +33,12 @@ export const getAllProduct =async(req,res,next)=>{
             ];
         }
 
-        const products=await products.find(filter);
+        const products=await Product.find(filter);
 
         return res.status(200).json({success:true,count:products.length,products})
     }
     catch(error){
+        console.error("GET ALL PRODUCTS ERROR:", error);
         next(error)
     }
 };
@@ -59,6 +60,7 @@ export const getSingleProduct=async(req,res,next)=>{
         return res.status(200).json({success:true,product})
     }
     catch(error){
+        console.log("GET SINGLEPRODUCT ERROR:",error)
         next(error);
     }
 }

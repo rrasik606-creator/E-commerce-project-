@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 import {
@@ -14,7 +15,8 @@ const useWishlist = (product) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const userId = localStorage.getItem("user");
+    const user=useSelector((state)=>state.auth.user);
+    const userId=user?.id;
 
 
     // Get user's wishlist
@@ -29,14 +31,13 @@ const useWishlist = (product) => {
     const isWishlisted =
         userWishlist?.items?.some(
             (item) =>
-                String(item.productId) === String(product?.id)
+                String(item.productId?._id) === String(product?._id)
         ) || false;
 
 
     // Add wishlist
     const addWishlistMutation = useMutation({
-        mutationFn: (wishlistItem) =>
-            addWishlist(wishlistItem),
+        mutationFn: (productId) =>addWishlist(productId),
 
         onSuccess: (updatedWishlist) => {
             queryClient.setQueryData(
@@ -51,8 +52,7 @@ const useWishlist = (product) => {
 
     // Delete wishlist
     const deleteWishlistMutation = useMutation({
-        mutationFn: ({ wishlistId, productId }) =>
-            deleteWishlist(wishlistId, productId),
+        mutationFn: (productId) =>deleteWishlist(productId),
 
         onSuccess: (updatedWishlist) => {
             queryClient.setQueryData(
@@ -77,28 +77,24 @@ const useWishlist = (product) => {
             return;
         }
 
+        if(addWishlistMutation.isPending||deleteWishlistMutation.isPending){
+            return;
+        }
+
+        if(!product?._id){
+            return;
+        }
+
 
         // Remove from wishlist
         if (isWishlisted) {
-
-            deleteWishlistMutation.mutate({
-                wishlistId: userWishlist.id,
-                productId: product.id
-            });
-
+            deleteWishlistMutation.mutate(product._id);
             return;
         }
 
 
         // Add to wishlist
-        addWishlistMutation.mutate({
-            userId: userId,
-            productId: product.id,
-            name: product.name,
-            brand: product.brand,
-            price: product.price,
-            image: product.image
-        });
+        addWishlistMutation.mutate(product._id);
     };
 
 

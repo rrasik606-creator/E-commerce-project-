@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-
 import toast from "react-hot-toast";
 
 import {
@@ -31,10 +29,10 @@ import useCart from "../../hooks/useCart";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
-  const userId = localStorage.getItem("user");
+  const user=useSelector((state)=>state.auth.user);
+  const userId=user?.id
 
   const [addingProductId, setAddingProductId] = useState(null);
 
@@ -54,16 +52,6 @@ const Wishlist = () => {
     enabled: !!userId,
   });
 
-  const wishlistId = userWishlist?.id;
-
-  // Get products (for stock lookup)
-  const { data: products = [] } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const response = await axios.get("http://localhost:3001/products");
-      return response.data;
-    },
-  });
 
   // Store wishlist in Redux
   useEffect(() => {
@@ -75,21 +63,21 @@ const Wishlist = () => {
 
   // Delete product
   const deleteMutation = useMutation({
-    mutationFn: (productId) =>
-      deleteWishlist(
-        wishlistId,
-        productId
-      ),
+    mutationFn: (productId) =>deleteWishlist(productId),
 
     onSuccess: (updatedWishlist) => {
-      dispatch(
-        setWishlist(updatedWishlist.items)
-      );
+      dispatch(setWishlist(updatedWishlist.items));
 
       queryClient.setQueryData(
         ["wishlist", userId],
         updatedWishlist
       );
+
+      toast.success("Product removed from wishlist!")
+    },
+
+    onError:()=>{
+      toast.error("Failed to remove product")
     },
   });
 
@@ -97,30 +85,42 @@ const Wishlist = () => {
     e.stopPropagation();
 
     deleteMutation.mutate(productId);
-    toast.success("Product removed from wishlist!")
   };
 
   // Add to cart
-  const handleAddToCart = (e, item) => {
+  const handleAddToCart = (e, product) => {
     e.stopPropagation();
 
-    const product = products.find(
-      (product) => product.id === item.productId
-    );
-
-    if (!product || Number(product.stock) <= 0) {
+    if (!product || product.stock<= 0) {
       toast.error("This product is out of stock");
       return;
     }
 
-    setAddingProductId(item.productId);
+    setAddingProductId(product._id);
 
     addToCart(product, 1);
-
-    setTimeout(() => {
-      setAddingProductId(null);
-    }, 500);
   };
+
+  useEffect(()=>{
+    if(!addToCartMutation.isPending&&addingProductId){
+      setAddingProductId(null)
+    }
+  },[addToCartMutation.isPending,addingProductId]);
+
+
+  if (!userId) {
+    return (
+      <div className="p-10 text-center">
+        Please login to view your wishlist.
+        <button
+          onClick={() => navigate("/login")}
+          className="block mx-auto mt-4 bg-black text-white px-6 py-3 rounded-lg"
+        >
+          Login
+        </button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -197,12 +197,14 @@ const Wishlist = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            {wishlist.map((item) => (
+            {wishlist.filter((item) => item.productId).map((item)=>{
 
+              const product=item.productId;
+              return(
               <div
-                key={item.productId}
+                key={item._id}
                 onClick={() =>
-                  navigate(`/products/${item.productId}`)
+                  navigate(`/products/${product._id}`)
                 }
                 className="bg-white rounded-xl overflow-hidden shadow-sm cursor-pointer"
               >
@@ -212,23 +214,16 @@ const Wishlist = () => {
                 <div className="relative">
 
                   <img
-                    src={item.image[0]}
-                    alt={item.name}
+                    src={product.image?.[0]||product.image}
+                    alt={product.name}
                     className="w-full h-64 object-cover"
                   />
 
                   {/* DELETE */}
 
                   <button
-                    onClick={(e) =>
-                      handleDelete(
-                        e,
-                        item.productId
-                      )
-                    }
-                    disabled={
-                      deleteMutation.isPending
-                    }
+                    onClick={(e) =>handleDelete(e,product._id)}
+                    disabled={deleteMutation.isPending}
                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow"
                   >
                     <Trash2
@@ -244,44 +239,29 @@ const Wishlist = () => {
                 <div className="p-4">
 
                   <p className="text-sm text-gray-500">
-                    {item.brand}
+                    {product.brand}
                   </p>
 
                   <h2 className="font-semibold mt-1">
-                    {item.name}
+                    {product.name}
                   </h2>
 
                   <p className="font-bold text-lg mt-3">
-                    ₹{item.price}
+                    ₹{product.price}
                   </p>
 
                   {/* ADD TO CART */}
 
                   <button
-                    onClick={(e) =>
-                      handleAddToCart(e, item)
-                    }
-                    disabled={
-                      addingProductId === item.productId ||
-                      Number(
-                        products.find(
-                          (product) =>
-                            product.id === item.productId
-                        )?.stock
-                      ) <= 0
-                    }
+                    onClick={(e) =>handleAddToCart(e, product)}
+                    disabled={addingProductId === product._id ||product.stock<=0}
                     className="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg"
                   >
                     <ShoppingBag size={18} />
 
-                    {addingProductId === item.productId
+                    {addingProductId === product._id
                       ? "Adding..."
-                      : Number(
-                          products.find(
-                            (product) =>
-                              product.id === item.productId
-                          )?.stock
-                        ) <= 0
+                      : product.stock<=0
                       ? "Out of Stock"
                       : "Add to Cart"}
                   </button>
@@ -289,8 +269,9 @@ const Wishlist = () => {
                 </div>
 
               </div>
+              );
 
-            ))}
+            })}
 
           </div>
         )}

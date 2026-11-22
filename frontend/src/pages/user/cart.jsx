@@ -26,6 +26,7 @@ const Cart = () => {
     handleDelete,
     subtotal,
     total,
+    updateingProductId
   } = useCart();
 
 
@@ -252,7 +253,7 @@ const Cart = () => {
                                 }}
 
                                 disabled={
-                                  updateMutation.isPending ||
+                                  updateingProductId===product._id ||
                                   item.quantity <= 1
                                 }
 
@@ -276,7 +277,7 @@ const Cart = () => {
                                 }
 
                                 disabled={
-                                  updateMutation.isPending ||
+                                  updateingProductId===product._id ||
                                   item.quantity >= (product.stock)
                                 }
 

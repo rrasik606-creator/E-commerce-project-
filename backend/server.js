@@ -7,11 +7,12 @@ import cookieParser from "cookie-parser";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import productRoutes from "./src/routes/productRoutes.js";
-import cartRoutes  from "./src/routes/cartRoutes.js"
+import cartRoutes  from "./src/routes/cartRoutes.js";
+import wishlistRoutes  from "./src/routes/wishlistRoutes.js";
 import errorMiddleware from "./src/middlewares/errorMiddleware.js";
 
-// import dns from "node:dns";
-// dns.setServers(["8.8.8.8","8.8.4.4"])
+import dns from "node:dns";
+dns.setServers(["8.8.8.8","8.8.4.4"])
 
 
 
@@ -33,9 +34,10 @@ app.get("/",(req,res)=>{
     res.status(200).json({message:"VELORA API is running"});
 });
 
-app.use("/auth",authRoutes)
-app.use("/products",productRoutes)
+app.use("/auth",authRoutes);
+app.use("/products",productRoutes);
 app.use("/cart",cartRoutes);
+app.use("/wishlist",wishlistRoutes);
 
 app.use(errorMiddleware);
 

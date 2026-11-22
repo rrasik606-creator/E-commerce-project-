@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import {
   useQuery,
   useMutation,
@@ -20,6 +20,8 @@ import {
 import { setCart } from "../redux/slices/cartslice";
 
 const useCart = () => {
+
+  const[updateingProductId,setUpdatingProductId]=useState(null);
 
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -99,6 +101,14 @@ const useCart = () => {
 
     mutationFn: ({ productId, quantity }) =>
       updateCart(productId, quantity),
+
+    onMutate:({productId})=>{
+      setUpdatingProductId(productId);
+    },
+
+    onSettled:()=>{
+      setUpdatingProductId(null)
+    },
 
     onSuccess: (updatedCart) => {
       dispatch(setCart(updatedCart.items));
@@ -183,7 +193,8 @@ const useCart = () => {
     deleteMutation,
     handleDelete,
     subtotal,
-    total
+    total,
+    updateingProductId
   };
 };
 

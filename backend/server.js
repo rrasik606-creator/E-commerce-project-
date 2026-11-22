@@ -9,6 +9,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import productRoutes from "./src/routes/productRoutes.js";
 import cartRoutes  from "./src/routes/cartRoutes.js";
 import wishlistRoutes  from "./src/routes/wishlistRoutes.js";
+import orderRoutes  from "./src/routes/orderRoutes.js"
 import errorMiddleware from "./src/middlewares/errorMiddleware.js";
 
 import dns from "node:dns";
@@ -38,6 +39,7 @@ app.use("/auth",authRoutes);
 app.use("/products",productRoutes);
 app.use("/cart",cartRoutes);
 app.use("/wishlist",wishlistRoutes);
+app.use("/orders",orderRoutes);
 
 app.use(errorMiddleware);
 

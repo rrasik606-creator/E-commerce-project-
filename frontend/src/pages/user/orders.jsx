@@ -1,59 +1,51 @@
 import React from "react";
-import axios from "axios";
 import { useQuery,useMutation,useQueryClient } from "@tanstack/react-query";
-import { getOrder,updateOrder } from "../../services/order";
+import { getMyOrders,cancelOrder  } from "../../services/order";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ShoppingBag } from "lucide-react";
 import Swal from "sweetalert2";
 
 const Orders = () => {
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem("user");
+  const user=useSelector((state)=>state.auth.user);
+  const userId=user?.id
 
-  const queryclient=useQueryClient();
+  const queryClient=useQueryClient();
+
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["orders", userId],
+    queryFn: getMyOrders,
+    enabled: !!userId,
+  });
 
   const cancelOrderMutation = useMutation({
-    mutationFn: async (order) => {
+    mutationFn: (orderId) => cancelOrder(orderId),
 
-      // Restore product stock
-      for (const item of order.items) {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["orders", userId],
+      });
 
-        try{
-
-        const response = await axios.get(
-          `http://localhost:3001/products/${item.productId}`
-        );
-
-        const product = response.data;
-
-        await axios.patch(
-          `http://localhost:3001/products/${item.productId}`,
-          {
-            stock:
-              Number(product.stock) + Number(item.quantity),
-          }
-        );
-      }
-      catch(error){
-        if(error.response?.status === 404){
-          continue;
-        }
-        throw error
-      }
-      }
-
-
-
-      // Update order status
-      return updateOrder(order.id, {
-        status: "Cancelled",
+      Swal.fire({
+        title: "Order cancelled",
+        text: "Your order has been cancelled successfully.",
+        icon: "success",
       });
     },
 
-    onSuccess: () => {
-      queryclient.invalidateQueries({
-        queryKey: ["orders", userId],
+    onError: (error) => {
+      Swal.fire({
+        title: "Cancellation failed",
+        text:
+          error.response?.data?.message ||
+          "Unable to cancel your order.",
+        icon: "error",
       });
     },
   });
@@ -61,7 +53,7 @@ const Orders = () => {
   const handleCancelOrder=async(order)=>{
     const confirmCancel= await Swal.fire({
       title:"Cancel order?",
-      text:`Are you sure you want to cancel order "${order.id}"?`,
+      text:`Are you sure you want to cancel order "${order._id}"?`,
       icon:"warning",
       showCancelButton:true,
       confirmButtonText:"Yes,Cancel",
@@ -70,18 +62,8 @@ const Orders = () => {
     if(!confirmCancel.isConfirmed){
       return
     }
-    cancelOrderMutation.mutate(order);
+    cancelOrderMutation.mutate(order._id);
   };
-
-  const {
-    data: orders = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["orders", userId],
-    queryFn: getOrder,
-    enabled: !!userId,
-  });
 
   // Not logged in
   if (!userId) {
@@ -160,7 +142,7 @@ const Orders = () => {
 
           {orders.map((order) => (
             <div
-              key={order.id}
+              key={order._id}
               className="bg-white rounded-lg shadow-sm border p-6"
             >
 
@@ -169,7 +151,7 @@ const Orders = () => {
 
                 <div>
                   <p className="font-semibold">
-                    Order ID: {order.id}
+                    Order ID: {order._id}
                   </p>
 
                   <p className="text-sm text-gray-500 mt-1">
@@ -202,7 +184,7 @@ const Orders = () => {
                 {order.items?.map((item) => (
 
                   <div
-                    key={item.productId}
+                    key={item._id||item.productId}
                     className="flex items-center gap-4"
                   >
 
@@ -292,23 +274,19 @@ const Orders = () => {
               </div>
 
               {/* Cancel order */}
-              {
-                order.status!=="Delivered"&&order.status!=="Cancelled"&&(
-                  <div className="flex justify-end mt-5">
-                    <button 
-                    onClick={()=>handleCancelOrder(order)}
+              {order.status === "Pending" && (
+                <div className="flex justify-end mt-5">
+                  <button
+                    onClick={() => handleCancelOrder(order)}
                     disabled={cancelOrderMutation.isPending}
                     className="px-5 py-2.5 text-sm font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 hover:border-red-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {
-                        cancelOrderMutation.isPending
-                        ? "Cancelling..."
-                        : "Cancel order"
-                      }
-                    </button>
-                  </div>
-                )
-              }
+                  >
+                    {cancelOrderMutation.isPending
+                      ? "Cancelling..."
+                      : "Cancel order"}
+                  </button>
+                </div>
+              )}
 
             </div>
           ))}

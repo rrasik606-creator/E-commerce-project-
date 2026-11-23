@@ -1,15 +1,26 @@
-import axios from "axios";
 
-const API_URL="http://localhost:3001/orders";
+import api from "./api.js";
 
-export const getOrder=async()=>{
-    const userId=localStorage.getItem("user");
+// Place a new order
+export const createOrder = async (orderData) => {
+  const response = await api.post("/orders", orderData);
+  return response.data;
+};
 
-    const response=await axios.get(`${API_URL}?userId=${userId}`);
-    return response.data;
-}
+// Get all orders of logged-in user
+export const getMyOrders = async () => {
+  const response = await api.get("/orders");
+  return response.data.orders;
+};
 
-export const updateOrder=async(id,order)=>{
-    const response=await axios.patch(`${API_URL}/${id}`,order);
-    return response.data;
-}
+// Get single order
+export const getSingleOrder = async (orderId) => {
+  const response = await api.get(`/orders/${orderId}`);
+  return response.data.order;
+};
+
+// Cancel an order
+export const cancelOrder = async (orderId) => {
+  const response = await api.patch(`/orders/${orderId}/cancel`);
+  return response.data;
+};

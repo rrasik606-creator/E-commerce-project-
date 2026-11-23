@@ -74,7 +74,7 @@ const orderSchema = new mongoose.Schema(
         },
         paymentMethod:{
             type:String,
-            enum:["COD","UPI"],
+            enum:["COD","UPI","Card"],
             required:true
         },
         subtotal:{

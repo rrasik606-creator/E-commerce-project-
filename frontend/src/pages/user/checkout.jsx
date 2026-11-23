@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag, MapPin, CreditCard } from "lucide-react";
-import axios from "axios";
 
-import { getcart } from "../../services/cartService";
+import { getcart } from "../../services/cartService.js";
+import { createOrder } from "../../services/order.js";
 
-const API_URL = "http://localhost:3001";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const userId = localStorage.getItem("user");
+  const user=useSelector((state)=>state.auth.user);
+  const userId=user?.id;
 
-  // Address
   const [address, setAddress] = useState({
     name: "",
     phone: "",
@@ -24,10 +24,7 @@ const Checkout = () => {
     pincode: "",
   });
 
-  // Payment
   const [paymentMethod, setPaymentMethod] = useState("");
-
-  // Validation errors
   const [errors, setErrors] = useState({});
 
   // Get cart
@@ -44,14 +41,14 @@ const Checkout = () => {
   const cart = userCart?.items || [];
 
   // Calculate subtotal
-  const subtotal = cart.reduce(
-    (total, item) =>
-      total + item.price * item.quantity,
-    0
-  );
+  const subtotal = cart.reduce((total, item) => {
+    const product = item.productId;
 
-  // Total
-  const total = subtotal;
+    return total + (product?.price || 0) * item.quantity;
+  }, 0);
+
+  const shippingCharge =0;
+  const total = subtotal+shippingCharge;
 
   // Handle input
   const handleChange = (e) => {
@@ -134,74 +131,9 @@ const Checkout = () => {
 
   // Place order
   const placeOrderMutation = useMutation({
-    mutationFn: async () => {
-
-      // Check stock first
-      const products = [];
-
-      for (const item of cart) {
-        const response = await axios.get(
-          `${API_URL}/products/${item.productId}`
-        );
-
-        const product = response.data;
-
-        if (Number(product.stock) < Number(item.quantity)) {
-          throw new Error(
-            `${product.name} does not have enough stock`
-          );
-        }
-
-        products.push(product);
-      }
-
-      // Create order
-      const order = {
-        userId: userId,
-        items: cart,
-        address: address,
-        paymentMethod: paymentMethod,
-        subtotal: subtotal,
-        total: total,
-        status: "Placed",
-        orderDate: new Date().toISOString(),
-      };
-
-      const response = await axios.post(
-        `${API_URL}/orders`,
-        order
-      );
-
-      // Decrease stock
-      for (const item of cart) {
-        const product = products.find(
-          (product) => product.id === item.productId
-        );
-
-        await axios.patch(
-          `${API_URL}/products/${item.productId}`,
-          {
-            stock:
-              Number(product.stock) - Number(item.quantity),
-          }
-        );
-      }
-
-      return response.data;
-    },
+    mutationFn:() => createOrder({address,paymentMethod}),
 
     onSuccess: async () => {
-      // Clear cart items
-      if (userCart?.id) {
-        await axios.patch(
-          `${API_URL}/cart/${userCart.id}`,
-          {
-            items: [],
-          }
-        );
-      }
-
-      // Update cart cache
       queryClient.setQueryData(
         ["cart", userId],
         {
@@ -210,6 +142,10 @@ const Checkout = () => {
         }
       );
 
+      queryClient.invalidateQueries({
+        queryKey:["cart",userId]
+      });
+
       // Go to success page
       navigate("/orders");
     },
@@ -217,13 +153,22 @@ const Checkout = () => {
     onError: (error) => {
       setErrors((prev) => ({
         ...prev,
-        submit: error.message,
+        submit: error.response?.data?.message||error.message||"Failed to place order"
       }));
     },
   });
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
+
+    if(placeOrderMutation.isPending){
+      return
+    }
+
+    setErrors((prev) => ({
+    ...prev,
+    submit: undefined,
+   }));
 
     const isValid = validate();
 
@@ -586,23 +531,35 @@ const Checkout = () => {
 
                 <div className="space-y-4">
 
-                  {cart.map((item) => (
+                  {cart.map((item) => {
+
+                    const product=item.productId;
+
+                    if(!product){
+                      return null
+                    }
+
+                    return(
 
                     <div
-                      key={item.productId}
+                      key={item._id}
                       className="flex items-center gap-4 border-b border-gray-100 pb-4"
                     >
 
                       <img
-                        src={item.image[0]}
-                        alt={item.name}
+                        src={
+                          Array.isArray(product.image)
+                          ?product.image[0]
+                          :product.image
+                        }
+                        alt={product.name}
                         className="w-20 h-20 object-contain bg-gray-100 rounded-lg"
                       />
 
                       <div className="flex-1">
 
                         <p className="font-semibold">
-                          {item.name}
+                          {product.name}
                         </p>
 
                         <p className="text-sm text-gray-500">
@@ -610,21 +567,23 @@ const Checkout = () => {
                         </p>
 
                         <p className="text-sm text-gray-500">
-                          ₹{item.price.toLocaleString()}
+                          ₹{product.price.toLocaleString("en-IN")}
                         </p>
 
                       </div>
 
                       <p className="font-semibold">
                         ₹{(
-                          item.price *
+                          product.price *
                           item.quantity
-                        ).toLocaleString()}
+                        ).toLocaleString("en-IN")}
                       </p>
 
                     </div>
 
-                  ))}
+                    )
+
+                  })}
 
                 </div>
 

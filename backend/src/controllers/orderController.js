@@ -13,7 +13,7 @@ export const createOrder = async (req, res, next) => {
     const { address, paymentMethod } = req.body;
 
     // Validate payment method
-    if (!["COD", "UPI"].includes(paymentMethod)) {
+    if (!["COD", "UPI","Card"].includes(paymentMethod)) {
       return res.status(400).json({
         success: false,
         message: "Invalid payment method"

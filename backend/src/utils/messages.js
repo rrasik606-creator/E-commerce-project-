@@ -68,9 +68,42 @@ const messages = {
   AUTHENTICATION_REQUIRED: "Authentication required",
   PERMISSION_DENIED: "You don't have permission to perform this action",
 
-  // Rate Limit
+  // Rate Limit Middleware
   TOO_MANY_LOGIN_ATTEMPTS: "Too many login attempts. Please try again after 15 minutes.",
   TOO_MANY_REGISTRATION_ATTEMPTS: "Too many registration attempts. Please try again later.",
-};
+
+  // Authentication Validation
+  NAME_REQUIRED: "Name is required",
+  USERNAME_REQUIRED: "Username is required",
+  EMAIL_REQUIRED: "Email is required",
+  INVALID_EMAIL: "Please provide a valid email",
+  PASSWORD_REQUIRED: "Password is required",
+  PASSWORD_MIN_LENGTH: "Password must be at least 8 characters long",
+
+  // Product Validation
+  PRODUCT_NAME_REQUIRED: "Product name is required",
+  PRODUCT_BRAND_REQUIRED: "Brand is required",
+  PRODUCT_CATEGORY_INVALID: "Category must be men or women",
+  PRODUCT_TYPE_REQUIRED: "Product type is required",
+  PRODUCT_PRICE_INVALID: "Price must be a valid non-negative number",
+  PRODUCT_ORIGINAL_PRICE_INVALID: "Original price must be a valid non-negative number",
+  PRODUCT_DISCOUNT_INVALID: "Discount must be between 0 and 100",
+  PRODUCT_RATING_INVALID: "Rating must be between 0 and 5",
+  PRODUCT_REVIEWS_INVALID: "Reviews must be a non-negative number",
+  PRODUCT_IMAGE_REQUIRED: "At least one product image is required",
+  PRODUCT_DESCRIPTION_REQUIRED: "Product description is required",
+  PRODUCT_FEATURES_INVALID: "Features must be an array of strings",
+  PRODUCT_STOCK_INVALID: "Stock must be a non-negative number",
+  PRODUCT_FEATURED_INVALID: "Featured must be a boolean",
+  PRODUCT_IS_NEW_INVALID: "isNew must be a boolean",
+
+  // Order Validation
+  ADDRESS_NAME_REQUIRED: "Delivery name is required",
+  ADDRESS_PHONE_REQUIRED: "Phone number is required",
+  ADDRESS_REQUIRED: "Address is required",
+  ADDRESS_CITY_REQUIRED: "City is required",
+  ADDRESS_STATE_REQUIRED: "State is required",
+  ADDRESS_PINCODE_REQUIRED: "Pincode is required",
+  };
 
 export default messages;

@@ -182,40 +182,40 @@ export const getMyOrders = async (req, res, next) => {
 };
 
 
-export const getSingleOrder = async (req, res, next) => {
-  try {
-    const userId = req.user.userId;
-    const { orderId } = req.params;
+// export const getSingleOrder = async (req, res, next) => {
+//   try {
+//     const userId = req.user.userId;
+//     const { orderId } = req.params;
 
-    if (!mongoose.isValidObjectId(orderId)) {
-      return res.status(400).json({
-        success: false,
-        message: messages.INVALID_ORDER_ID
-      });
-    }
+//     if (!mongoose.isValidObjectId(orderId)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: messages.INVALID_ORDER_ID
+//       });
+//     }
 
-    const order = await Order.findOne({
-      _id: orderId,
-      userId
-    });
+//     const order = await Order.findOne({
+//       _id: orderId,
+//       userId
+//     });
 
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: messages.ORDER_NOT_FOUND
-      });
-    }
+//     if (!order) {
+//       return res.status(404).json({
+//         success: false,
+//         message: messages.ORDER_NOT_FOUND
+//       });
+//     }
 
-    return res.status(200).json({
-      success: true,
-      order
-    });
+//     return res.status(200).json({
+//       success: true,
+//       order
+//     });
 
-  } catch (error) {
-    console.log("Get Single Order Error:", error);
-    next(error);
-  }
-};
+//   } catch (error) {
+//     console.log("Get Single Order Error:", error);
+//     next(error);
+//   }
+// };
 
 
 export const cancelOrder = async (req, res, next) => {

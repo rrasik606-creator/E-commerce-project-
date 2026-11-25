@@ -97,6 +97,11 @@ const messages = {
   PRODUCT_FEATURED_INVALID: "Featured must be a boolean",
   PRODUCT_IS_NEW_INVALID: "isNew must be a boolean",
 
+  // Product Query Validation
+  INVALID_PRODUCT_TYPE: "Invalid product type",
+  INVALID_BRAND: "Brand must be a string",
+  INVALID_SEARCH: "Search must be a string",
+
   // Order Validation
   ADDRESS_NAME_REQUIRED: "Delivery name is required",
   ADDRESS_PHONE_REQUIRED: "Phone number is required",

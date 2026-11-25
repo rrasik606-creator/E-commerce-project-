@@ -1,11 +1,11 @@
 import express from "express";
 
-import {createOrder,getMyOrders,getSingleOrder,cancelOrder} from "../controllers/orderController.js";
+import {createOrder,getMyOrders,cancelOrder} from "../controllers/orderController.js";
 
 import authMiddleware from "../middlewares/authMiddleware.js";
 import validateMiddleware from "../middlewares/validateMiddleware.js";
 
-import { createOrderValidator,getSingleOrderValidator,cancelOrderValidator } from "../validators/orderValidator.js";
+import { createOrderValidator,cancelOrderValidator } from "../validators/orderValidator.js";
 
 const router = express.Router();
 

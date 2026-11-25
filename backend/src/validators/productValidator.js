@@ -1,57 +1,91 @@
 
-import { body } from "express-validator";
+import { body, query, param } from "express-validator";
 import messages from "../utils/messages.js";
+
+export const getAllProductValidator = [
+    query("type")
+        .optional()
+        .isString()
+        .withMessage(messages.INVALID_PRODUCT_TYPE),
+
+    query("brand")
+        .optional()
+        .isString()
+        .withMessage(messages.INVALID_BRAND),
+
+    query("search")
+        .optional()
+        .isString()
+        .withMessage(messages.INVALID_SEARCH)
+];
+
+export const getSingleProductValidator = [
+    param("id")
+        .isMongoId()
+        .withMessage(messages.INVALID_PRODUCT_ID)
+];
 
 export const createProductValidator = [
     body("name")
-        .isString().withMessage(messages.PRODUCT_NAME_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_NAME_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_NAME_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_NAME_REQUIRED),
 
     body("brand")
-        .isString().withMessage(messages.PRODUCT_BRAND_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_BRAND_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_BRAND_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_BRAND_REQUIRED),
 
     body("category")
         .isIn(["men", "women"])
         .withMessage(messages.PRODUCT_CATEGORY_INVALID),
 
     body("type")
-        .isString().withMessage(messages.PRODUCT_TYPE_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_TYPE_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_TYPE_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_TYPE_REQUIRED),
 
     body("price")
         .isFloat({ min: 0 })
         .withMessage(messages.PRODUCT_PRICE_INVALID)
+        .bail()
         .toFloat(),
 
     body("originalPrice")
         .isFloat({ min: 0 })
         .withMessage(messages.PRODUCT_ORIGINAL_PRICE_INVALID)
+        .bail()
         .toFloat(),
 
     body("discount")
         .optional()
         .isFloat({ min: 0, max: 100 })
         .withMessage(messages.PRODUCT_DISCOUNT_INVALID)
+        .bail()
         .toFloat(),
 
     body("rating")
         .optional()
         .isFloat({ min: 0, max: 5 })
         .withMessage(messages.PRODUCT_RATING_INVALID)
+        .bail()
         .toFloat(),
 
     body("reviews")
         .optional()
-        .isFloat({ min: 0 })
+        .isInt({ min: 0 })
         .withMessage(messages.PRODUCT_REVIEWS_INVALID)
-        .toFloat(),
+        .bail()
+        .toInt(),
 
     body("image")
         .isArray({ min: 1 })
@@ -81,13 +115,18 @@ export const createProductValidator = [
     body("features.*")
         .optional()
         .isString()
+        .withMessage(messages.PRODUCT_FEATURES_INVALID)
+        .bail()
+        .trim()
+        .notEmpty()
         .withMessage(messages.PRODUCT_FEATURES_INVALID),
 
     body("stock")
         .optional()
-        .isFloat({ min: 0 })
+        .isInt({ min: 0 })
         .withMessage(messages.PRODUCT_STOCK_INVALID)
-        .toFloat(),
+        .bail()
+        .toInt(),
 
     body("featured")
         .optional()
@@ -103,17 +142,21 @@ export const createProductValidator = [
 export const updateProductValidator = [
     body("name")
         .optional()
-        .isString().withMessage(messages.PRODUCT_NAME_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_NAME_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_NAME_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_NAME_REQUIRED),
 
     body("brand")
         .optional()
-        .isString().withMessage(messages.PRODUCT_BRAND_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_BRAND_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_BRAND_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_BRAND_REQUIRED),
 
     body("category")
         .optional()
@@ -122,40 +165,47 @@ export const updateProductValidator = [
 
     body("type")
         .optional()
-        .isString().withMessage(messages.PRODUCT_TYPE_REQUIRED)
+        .isString()
+        .withMessage(messages.PRODUCT_TYPE_REQUIRED)
         .bail()
         .trim()
-        .notEmpty().withMessage(messages.PRODUCT_TYPE_REQUIRED),
+        .notEmpty()
+        .withMessage(messages.PRODUCT_TYPE_REQUIRED),
 
     body("price")
         .optional()
         .isFloat({ min: 0 })
         .withMessage(messages.PRODUCT_PRICE_INVALID)
+        .bail()
         .toFloat(),
 
     body("originalPrice")
         .optional()
         .isFloat({ min: 0 })
         .withMessage(messages.PRODUCT_ORIGINAL_PRICE_INVALID)
+        .bail()
         .toFloat(),
 
     body("discount")
         .optional()
         .isFloat({ min: 0, max: 100 })
         .withMessage(messages.PRODUCT_DISCOUNT_INVALID)
+        .bail()
         .toFloat(),
 
     body("rating")
         .optional()
         .isFloat({ min: 0, max: 5 })
         .withMessage(messages.PRODUCT_RATING_INVALID)
+        .bail()
         .toFloat(),
 
     body("reviews")
         .optional()
-        .isFloat({ min: 0 })
+        .isInt({ min: 0 })
         .withMessage(messages.PRODUCT_REVIEWS_INVALID)
-        .toFloat(),
+        .bail()
+        .toInt(),
 
     body("image")
         .optional()
@@ -188,13 +238,18 @@ export const updateProductValidator = [
     body("features.*")
         .optional()
         .isString()
+        .withMessage(messages.PRODUCT_FEATURES_INVALID)
+        .bail()
+        .trim()
+        .notEmpty()
         .withMessage(messages.PRODUCT_FEATURES_INVALID),
 
     body("stock")
         .optional()
-        .isFloat({ min: 0 })
+        .isInt({ min: 0 })
         .withMessage(messages.PRODUCT_STOCK_INVALID)
-        .toFloat(),
+        .bail()
+        .toInt(),
 
     body("featured")
         .optional()

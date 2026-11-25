@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 
+import messages from "../utils/messages.js";
+
 const authMiddleware =(req,res,next)=>{
     try{
         const token = req.cookies.accessToken;
 
         if(!token){
-            return res.status(401).json({success:false,message:"Access token is required"});
+            return res.status(401).json({success:false,message:messages.ACCESS_TOKEN_REQUIRED});
         }
 
 
@@ -19,7 +21,7 @@ const authMiddleware =(req,res,next)=>{
         next();
     }
     catch{
-        return res.status(401).json({success:false,message:"Invalid or expired access token"});
+        return res.status(401).json({success:false,message:messages.INVALID_ACCESS_TOKEN});
     }
 }
 

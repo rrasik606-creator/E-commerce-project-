@@ -16,8 +16,6 @@ export const updateCart = async (productId,quantity) => {
 };
 
 export const deleteCart = async (productId) => {
-    console.log("Service product ID:", productId);
-
   const response=await api.delete(`/cart/${productId}`);
   return response.data.cart
 };

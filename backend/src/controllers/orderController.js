@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/Product.js";
+import messages from "../utils/messages.js";
 
 export const createOrder = async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -16,7 +17,7 @@ export const createOrder = async (req, res, next) => {
     if (!["COD", "UPI","Card"].includes(paymentMethod)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid payment method"
+        message: messages.INVALID_PAYMENT_METHOD
       });
     }
 
@@ -39,7 +40,7 @@ export const createOrder = async (req, res, next) => {
     if (isAddressInvalid) {
       return res.status(400).json({
         success: false,
-        message: "Please provide complete delivery address"
+        message: messages.INCOMPLETE_DELIVERY_ADDRESS
       });
     }
 
@@ -53,7 +54,7 @@ export const createOrder = async (req, res, next) => {
         .session(session);
 
       if (!cart || cart.items.length === 0) {
-        const error = new Error("Your cart is empty");
+        const error = new Error(messages.EMPTY_CART);
         error.statusCode = 400;
         throw error;
       }
@@ -66,14 +67,14 @@ export const createOrder = async (req, res, next) => {
         const product = item.productId;
 
         if (!product || product.deleted) {
-          const error = new Error("A product in your cart is unavailable");
+          const error = new Error(messages.UNAVAILABLE_CART_PRODUCT);
           error.statusCode = 400;
           throw error;
         }
 
         if (product.stock < item.quantity) {
           const error = new Error(
-            `Only ${product.stock} units of ${product.name} are available`
+            messages.ORDER_STOCK_LIMIT.replace("{stock}",product.stock).replace("{product}",product.name)
           );
           error.statusCode = 400;
           throw error;
@@ -94,7 +95,7 @@ export const createOrder = async (req, res, next) => {
 
         if (stockUpdate.modifiedCount !== 1) {
           const error = new Error(
-            `Insufficient stock for ${product.name}`
+            messages.INSUFFICIENT_PRODUCT_STOCK.replace("{product}",product.name)
           );
           error.statusCode = 400;
           throw error;
@@ -142,7 +143,7 @@ export const createOrder = async (req, res, next) => {
 
     return res.status(201).json({
       success: true,
-      message: "Order placed successfully",
+      message: messages.ORDER_PLACED,
       order: createdOrder
     });
 
@@ -151,7 +152,7 @@ export const createOrder = async (req, res, next) => {
 
     return res.status(error.statusCode || 500).json({
       success: false,
-      message: error.message || "Failed to place order"
+      message: error.message || messages.FAILED_TO_PLACE_ORDER
     });
 
   } finally {
@@ -189,7 +190,7 @@ export const getSingleOrder = async (req, res, next) => {
     if (!mongoose.isValidObjectId(orderId)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid order ID"
+        message: messages.INVALID_ORDER_ID
       });
     }
 
@@ -201,7 +202,7 @@ export const getSingleOrder = async (req, res, next) => {
     if (!order) {
       return res.status(404).json({
         success: false,
-        message: "Order not found"
+        message: messages.ORDER_NOT_FOUND
       });
     }
 
@@ -227,7 +228,7 @@ export const cancelOrder = async (req, res, next) => {
     if (!mongoose.isValidObjectId(orderId)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid order ID"
+        message: messages.INVALID_ORDER_ID
       });
     }
 
@@ -240,14 +241,14 @@ export const cancelOrder = async (req, res, next) => {
       }).session(session);
 
       if (!order) {
-        const error = new Error("Order not found");
+        const error = new Error(messages.ORDER_NOT_FOUND);
         error.statusCode = 404;
         throw error;
       }
 
       if (order.status !== "Pending") {
         const error = new Error(
-          "Only pending orders can be cancelled"
+          messages.PENDING_ORDERS_ONLY
         );
         error.statusCode = 400;
         throw error;
@@ -271,7 +272,7 @@ export const cancelOrder = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      message: "Order cancelled successfully",
+      message: messages.ORDER_CANCELLED,
       order: cancelledOrder
     });
 
@@ -280,7 +281,7 @@ export const cancelOrder = async (req, res, next) => {
 
     return res.status(error.statusCode || 500).json({
       success: false,
-      message: error.message || "Failed to cancel order"
+      message: error.message || messages.FAILED_TO_CANCEL_ORDER
     });
 
   } finally {

@@ -1,11 +1,13 @@
+import messages from "../utils/messages.js";
+
 const roleMiddleware=(...Roles)=>{
     return (req,res,next)=>{
         if(!req.user){
-            return res.status(401).json({success:false,message:"Authentication required"});
+            return res.status(401).json({success:false,message:messages.AUTHENTICATION_REQUIRED});
         }
 
         if(!Roles.includes(req.user.role)){
-            return res.status(403).json({success:false,message:"You don't have permission to perform this action"});
+            return res.status(403).json({success:false,message:messages.PERMISSION_DENIED});
         }
         next();
     }

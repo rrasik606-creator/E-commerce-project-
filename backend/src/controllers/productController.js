@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Product from "../models/Product.js";
+import messages from "../utils/messages.js";
 
 export const getAllProduct =async(req,res,next)=>{
     try{
@@ -48,13 +49,13 @@ export const getSingleProduct=async(req,res,next)=>{
         const {id} = req.params;
 
         if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).json({success:false,message:"Invalid product ID"});
+            return res.status(400).json({success:false,message:messages.INVALID_PRODUCT_ID});
         }
 
         const product=await Product.findOne({_id:id,deleted:{$ne:true}});
 
         if(!product){
-            return res.status(404).json({success:false,message:"Product not found"});
+            return res.status(404).json({success:false,message:messages.PRODUCT_NOT_FOUND});
         }
 
         return res.status(200).json({success:true,product})

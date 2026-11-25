@@ -73,7 +73,7 @@ const Wishlist = () => {
         updatedWishlist
       );
 
-      toast.success("Product removed from wishlist!")
+      toast.error("Product removed from wishlist!")
     },
 
     onError:()=>{

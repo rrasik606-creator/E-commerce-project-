@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Session from "../models/Session.js";
 import { generateAccessToken,generateRefreshToken,hashRefreshToken } from "../utils/generateTokens.js";
+import messages from "../utils/messages.js";
 
 const refreshCookieOptions={
     httpOnly:true,
@@ -26,13 +27,13 @@ export const register=async(req,res)=>{
         const {name,username,email,password}=req.body;
 
         if(!name||!username||!email||!password){
-            return res.status(400).json({success:false,message:"All fields are required"});
+            return res.status(400).json({success:false,message:messages.ALL_FIELDS_REQUIRED});
         }
 
         const existingUser=await User.findOne({email:email.toLowerCase().trim()});
 
         if(existingUser){
-            return res.status(409).json({success:false,message:"Email already exists"});
+            return res.status(409).json({success:false,message:messages.EMAIL_ALREADY_EXISTS});
         }
 
         const user = await User.create({
@@ -45,7 +46,7 @@ export const register=async(req,res)=>{
 
         return res.status(201).json({
             success:true,
-            message:"Registration successful",
+            message:messages.REGISTRATION_SUCCESSFUL,
             user:{
                 id:user._id,
                 name:user.name,
@@ -57,9 +58,9 @@ export const register=async(req,res)=>{
     }
     catch(error){
         if(error.code===11000){
-            return res.status(409).json({success:false,message:"Email already exists"})
+            return res.status(409).json({success:false,message:messages.EMAIL_ALREADY_EXISTS})
         }
-        return res.status(500).json({success:false,message:"Internal server error",error:error.message});
+        return res.status(500).json({success:false,message:messages.INTERNAL_SERVER_ERROR,error:error.message});
     }
 };
 
@@ -69,23 +70,23 @@ export const login=async(req,res)=>{
         const {email,password}=req.body;
 
         if(!email||!password){
-            return res.status(400).json({success:false,message:"Email and password are required"});
+            return res.status(400).json({success:false,message:messages.EMAIL_PASSWORD_REQUIRED});
         }
 
         const user = await User.findOne({email:email.toLowerCase().trim()});
 
         if(!user){
-           return res.status(401).json({success:false,message:"Invalid email or password"});
+           return res.status(401).json({success:false,message:messages.INVALID_CREDENTIALS});
         }
 
         if(user.blocked){
-            return res.status(403).json({success:false,message:"Your account has been blocked"});
+            return res.status(403).json({success:false,message:messages.ACCOUNT_BLOCKED});
         }
 
         const isPasswordValid=await bcrypt.compare(password,user.password);
 
         if(!isPasswordValid){
-            return res.status(401).json({success:false,message:"Invalid email or password"});
+            return res.status(401).json({success:false,message:messages.INVALID_CREDENTIALS});
         }
 
         const accessToken=generateAccessToken(user);
@@ -113,7 +114,7 @@ export const login=async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            message:"Login successful",
+            message:messages.LOGIN_SUCCESSFUL,
             user:{
                 id:user._id,
                 name:user.name,
@@ -124,7 +125,7 @@ export const login=async(req,res)=>{
         });
     }
     catch(error){
-        return res.status(500).json({success:false,message:"Internal server error",error:error.message});
+        return res.status(500).json({success:false,message:messages.INTERNAL_SERVER_ERROR,error:error.message});
     }
 };
 
@@ -135,7 +136,7 @@ export const refresh=async(req,res)=>{
         const token =req.cookies?.refreshToken;
 
         if(!token){
-            return res.status(401).json({success:false,message:"Refresh token is required"});
+            return res.status(401).json({success:false,message:messages.REFRESH_TOKEN_REQUIRED});
         }
 
         let decoded;
@@ -147,14 +148,14 @@ export const refresh=async(req,res)=>{
         );
         }
         catch(error){
-            return res.status(401).json({success:false,message:"Invalid or expired refresh token"});
+            return res.status(401).json({success:false,message:messages.INVALID_REFRESH_TOKEN});
         }
 
 
         const user =await User.findById(decoded.userId);
 
         if(!user||user.blocked){
-            return res.status(401).json({success:false,message:"User not found or account blocked"});
+            return res.status(401).json({success:false,message:messages.USER_NOT_FOUND_OR_BLOCKED});
         }
 
         const newRefreshToken=generateRefreshToken(user);
@@ -178,7 +179,7 @@ export const refresh=async(req,res)=>{
         );
 
         if(!session){
-            return res.status(401).json({success:false,message:"Refresh token has already been used or expired"});
+            return res.status(401).json({success:false,message:messages.REFRESH_TOKEN_EXPIRED_OR_USED});
         }
 
         const newAccessToken=generateAccessToken(user);
@@ -198,7 +199,7 @@ export const refresh=async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            message:"Token refreshed successfully",
+            message:messages.TOKEN_REFRESHED,
             user:{
                 id:user._id,
                 name:user.name,
@@ -209,7 +210,7 @@ export const refresh=async(req,res)=>{
         });
     }
     catch(error){
-        return res.status(500).json({success:false,message:"Internal server error",error:error.message});
+        return res.status(500).json({success:false,message:messages.INTERNAL_SERVER_ERROR,error:error.message});
     }
 };
 
@@ -234,12 +235,12 @@ export const logout=async(req,res)=>{
             {...refreshCookieOptions,maxAge:undefined}
         );
 
-        return res.status(200).json({success:true,message:"Logout successful"});
+        return res.status(200).json({success:true,message:messages.LOGOUT_SUCCESSFUL});
     }
     catch(error){
         return res.status(500).json({
             success:false,
-            message:"Internal server error",
+            message:messages.INTERNAL_SERVER_ERROR,
             error:error.message
         });
     }
@@ -252,7 +253,7 @@ export const profile=async(req,res)=>{
         if(!user||user.blocked){
             return res.status(401).json({
                 success:false,
-                message:"User not found or account blocked"
+                message:messages.USER_NOT_FOUND_OR_BLOCKED
             });
         }
 
@@ -270,7 +271,7 @@ export const profile=async(req,res)=>{
     catch(error){
         return res.status(500).json({
             success:false,
-            message:"Internal server error"
+            message:messages.INTERNAL_SERVER_ERROR
         });
     }
 };

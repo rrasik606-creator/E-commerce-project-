@@ -60,3 +60,5 @@ export const loginValidator = [
         .notEmpty()
         .withMessage(messages.PASSWORD_REQUIRED)
 ];
+
+

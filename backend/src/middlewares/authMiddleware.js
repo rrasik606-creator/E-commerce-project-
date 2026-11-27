@@ -1,8 +1,11 @@
 import jwt from "jsonwebtoken";
 
+import User from "../models/User.js";
 import messages from "../utils/messages.js";
 
-const authMiddleware =(req,res,next)=>{
+const authMiddleware =async(req,res,next)=>{
+    let decoded;
+
     try{
         const token = req.cookies.accessToken;
 
@@ -11,17 +14,43 @@ const authMiddleware =(req,res,next)=>{
         }
 
 
-        const decoded =jwt.verify(
+        decoded =jwt.verify(
             token,
             process.env.ACCESS_TOKEN_SECRET
         );
 
-        req.user = decoded
-
-        next();
+        if(!decoded.userId){
+            return res.status(401).json({
+                success:false,
+                message:messages.INVALID_ACCESS_TOKEN
+            });
+        }
     }
     catch{
         return res.status(401).json({success:false,message:messages.INVALID_ACCESS_TOKEN});
+    }
+
+    try{
+        const user = await User.findById(decoded.userId).select("role blocked");
+
+        if(!user||user.blocked){
+            return res.status(401).json({
+                success:false,
+                message:messages.USER_NOT_FOUND_OR_BLOCKED
+            });
+        }
+
+        req.user={
+            ...decoded,
+            userId:user._id.toString(),
+            role:user.role
+        };
+
+        next();
+    }
+    catch(error){
+        console.log("ERROR FOM MIDDLE WARE:",error);
+        next(error)
     }
 }
 

@@ -70,3 +70,22 @@ export const cancelOrderValidator = [
         .isMongoId()
         .withMessage(messages.INVALID_ORDER_ID)
 ];
+
+export const updateOrderStatusValidator = [
+    param("id")
+        .isMongoId()
+        .withMessage(messages.INVALID_ORDER_ID),
+    
+    body("status")
+        .notEmpty()
+        .withMessage(messages.INVALID_ORDER_STATUS)
+        .bail()
+        .isIn([
+            "Pending",
+            "Processing",
+            "Shipped",
+            "Delivered",
+            "Cancelled"
+        ])
+        .withMessage(messages.INVALID_ORDER_STATUS)
+];

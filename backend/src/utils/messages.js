@@ -109,6 +109,26 @@ const messages = {
   ADDRESS_CITY_REQUIRED: "City is required",
   ADDRESS_STATE_REQUIRED: "State is required",
   ADDRESS_PINCODE_REQUIRED: "Pincode is required",
+
+  // Admin Controller
+  PRODUCT_CREATED: "Product created successfully",
+  PRODUCT_UPDATED: "Product updated successfully",
+  PRODUCT_DELETED: "Product deleted successfully",
+  PRODUCT_RESTORED: "Product restored successfully",
+  PRODUCT_PERMANENTLY_DELETED: "Product permanently deleted",
+  INVALID_ORDER_STATUS: "Invalid order status",
+  ORDER_STATUS_CANNOT_BE_UPDATED: "This order status cannot be updated",
+  ORDER_STATUS_UPDATED: "Order status updated successfully",
+  USER_NOT_FOUND: "User not found",
+  CANNOT_BLOCK_ADMIN: "Admin accounts cannot be blocked",
+  CANNOT_BLOCK_SELF: "You cannot block your own account",
+  USER_ALREADY_BLOCKED: "User is already blocked",
+  USER_ALREADY_UNBLOCKED: "User is already unblocked",
+  USER_BLOCKED: "User blocked successfully",
+  USER_UNBLOCKED: "User unblocked successfully",
+
+  //User Validator
+  INVALID_USER_ID: "Invalid user ID",
   };
 
 export default messages;

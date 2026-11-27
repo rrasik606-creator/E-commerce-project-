@@ -126,6 +126,7 @@ const messages = {
   USER_ALREADY_UNBLOCKED: "User is already unblocked",
   USER_BLOCKED: "User blocked successfully",
   USER_UNBLOCKED: "User unblocked successfully",
+  INVALID_USER_STATUS:"Invalid user status",
 
   //User Validator
   INVALID_USER_ID: "Invalid user ID",

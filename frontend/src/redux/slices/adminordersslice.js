@@ -14,7 +14,7 @@ const adminOrderSlice=createSlice({
 
         updateOrder:(state,action)=>{
             const index=state.orders.findIndex(
-                (oreder)=>oreder.id===action.payload.id
+                (oreder)=>oreder._id===action.payload._id
                 );
 
             if(index!==-1){

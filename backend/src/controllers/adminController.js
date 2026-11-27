@@ -296,12 +296,60 @@ export const updateOrderStatus = async(req,res,next) =>{
 //User
 export const getAllUsers = async(req,res,next) =>{
     try{
-        const users = await User.find().select("-password").sort({createdAt:-1});
+        const page = Math.max(1,parseInt(req.query.page)||1);
+        const limit = Math.min(100,Math.max(1,parseInt(req.query.limit)||5));
+
+        const search = req.query.search?.trim() || "";
+        const status = req.query.status || "";
+
+        const filter={
+            role:{$ne:"admin"}
+        };
+
+        if(search){
+            const searchRegex = new RegExp(
+                search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),"i"
+            );
+
+            filter.$or=[
+                {name:searchRegex},
+                {username:searchRegex},
+                {email:searchRegex}
+            ];
+        }
+
+        if(status==="active"){
+            filter.blocked=false;
+        }
+        else if(status==="blocked"){
+            filter.blocked=true
+        }
+        else if(status!==""){
+            return res.status(400).json({
+                success:false,
+                message:messages.INVALID_USER_STATUS
+            });
+        }
+
+        const totalUsers = await User.countDocuments(filter);
+        const totalPages = Math.ceil(totalUsers/limit);
+
+        const users = await User.find(filter)
+            .select("-password")
+            .sort({createdAt:-1})
+            .skip((page-1)*limit)
+            .limit(limit);
 
         return res.status(200).json({
             success:true,
             count:users.length,
-            users
+            users,
+            pagination:{
+                currentPage:page,
+                totalPages,
+                totalUsers,
+                limit
+            }
         });
     }
     catch(error){

@@ -1,15 +1,11 @@
-import axios from "axios";
-
-const API_URL="http://localhost:3001/orders";
+import api from "./api";
 
 export const getOrders=async()=>{
-    const response=await axios.get(API_URL);
+    const response=await api.get("/admin/orders");
     return response.data;
 };
 
-export const updateOrder=async(id,order)=>{
-    const response=await axios.patch(
-        `${API_URL}/${id}`,order
-    );
+export const updateOrder=async(id,status)=>{
+    const response=await api.patch(`/admin/orders/${id}/status`,{status});
     return response.data;
 };

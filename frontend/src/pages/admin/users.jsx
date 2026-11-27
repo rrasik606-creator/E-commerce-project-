@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdminSidbar from '../../components/adminsidebar'
 
-import {
-    setUsers,
-    blockUser as blockUserRedux,
-    unblockUser as unblockUserRedux
-} from '../../redux/slices/adminuserslice'
+import {setUsers} from '../../redux/slices/adminuserslice'
 
 import {
     getUsers,
@@ -29,70 +25,47 @@ const AdminUsers = () => {
 
     const usersPerPage=5;
 
-    const allUsers = useSelector(
-        (state) => state.adminUser.users
-    );
+    const users = useSelector((state) => state.adminUser.users);
+    const pagination = useSelector((state)=>state.adminUser.pagination);
 
-    const users=allUsers
-        .filter((user)=>user.role!=="admin")
-        .filter((user)=>{
-        const searchMatch=
-                user.name.toLowerCase().includes(search.toLowerCase())||
-                user.username.toLowerCase().includes(search.toLowerCase())||
-                user.email.toLowerCase().includes(search.toLowerCase());
-
-        const statusMatch=
-        status===""
-        ?true
-        :status==="active"
-        ?!user.blocked
-        :user.blocked      
+    const totalPages=pagination.totalPages
 
 
-        return searchMatch&&statusMatch
-    })
+    const fetchUsers = useCallback(async () => {
 
-    const totalPages=Math.ceil(users.length/usersPerPage);
-    const startIndex=(currentPage-1)*usersPerPage;
-    const currentUsers=users.slice(startIndex,startIndex+usersPerPage);
-
-
-    const fetchUsers = async () => {
-
-        try {
-
-            const data = await getUsers();
-
+            const data = await getUsers({
+                search,
+                status,
+                page:currentPage,
+                limit:usersPerPage
+            });
             dispatch(setUsers(data));
 
-        } catch (error) {
-
-            console.log(error);
-
-        }
-
-    };
+    },[search,status,currentPage,dispatch]);
 
 
     useEffect(() => {
+        const loadUsers = async()=>{
+            try{
+                await fetchUsers();
+            }
+            catch(error){
+                console.log("GET USERS ERROR:",error);
+            }
+        };
 
-        fetchUsers();
-
-    }, []);
-
+        loadUsers();
+    }, [fetchUsers]);
 
     const handleBlock = async (id) => {
 
         try {
-
             await blockUser(id);
 
-            dispatch(blockUserRedux(id));
-
-        } catch (error) {
-
-            console.log(error);
-
+            await fetchUsers();
+        } 
+        catch (error) {
+            console.log("BLOCK USERS ERROR:",error);
         }
 
     };
@@ -101,15 +74,12 @@ const AdminUsers = () => {
     const handleUnblock = async (id) => {
 
         try {
-
             await unblockUser(id);
 
-            dispatch(unblockUserRedux(id));
-
-        } catch (error) {
-
-            console.log(error);
-
+            await fetchUsers();
+        } 
+        catch (error) {
+            console.log("UNBLOCK USER ERROR:",error);
         }
 
     };
@@ -135,16 +105,17 @@ const AdminUsers = () => {
                       value={search}
                       onChange={(e)=>{
                         const value=e.target.value;
+                        const params=new URLSearchParams(searchParams);
                         if(value){
-                          searchParams.set("search",value);
+                          params.set("search",value);
                         }
                         else{
-                          searchParams.delete("search");
+                          params.delete("search");
                         }
 
-                        searchParams.delete("page");
+                        params.delete("page");
 
-                        setSearchParams(searchParams);                        
+                        setSearchParams(params);                        
                       }}
                       className='border border-gray-300 rounded-lg px-4 py-2 w-full md:w-80 outline-none'
                       />
@@ -153,17 +124,18 @@ const AdminUsers = () => {
                       value={status}
                       onChange={(e)=>{
                         const value=e.target.value
+                        const params=new URLSearchParams(searchParams)
 
                         if(value){
-                            searchParams.set("status",value);
+                            params.set("status",value);
                         }
                         else{
-                            searchParams.delete("status");
+                            params.delete("status");
                         }
 
-                        searchParams.delete("page")
+                        params.delete("page")
 
-                        setSearchParams(searchParams);
+                        setSearchParams(params);
                       }}
                       className='border border-gray-300 rounded-lg px-4 py-2 outline-none ml-3'
                       >
@@ -219,10 +191,10 @@ const AdminUsers = () => {
                             <tbody>
 
                                 {
-                                    currentUsers.map((user) => (
+                                    users.map((user) => (
 
                                         <tr
-                                            key={user.id}
+                                            key={user._id}
                                             className='border-b'
                                         >
 
@@ -251,7 +223,7 @@ const AdminUsers = () => {
 
                                                         <button
                                                             onClick={() =>
-                                                                handleUnblock(user.id)
+                                                                handleUnblock(user._id)
                                                             }
                                                             className='text-green-600'
                                                         >
@@ -262,7 +234,7 @@ const AdminUsers = () => {
 
                                                         <button
                                                             onClick={() =>
-                                                                handleBlock(user.id)
+                                                                handleBlock(user._id)
                                                             }
                                                             className='text-red-600'
                                                         >
@@ -285,7 +257,7 @@ const AdminUsers = () => {
 
 
                         {
-                            currentUsers.length === 0 && (
+                            users.length === 0 && (
 
                                 <div className='p-8 text-center text-gray-500'>
                                     No users found

@@ -1,29 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useCallback } from 'react'
 import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
-import AdminSidbar from '../../components/adminsidebar'
+import AdminSidbar from '../../components/adminsidebar.jsx'
+
+import {setProducts} from '../../redux/slices/adminproductslice.js'
 
 import {
-    setProducts,
-    restoreProduct as restoreProductRedux,
-    permanentDeleteProduct as permanentDeleteProductRedux
-} from '../../redux/slices/adminproductslice'
-
-import {
-    getProduct,
+    getDeletedProducts,
     restoreProduct,
     permanentDeleteProduct
-} from '../../services/adminproductservices'
+} from '../../services/adminproductservices.js'
 
 
 const DeletedProduct = () => {
 
     const dispatch = useDispatch();
 
+
     const products = useSelector(
         (state) => state.adminProduct.products
+    );
+
+    const brands = useSelector(
+        (state) => state.adminProduct.brands
+    );
+
+    const types = useSelector(
+    (state) => state.adminProduct.types
+    );
+
+    const pagination = useSelector(
+        (state) => state.adminProduct.pagination
     );
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -34,89 +43,53 @@ const DeletedProduct = () => {
 
     const currentPage = Number(searchParams.get("page")) || 1;
 
-    const productsPerPage = 5;
-
-    const deletedProducts = products.filter((product) => {
-
-        if (!product.deleted) {
-            return false;
-        }
-
-        const matchesSearch =
-            product.name
-                .toLowerCase()
-                .includes(search.toLowerCase());
-
-        const matchesBrand =
-            brandFilter === "" ||
-            product.brand === brandFilter;
-
-        const matchesType =
-            typeFilter === "" ||
-            product.type === typeFilter;
-
-        return (
-            matchesSearch &&
-            matchesBrand &&
-            matchesType
-        );
-    });
-
-    const totalPages = Math.ceil(
-        deletedProducts.length / productsPerPage
-    );
-
-    const startIndex = (currentPage - 1) * productsPerPage;
-
-    const currentProducts = deletedProducts.slice(
-        startIndex,
-        startIndex + productsPerPage
-    );
-
-
-    const fetchProduct = async () => {
-
+    const fetchDeletedProducts = useCallback(async () => {
         try {
-
-            const data = await getProduct();
+            const data = await getDeletedProducts({
+                page: currentPage,
+                limit: 5,
+                search,
+                brand: brandFilter,
+                type: typeFilter
+            });
 
             dispatch(setProducts(data));
 
-        } catch (error) {
-
-            console.log(error);
-
+            return data;
         }
-
-    };
-
+        catch (error) {
+            console.log(error);
+        }
+    }, [dispatch, currentPage, search, brandFilter, typeFilter]);
 
     useEffect(() => {
+        fetchDeletedProducts();
+    }, [fetchDeletedProducts]);
 
-        fetchProduct();
 
-    }, []);
 
 
     const handleRestore = async (id) => {
-
         try {
-
             await restoreProduct(id);
 
-            dispatch(restoreProductRedux(id));
+            const data = await fetchDeletedProducts();
 
-        } catch (error) {
-
-            console.log(error);
-
+            if (data && data.products.length === 0 && currentPage > 1) {
+                setSearchParams({
+                    search,
+                    brand: brandFilter,
+                    type: typeFilter,
+                    page: Math.max(1, data.pagination.totalPages)
+                });
+            }
         }
-
+        catch (error) {
+            console.log(error);
+        }
     };
 
-
     const handlePermanentDelete = async (id) => {
-
         const confirmpermanentdelete = await Swal.fire({
             title: "Are you sure?",
             text: "This product will be permanently deleted and cannot be restored.",
@@ -131,18 +104,24 @@ const DeletedProduct = () => {
         }
 
         try {
-
             await permanentDeleteProduct(id);
 
-            dispatch(permanentDeleteProductRedux(id));
+            const data = await fetchDeletedProducts();
 
-        } catch (error) {
-
-            console.log(error);
-
+            if (data && data.products.length === 0 && currentPage > 1) {
+                setSearchParams({
+                    search,
+                    brand: brandFilter,
+                    type: typeFilter,
+                    page: Math.max(1, data.pagination.totalPages)
+                });
+            }
         }
-
+        catch (error) {
+            console.log(error);
+        }
     };
+
 
 
     return (
@@ -201,22 +180,11 @@ const DeletedProduct = () => {
                                         All Brands
                                     </option>
 
-                                    {
-                                        [...new Set(
-                                            products
-                                                .filter((product) => product.deleted)
-                                                .map((product) => product.brand)
-                                        )].map((brand) => (
-
-                                            <option
-                                                key={brand}
-                                                value={brand}
-                                            >
-                                                {brand}
-                                            </option>
-
-                                        ))
-                                    }
+                                    {brands.map((brand) => (
+                                        <option key={brand} value={brand}>
+                                            {brand}
+                                        </option>
+                                    ))}
 
                                 </select>
 
@@ -239,22 +207,11 @@ const DeletedProduct = () => {
                                         All Types
                                     </option>
 
-                                    {
-                                        [...new Set(
-                                            products
-                                                .filter((product) => product.deleted)
-                                                .map((product) => product.type)
-                                        )].map((type) => (
-
-                                            <option
-                                                key={type}
-                                                value={type}
-                                            >
-                                                {type}
-                                            </option>
-
-                                        ))
-                                    }
+                                    {types.map((type) => (
+                                        <option key={type} value={type}>
+                                            {type}
+                                        </option>
+                                    ))}
 
                                 </select>
 
@@ -306,18 +263,19 @@ const DeletedProduct = () => {
                             <tbody>
 
                                 {
-                                    currentProducts.map((product) => (
+                                    products.map((product) => (
 
                                         <tr
-                                            key={product.id}
+                                            key={product._id}
                                             className='border-b'
                                         >
 
                                             <td className='p-4'>
 
                                                 <img
-                                                    src={product.image[0]}
+                                                    src={product.image[0] || "/placeholder.png"}
                                                     alt={product.name}
+                                                    loading="lazy"
                                                     className='w-16 h-16 object-contain'
                                                 />
 
@@ -353,7 +311,7 @@ const DeletedProduct = () => {
 
                                                 <button
                                                     onClick={() =>
-                                                        handleRestore(product.id)
+                                                        handleRestore(product._id)
                                                     }
                                                     className='text-green-600 mr-3'
                                                 >
@@ -363,7 +321,7 @@ const DeletedProduct = () => {
 
                                                 <button
                                                     onClick={() =>
-                                                        handlePermanentDelete(product.id)
+                                                        handlePermanentDelete(product._id)
                                                     }
                                                     className='text-red-600'
                                                 >
@@ -382,7 +340,7 @@ const DeletedProduct = () => {
                         </table>
 
                         {
-                            currentProducts.length===0&&(
+                            products.length===0&&(
                                 <div className='p-8 text-center text-gray-500'>
                                     No deleted products found
                                 </div>
@@ -403,7 +361,7 @@ const DeletedProduct = () => {
                                     page: currentPage - 1
                                 })
                             }
-                            disabled={currentPage === 1}
+                            disabled={currentPage <= 1}
                             className='px-4 py-2 border rounded-lg disabled:opacity-50'
                         >
                             Previous
@@ -411,7 +369,7 @@ const DeletedProduct = () => {
 
 
                         {Array.from(
-                            { length: totalPages },
+                            { length: pagination.totalPages },
                             (_, index) => (
 
                                 <button
@@ -447,8 +405,8 @@ const DeletedProduct = () => {
                                 })
                             }
                             disabled={
-                                currentPage === totalPages ||
-                                totalPages === 0
+                                currentPage >= pagination.totalPages ||
+                                pagination.totalPages === 0
                             }
                             className='px-4 py-2 border rounded-lg disabled:opacity-50'
                         >

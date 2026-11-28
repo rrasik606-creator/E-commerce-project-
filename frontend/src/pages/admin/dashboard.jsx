@@ -1,221 +1,65 @@
 import React,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector,useDispatch } from 'react-redux'
 
 import { AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts'
 
 import AdminSidbar from '../../components/adminsidebar'
 import AdminHeader from '../../components/adminheader'
 
-import { getProduct } from '../../services/adminproductservices'
-import { getUsers } from '../../services/adminuserservices'
-import { getOrders } from '../../services/adminorderservices'
-
-import { setProducts } from '../../redux/slices/adminproductslice'
-import { setUsers } from '../../redux/slices/adminuserslice'
-import { setOrders } from '../../redux/slices/adminordersslice'
+import { getDashboardStats } from '../../services/admindashboardservices'
 
 
 const Dashboard = () => {
-    const dispatch=useDispatch();
     const navigate=useNavigate();
 
-    const[period,setPeriod]=useState("monthly")
+    const[period,setPeriod]=useState("monthly");
+    const [dashboardData, setDashboardData] = useState({
+        statistics: {
+            totalProducts: 0,
+            totalUsers: 0,
+            activeUsers: 0,
+            blockedUsers: 0,
+            totalOrders: 0,
+            revenue: 0
+        },
+        chartData: [],
+        recentOrders: []
+    });
+
+    const [loading,setloading] = useState(true);
 
     useEffect(() => {
 
-    const fetchDashboardData = async () => {
-
-        const productsData = await getProduct();
-        const usersData = await getUsers();
-        const ordersData = await getOrders();
-
-        dispatch(setProducts(productsData));
-        dispatch(setUsers(usersData));
-        dispatch(setOrders(ordersData));
+      const fetchDashboardData = async () => {
+        try{
+            setloading(true);
+            const data= await getDashboardStats(period);
+            setDashboardData(data);
+        }
+        catch(error){
+            console.log(error);
+        }
+        finally{
+            setloading(false);
+        }
     };
 
     fetchDashboardData();
 
-    }, [dispatch]);
+    }, [period]);
 
-    const products=useSelector((state)=>state.adminProduct.products);
+    const {
+        totalProducts,
+        totalUsers,
+        activeUsers,
+        blockedUsers,
+        totalOrders,
+        revenue
+    } = dashboardData.statistics
 
-    const users=useSelector((state)=>state.adminUser.users);
-    const totalUsers =users.filter((user)=>user.role!=="admin").length;
-    const activeUsers =users.filter((user)=>user.role!=="admin"&&!user.blocked).length;
-    const blockedUsers =users.filter((user)=>user.role!=="admin"&&user.blocked).length;
+    const recentOrders = dashboardData.recentOrders;
+    const chartData = dashboardData.chartData;
 
-    const orders=useSelector((state)=>state.adminOrder.orders);
-
-    const validOrders = orders.filter(
-        (order) => order.status !== "Cancelled"
-    );
-
-    const revenue = validOrders
-    .reduce(
-        (total, order) => total + Number(order.total),
-        0
-    );
-
-    const recentOrders =[...orders].sort((a,b)=>new Date(b.orderDate)-new Date(a.orderDate)).slice(0,5);
-
-    let chartData = [];
-
-    if (period === "monthly") {
-
-        chartData = Array.from({ length: 12 }, (_, index) => {
-
-            const revenue = validOrders
-                .filter((order) => {
-                    const date = new Date(order.orderDate);
-
-                    return date.getMonth() === index;
-                })
-                .reduce(
-                    (total, order) => total + Number(order.total),
-                    0
-                );
-
-            return {
-                label: new Date(2026, index).toLocaleString("en-US", {
-                    month: "short"
-                }),
-                revenue: revenue
-            };
-        });
-
-    }
-
-    if (period === "yearly") {
-
-        const years = [
-            ...new Set(
-                validOrders.map((order) => {
-                    return new Date(order.orderDate).getFullYear();
-                })
-            )
-        ];
-
-        chartData = years.map((year) => {
-
-            const revenue = validOrders
-                .filter((order) => {
-                    const date = new Date(order.orderDate);
-
-                    return date.getFullYear() === year;
-                })
-                .reduce(
-                    (total, order) => total + Number(order.total),
-                    0
-                );
-
-            return {
-                label: year.toString(),
-                revenue: revenue
-            };
-        });
-
-    }
-
-    if (period === "weekly") {
-
-        const today = new Date();
-
-        const year = today.getFullYear();
-        const month = today.getMonth();
-
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-
-        const firstWeekDay = firstDay.getDay();
-
-        const totalWeeks = Math.ceil(
-            (firstWeekDay + lastDay.getDate()) / 7
-        );
-
-        chartData = Array.from(
-            { length: totalWeeks },
-            (_, index) => {
-
-                const weekNumber = index + 1;
-
-                const revenue = validOrders
-                    .filter((order) => {
-
-                        const date = new Date(order.orderDate);
-
-                        if (
-                            date.getFullYear() !== year ||
-                            date.getMonth() !== month
-                        ) {
-                            return false;
-                        }
-
-                        const week = Math.ceil(
-                            (firstWeekDay + date.getDate()) / 7
-                        );
-
-                        return week === weekNumber;
-                    })
-                    .reduce(
-                        (total, order) =>
-                            total + Number(order.total),
-                        0
-                    );
-
-                return {
-                    label: `Week ${weekNumber}`,
-                    revenue: revenue
-                };
-            }
-        );
-
-    }
-
-    if (period === "daily") {
-
-        const today = new Date();
-
-        const year = today.getFullYear();
-        const month = today.getMonth();
-
-        const daysInMonth = new Date(
-            year,
-            month + 1,
-            0
-        ).getDate();
-
-        chartData = Array.from(
-            { length: daysInMonth },
-            (_, index) => {
-
-                const day = index + 1;
-
-                const revenue = validOrders
-                    .filter((order) => {
-                        const date = new Date(order.orderDate);
-
-                        return (
-                            date.getFullYear() === year &&
-                            date.getMonth() === month &&
-                            date.getDate() === day
-                        );
-                    })
-                    .reduce(
-                        (total, order) =>
-                            total + Number(order.total),
-                        0
-                    );
-
-                return {
-                    label: day.toString(),
-                    revenue: revenue
-                };
-            }
-        );
-
-    }
 
    return (
      <div className='flex min-h-screen bg-gray-100'>
@@ -237,7 +81,7 @@ const Dashboard = () => {
                     <div className='bg-white p-5 rounded-lg shadow'>
                         <p className='text-gray-500'>Product</p>
                         <h2 className='text-3xl font-bold mt-2'>
-                            {products.filter((product)=>!product.deleted).length}
+                            {totalProducts}
                         </h2>
                     </div>
 
@@ -268,14 +112,14 @@ const Dashboard = () => {
                     <div className='bg-white p-5 rounded-lg shadow'>
                         <p className='text-gray-500'>Orders</p>
                         <h2 className='text-3xl font-bold mt-2'>
-                            {orders.length}
+                            {totalOrders}
                         </h2>
                     </div>
 
                     <div className='bg-white p-5 rounded-lg shadow'>
                         <p className='text-gray-500'>Revenue</p>
                         <h2 className='text-3xl font-bold mt-2'>
-                            ₹ {revenue.toLocaleString()}
+                            ₹ {revenue.toLocaleString("en-IN")}
                         </h2>
                     </div>
 
@@ -363,19 +207,19 @@ const Dashboard = () => {
 
                             <tbody>
 
-                                {recentOrders.map((order) => (
+                                {!loading && recentOrders.length>0? (recentOrders.map((order) => (
 
                                     <tr
-                                        key={order.id}
+                                        key={order._id}
                                         className='border-b'
                                     >
 
                                         <td className='py-3'>
-                                            {order.id}
+                                            {order._id}
                                         </td>
 
                                         <td className='py-3'>
-                                            {order.address.name}
+                                            {order.userId?.name||order.address?.name||"Guest"}
                                         </td>
 
                                         <td className='py-3'>
@@ -394,7 +238,15 @@ const Dashboard = () => {
 
                                     </tr>
 
-                                ))}
+                                ))
+                                ):(
+                                    <tr>
+                                        <td colSpan="5" className="text-center py-5 text-gray-500">
+                                            {loading ? "Loading orders..." : "No recent orders found"}
+                                        </td>  
+                                    </tr>
+                                )
+                                }
 
                             </tbody>
 

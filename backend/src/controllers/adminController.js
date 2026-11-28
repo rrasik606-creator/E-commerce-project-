@@ -44,12 +44,14 @@ export const getAllProducts = async (req, res, next) => {
             .skip((page-1)*limit)
             .limit(limit);
         const brands = await Product.distinct("brand", { deleted: false });
+        const types = await Product.distinct("type", { deleted: true });
 
         return res.status(200).json({
             success: true,
             count: products.length,
             products,
             brands,
+            types,
             pagination:{
                 currentPage:page,
                 totalPages,
@@ -63,6 +65,69 @@ export const getAllProducts = async (req, res, next) => {
         next(error);
     }
 };
+
+
+export const getDeletedProducts = async (req, res, next) => {
+    try {
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 5));
+
+        const search = req.query.search?.trim() || "";
+        const brand = req.query.brand || "";
+        const type = req.query.type || "";
+
+        const filter = {
+            deleted: true
+        };
+
+        if (search) {
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+            filter.name = {
+                $regex: escapedSearch,
+                $options: "i"
+            };
+        }
+
+        if (brand) {
+            filter.brand = brand;
+        }
+
+        if (type) {
+            filter.type = type;
+        }
+
+        const totalProducts = await Product.countDocuments(filter);
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        const products = await Product.find(filter)
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const brands = await Product.distinct("brand", {
+            deleted: true
+        });
+
+        return res.status(200).json({
+            success: true,
+            count: products.length,
+            products,
+            brands,
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalProducts,
+                limit
+            }
+        });
+    }
+    catch (error) {
+        console.error("ADMIN GET DELETED PRODUCTS ERROR:", error);
+        next(error);
+    }
+};
+
 
 export const createProduct = async(req,res,next) => {
     try{
@@ -598,3 +663,227 @@ export const unblockUser = async(req,res,next) =>{
         next(error);
     }
 }
+
+//Dashboard
+// Dashboard
+export const getDashboardStats = async (req, res, next) => {
+    try {
+        const period = req.query.period || "monthly";
+
+        const validPeriods = [
+            "daily",
+            "weekly",
+            "monthly",
+            "yearly"
+        ];
+
+        if (!validPeriods.includes(period)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid dashboard period"
+            });
+        }
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+
+        // Dashboard card statistics
+        const [
+            totalProducts,
+            totalUsers,
+            activeUsers,
+            blockedUsers,
+            totalOrders,
+            revenueResult,
+            recentOrders
+        ] = await Promise.all([
+
+            Product.countDocuments({ deleted: false }),
+
+            User.countDocuments({ role: { $ne: "admin" } }),
+
+            User.countDocuments({
+                role: { $ne: "admin" },
+                blocked: false
+            }),
+
+            User.countDocuments({
+                role: { $ne: "admin" },
+                blocked: true
+            }),
+
+            Order.countDocuments(),
+
+            Order.aggregate([
+                {
+                    $match: {
+                        status: { $ne: "Cancelled" }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalRevenue: { $sum: "$total" }
+                    }
+                }
+            ]),
+
+            Order.find()
+                .sort({ orderDate: -1 })
+                .limit(5)
+                .populate("userId", "name username email")
+        ]);
+
+        const revenue = revenueResult[0]?.totalRevenue || 0;
+
+        // Revenue chart
+        const match = {
+            status: { $ne: "Cancelled" }
+        };
+
+        let groupId;
+        let chartData = [];
+
+        if (period === "monthly") {
+
+            match.orderDate = {
+                $gte: new Date(year, 0, 1),
+                $lt: new Date(year + 1, 0, 1)
+            };
+
+            groupId = { $month: "$orderDate" };
+
+            chartData = Array.from(
+                { length: 12 },
+                (_, index) => ({
+                    label: new Date(year, index).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                    ),
+                    revenue: 0
+                })
+            );
+        }
+
+        else if (period === "yearly") {
+
+            groupId = { $year: "$orderDate" };
+        }
+
+        else if (period === "daily") {
+
+            match.orderDate = {
+                $gte: new Date(year, month, 1),
+                $lt: new Date(year, month + 1, 1)
+            };
+
+            groupId = { $dayOfMonth: "$orderDate" };
+
+            const daysInMonth = new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+            chartData = Array.from(
+                { length: daysInMonth },
+                (_, index) => ({
+                    label: String(index + 1),
+                    revenue: 0
+                })
+            );
+        }
+
+        else if (period === "weekly") {
+
+            match.orderDate = {
+                $gte: new Date(year, month, 1),
+                $lt: new Date(year, month + 1, 1)
+            };
+
+            const firstWeekDay = new Date(
+                year,
+                month,
+                1
+            ).getDay();
+
+            const lastDay = new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+            const totalWeeks = Math.ceil(
+                (firstWeekDay + lastDay) / 7
+            );
+
+            groupId = {
+                $ceil: {
+                    $divide: [
+                        {
+                            $add: [
+                                { $dayOfMonth: "$orderDate" },
+                                firstWeekDay
+                            ]
+                        },
+                        7
+                    ]
+                }
+            };
+
+            chartData = Array.from(
+                { length: totalWeeks },
+                (_, index) => ({
+                    label: `Week ${index + 1}`,
+                    revenue: 0
+                })
+            );
+        }
+
+        const chartResults = await Order.aggregate([
+            { $match: match },
+            {
+                $group: {
+                    _id: groupId,
+                    revenue: { $sum: "$total" }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+
+        if (period === "yearly") {
+
+            chartData = chartResults.map((item) => ({
+                label: String(item._id),
+                revenue: item.revenue
+            }));
+
+        } else {
+
+            chartResults.forEach((item) => {
+                chartData[item._id - 1].revenue = item.revenue;
+            });
+
+        }
+
+        return res.status(200).json({
+            success: true,
+            statistics: {
+                totalProducts,
+                totalUsers,
+                activeUsers,
+                blockedUsers,
+                totalOrders,
+                revenue
+            },
+            chartData,
+            recentOrders
+        });
+
+    }
+    catch (error) {
+        console.log("ADMIN DASHBOARD ERROR:", error);
+        next(error);
+    }
+};

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
     products:[],
     brands:[],
+    types:[],
     pagination:{
         currentPage:1,
         totalPages:0,
@@ -22,6 +23,7 @@ const adminProductSlice=createSlice({
         setProducts:(state,action)=>{
             state.products=action.payload.products;
             state.brands = action.payload.brands || [];
+            state.types = action.payload.types || [];
             state.pagination=action.payload.pagination;
         },
 

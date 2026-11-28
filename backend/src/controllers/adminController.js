@@ -9,12 +9,53 @@ import messages from "../utils/messages.js";
 //Products
 export const getAllProducts = async (req, res, next) => {
     try {
-        const products = await Product.find();
+        const page =Math.max(1,parseInt(req.query.page)||1);
+        const limit =Math.min(100,Math.max(1,parseInt(req.query.limit)||5));
+
+        const search = req.query.search?.trim()||"";
+        const brand = req.query.brand||"";
+        const type = req.query.type||"";
+
+        const filter = {
+            deleted:false
+        };
+
+        if(search){
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+
+            filter.name={
+                $regex:escapedSearch,
+                $options:"i"
+            };
+        }
+
+        if(brand){
+            filter.brand = brand;
+        }
+        if(type){
+            filter.type = type;
+        }
+
+        const totalProducts = await Product.countDocuments(filter);
+        const totalPages = Math.ceil(totalProducts/limit);
+
+        const products = await Product.find(filter)
+            .sort({createdAt:-1})
+            .skip((page-1)*limit)
+            .limit(limit);
+        const brands = await Product.distinct("brand", { deleted: false });
 
         return res.status(200).json({
             success: true,
             count: products.length,
-            products
+            products,
+            brands,
+            pagination:{
+                currentPage:page,
+                totalPages,
+                totalProducts,
+                limit
+            }
         });
     }
     catch (error) {

@@ -2,17 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
     products:[],
+    brands:[],
+    pagination:{
+        currentPage:1,
+        totalPages:0,
+        totalProducts:0,
+        limit:5
+    }
 };
 
 const adminProductSlice=createSlice({
     name:"adminProduct",
 
     initialState,
+
     reducers:{
 
         //store product
         setProducts:(state,action)=>{
-            state.products=action.payload;
+            state.products=action.payload.products;
+            state.brands = action.payload.brands || [];
+            state.pagination=action.payload.pagination;
         },
 
         //add product
@@ -22,7 +32,7 @@ const adminProductSlice=createSlice({
 
         //update product
         updateProduct:(state,action)=>{
-            const index=state.products.findIndex((product)=>product.id===action.payload.id);
+            const index=state.products.findIndex((product)=>product._id===action.payload._id);
             if(index!==-1){
                 state.products[index]=action.payload;
             }
@@ -30,7 +40,7 @@ const adminProductSlice=createSlice({
 
         //soft delete
         softDeleteProduct:(state,action)=>{
-            const product=state.products.find((product)=>product.id===action.payload);
+            const product=state.products.find((product)=>product._id===action.payload);
             if(product){
                 product.deleted=true;
             }
@@ -38,14 +48,14 @@ const adminProductSlice=createSlice({
 
         //restore softdeleted product
         restoreProduct:(state,action)=>{
-            const product=state.products.find((product)=>product.id===action.payload);
+            const product=state.products.find((product)=>product._id===action.payload);
             if(product){
                 product.deleted=false;
             }
         },
 
         permanentDeleteProduct:(state,action)=>{
-            state.products=state.products.filter((product)=>product.id!==action.payload);
+            state.products=state.products.filter((product)=>product._id!==action.payload);
         }
     }
 });

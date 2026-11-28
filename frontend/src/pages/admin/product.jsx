@@ -1,9 +1,9 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useCallback} from 'react'
 import Swal from 'sweetalert2'
 import { useDispatch,useSelector } from 'react-redux'
 import { useNavigate,useSearchParams } from 'react-router-dom'
 import AdminSidbar from '../../components/adminsidebar'
-import { setProducts,softDeleteProduct as softDeleteProductRedux } from '../../redux/slices/adminproductslice'
+import { setProducts } from '../../redux/slices/adminproductslice'
 import { getProduct,softDeleteProduct } from '../../services/adminproductservices'
 
 const AdminProducts = () => {
@@ -12,6 +12,9 @@ const AdminProducts = () => {
     const navigate=useNavigate();
 
     const products=useSelector((state)=>state.adminProduct.products);
+    const brands=useSelector((state)=>state.adminProduct.brands);
+    const pagination=useSelector((state)=>state.adminProduct.pagination);
+
 
     const [searchParams,setSearchParams]=useSearchParams();
 
@@ -19,73 +22,30 @@ const AdminProducts = () => {
 
     const search=searchParams.get("search")||"";
     const brand=searchParams.get("brand")||"";
-    const category=searchParams.get("category")||"";
     const type=searchParams.get("type")||"";
 
-    const productsPerPage=5;
-
-    const activeProducts=products.filter(
-        (product)=>!product.deleted
-    );
-
-    const filteredProducts=activeProducts.filter((product)=>{
-
-        const searchMatch=product.name
-            .toLowerCase()
-            .includes(search.toLowerCase());
-
-        const brandMatch=brand
-            ? product.brand===brand
-            : true;
-
-        // const categoryMatch=category
-        //     ? product.category===category
-        //     : true;
-
-        const typeMatch=type
-            ? product.type===type
-            : true;
-
-        return (
-            searchMatch &&
-            brandMatch &&
-            // categoryMatch &&
-            typeMatch
-        );
-    });
-
-    const totalPages=Math.ceil(
-        filteredProducts.length/productsPerPage
-    );
-
-    const startIndex=(currentPage-1)*productsPerPage;
-
-    const currentProducts=filteredProducts.slice(
-        startIndex,
-        startIndex+productsPerPage
-    );
-
-    const brands=[
-        ...new Set(
-            activeProducts
-                .map((product)=>product.brand)
-                .filter(Boolean)
-        )
-    ];
-
-    const fetchProduct=async()=>{
+    const fetchProduct=useCallback(async()=>{
         try{
-            const data=await getProduct();
-            dispatch(setProducts(data))
+            const data=await getProduct({
+                page:currentPage,
+                limit:5,
+                search,
+                brand,
+                type
+            });
+
+            dispatch(setProducts(data));
+
+            return data;
         }
         catch(error){
             console.log(error);
         }
-    };
+    },[dispatch,currentPage,search,brand,type]);
 
     useEffect(()=>{
         fetchProduct();
-    },[]);
+    },[fetchProduct]);
 
     const handleDelete=async(id)=>{
 
@@ -104,7 +64,12 @@ const AdminProducts = () => {
 
         try{
             await softDeleteProduct(id);
-            dispatch(softDeleteProductRedux(id));
+
+            const data = await fetchProduct();
+
+            if(data&&data.products.length===0&&currentPage>1){
+                setSearchParams({search,brand,type,page:Math.max(1,data.pagination.totalPages)});
+            }
         }
         catch(error){
             console.log(error);
@@ -115,9 +80,8 @@ const AdminProducts = () => {
 
         setSearchParams({
             search:e.target.value,
-            brand:brand,
-            category:category,
-            type:type,
+            brand,
+            type,
             page:1
         });
 
@@ -126,33 +90,19 @@ const AdminProducts = () => {
     const handleBrand=(e)=>{
 
         setSearchParams({
-            search:search,
+            search,
             brand:e.target.value,
-            category:category,
-            type:type,
+            type,
             page:1
         });
 
     };
 
-    // const handleCategory=(e)=>{
-
-    //     setSearchParams({
-    //         search:search,
-    //         brand:brand,
-    //         category:e.target.value,
-    //         type:type,
-    //         page:1
-    //     });
-
-    // };
-
     const handleType=(e)=>{
 
         setSearchParams({
-            search:search,
-            brand:brand,
-            category:category,
+            search,
+            brand,
             type:e.target.value,
             page:1
         });
@@ -165,6 +115,15 @@ const AdminProducts = () => {
             page:1
         });
 
+    };
+
+    const handlePageChange = (page) => {
+        setSearchParams({
+            search,
+            brand,
+            type,
+            page
+        });
     };
 
   return (
@@ -230,28 +189,6 @@ const AdminProducts = () => {
 
                         </select>
 
-
-                        {/* <select
-                            value={category}
-                            onChange={handleCategory}
-                            className='border rounded-lg px-4 py-2'
-                        >
-
-                            <option value=''>
-                                All Categories
-                            </option>
-
-                            <option value='men'>
-                                Men
-                            </option>
-
-                            <option value='women'>
-                                Women
-                            </option>
-
-                        </select> */}
-
-
                         <select
                             value={type}
                             onChange={handleType}
@@ -315,10 +252,10 @@ const AdminProducts = () => {
                         <tbody>
 
                             {
-                                currentProducts.map((product)=>(
+                                products.map((product)=>(
 
                                     <tr
-                                        key={product.id}
+                                        key={product._id}
                                         className='border-b'
                                     >
 
@@ -361,7 +298,7 @@ const AdminProducts = () => {
                                         <td className='p-4'>
 
                                             <button
-                                                onClick={()=>navigate(`/admin/product/edit/${product.id}`)}
+                                                onClick={()=>navigate(`/admin/product/edit/${product._id}`)}
                                                 className='text-blue-600 mr-3'
                                             >
                                                 Edit
@@ -369,7 +306,7 @@ const AdminProducts = () => {
 
 
                                             <button
-                                                onClick={()=>handleDelete(product.id)}
+                                                onClick={()=>handleDelete(product._id)}
                                                 title='Delete'
                                                 className='text-red-600'
                                             >
@@ -389,7 +326,7 @@ const AdminProducts = () => {
 
 
                     {
-                        currentProducts.length===0 && (
+                        products.length===0 && (
 
                             <div className='p-8 text-center text-gray-500'>
                                 No products found
@@ -406,16 +343,8 @@ const AdminProducts = () => {
                 <div className='flex justify-center items-center gap-2 p-4'>
 
                     <button
-                        onClick={() =>
-                            setSearchParams({
-                                search:search,
-                                brand:brand,
-                                category:category,
-                                type:type,
-                                page:currentPage-1
-                            })
-                        }
-                        disabled={currentPage===1}
+                        onClick={() =>handlePageChange(currentPage-1)}
+                        disabled={currentPage<=1}
                         className='px-4 py-2 border rounded-lg disabled:opacity-50'
                     >
                         Previous
@@ -424,20 +353,12 @@ const AdminProducts = () => {
 
                     {
                         Array.from(
-                            {length:totalPages},
+                            {length:pagination.totalPages},
                             (_,index)=>(
 
                                 <button
                                     key={index}
-                                    onClick={() =>
-                                        setSearchParams({
-                                            search:search,
-                                            brand:brand,
-                                            category:category,
-                                            type:type,
-                                            page:index+1
-                                        })
-                                    }
+                                    onClick={() =>handlePageChange(index+1)}
                                     className={`px-4 py-2 rounded-lg ${
                                         currentPage===index+1
                                             ? 'bg-black text-white'
@@ -453,18 +374,10 @@ const AdminProducts = () => {
 
 
                     <button
-                        onClick={() =>
-                            setSearchParams({
-                                search:search,
-                                brand:brand,
-                                category:category,
-                                type:type,
-                                page:currentPage+1
-                            })
-                        }
+                        onClick={() =>handlePageChange(currentPage+1)}
                         disabled={
-                            currentPage===totalPages ||
-                            totalPages===0
+                            currentPage>=pagination.totalPages ||
+                            pagination.totalPages===0
                         }
                         className='px-4 py-2 border rounded-lg disabled:opacity-50'
                     >

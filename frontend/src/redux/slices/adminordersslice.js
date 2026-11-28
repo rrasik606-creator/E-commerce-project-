@@ -2,6 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
     orders:[],
+    pagination:{
+        currentPage:1,
+        totalPages:0,
+        totalOrders:0,
+        limit:5
+    }
 };
 
 const adminOrderSlice=createSlice({
@@ -9,12 +15,13 @@ const adminOrderSlice=createSlice({
     initialState,
     reducers:{
         setOrders:(state,action)=>{
-            state.orders=action.payload;
+            state.orders=action.payload.orders;
+            state.pagination=action.payload.pagination;
         },
 
         updateOrder:(state,action)=>{
             const index=state.orders.findIndex(
-                (oreder)=>oreder._id===action.payload._id
+                (order)=>order._id===action.payload._id
                 );
 
             if(index!==-1){

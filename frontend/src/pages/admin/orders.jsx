@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,9 +18,7 @@ const AdminOrders = () => {
 
     const dispatch = useDispatch();
 
-    const orders = useSelector(
-        (state) => state.adminOrder.orders
-    );
+    const {orders,pagination} =useSelector((state)=>state.adminOrder);
 
     const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -30,7 +28,6 @@ const AdminOrders = () => {
     const status = searchParams.get("status") || "";
     const currentPage = Number(searchParams.get("page")) || 1;
 
-    const ordersPerPage = 5;
 
     const statuses = [
         "Pending",
@@ -40,18 +37,24 @@ const AdminOrders = () => {
         "Cancelled"
     ];
 
-    const fetchOrders = async () => {
+    const fetchOrders = useCallback(async () => {
         try {
-            const data = await getOrders();
+            const data = await getOrders({
+                search,
+                status,
+                page:currentPage,
+                limit:pagination.limit
+            });
+
             dispatch(setOrders(data));
         } catch (error) {
             console.log(error);
         }
-    };
+    },[dispatch,search,status,currentPage,pagination.limit]);
 
     useEffect(() => {
         fetchOrders();
-    }, []);
+    }, [fetchOrders]);
 
     const handleViewOrder = (order) => {
         setSelectedOrder(order);
@@ -63,46 +66,18 @@ const AdminOrders = () => {
 
     const handleStatusChange = async (id, status) => {
         try {
-            const data = await updateOrder(id, { status });
+            const data = await updateOrder(id,status);
 
-            dispatch(updateOrderRedux(data));
+            dispatch(updateOrderRedux(data.order));
 
-            if (selectedOrder && selectedOrder.id === id) {
-                setSelectedOrder(data);
+            if (selectedOrder && selectedOrder._id === id) {
+                setSelectedOrder(data.order);
             }
         }
         catch (error) {
             console.log(error);
         }
     };
-
-    // Search and filter orders
-    const filteredOrders = orders.filter((order) => {
-
-        const searchMatch =
-            order.id.toLowerCase().includes(search.toLowerCase()) ||
-            order.userId.toLowerCase().includes(search.toLowerCase()) ||
-            order.address.name.toLowerCase().includes(search.toLowerCase());
-        const statusMatch =
-            status === ""
-                ? true
-                : order.status === status;
-
-        return searchMatch && statusMatch;
-    });
-
-    // Pagination
-    const totalPages = Math.ceil(
-        filteredOrders.length / ordersPerPage
-    );
-
-    const startIndex =
-        (currentPage - 1) * ordersPerPage;
-
-    const currentOrders = filteredOrders.slice(
-        startIndex,
-        startIndex + ordersPerPage
-    );
 
     // Search change
     const handleSearch = (e) => {
@@ -236,19 +211,19 @@ const AdminOrders = () => {
 
                             <tbody>
 
-                                {currentOrders.map((order) => (
+                                {orders.map((order) => (
 
                                     <tr
-                                        key={order.id}
+                                        key={order._id}
                                         className='border-b'
                                     >
 
                                         <td className='p-4'>
-                                            {order.id}
+                                            {order._id}
                                         </td>
 
                                         <td className='p-4'>
-                                            {order.userId}
+                                            {order.userId?._id||order.userId}
                                         </td>
 
                                         <td className='p-4'>
@@ -258,7 +233,7 @@ const AdminOrders = () => {
                                         <td className='p-4'>
 
                                             {new Date(
-                                                order.orderDate
+                                                order.createdAt
                                             ).toLocaleDateString(
                                                 'en-GB',
                                                 {
@@ -284,7 +259,7 @@ const AdminOrders = () => {
                                                 value={order.status}
                                                 onChange={(e) =>
                                                     handleStatusChange(
-                                                        order.id,
+                                                        order._id,
                                                         e.target.value
                                                     )
                                                 }
@@ -327,7 +302,7 @@ const AdminOrders = () => {
 
                         </table>
 
-                        {currentOrders.length === 0 && (
+                        {orders.length === 0 && (
                             <div className='p-8 text-center text-gray-500'>
                                 No orders found
                             </div>
@@ -335,15 +310,15 @@ const AdminOrders = () => {
 
                         {/* Pagination */}
 
-                        {totalPages > 0 && (
+                        {pagination.totalPages > 0 && (
 
                             <div className='flex justify-center items-center gap-2 p-4'>
 
                                 <button
                                     onClick={() =>
                                         setSearchParams({
-                                            search: search,
-                                            status: status,
+                                            search,
+                                            status,
                                             page: currentPage - 1
                                         })
                                     }
@@ -354,15 +329,15 @@ const AdminOrders = () => {
                                 </button>
 
                                 {Array.from(
-                                    { length: totalPages },
+                                    { length: pagination.totalPages },
                                     (_, index) => (
 
                                         <button
                                             key={index}
                                             onClick={() =>
                                                 setSearchParams({
-                                                    search: search,
-                                                    status: status,
+                                                    search,
+                                                    status,
                                                     page: index + 1
                                                 })
                                             }
@@ -381,13 +356,13 @@ const AdminOrders = () => {
                                 <button
                                     onClick={() =>
                                         setSearchParams({
-                                            search: search,
-                                            status: status,
+                                            search,
+                                            status,
                                             page: currentPage + 1
                                         })
                                     }
                                     disabled={
-                                        currentPage === totalPages
+                                        currentPage >= pagination.totalPages
                                     }
                                     className='px-4 py-2 border rounded-lg disabled:opacity-50'
                                 >
@@ -424,7 +399,7 @@ const AdminOrders = () => {
                                 </h2>
 
                                 <p className='text-sm text-gray-500'>
-                                    Order ID: {selectedOrder.id}
+                                    Order ID: {selectedOrder._id}
                                 </p>
 
                             </div>
@@ -456,7 +431,7 @@ const AdminOrders = () => {
                                     </p>
 
                                     <p className='font-medium'>
-                                        {selectedOrder.userId}
+                                        {selectedOrder.userId?._id||selectedOrder.userId}
                                     </p>
 
                                 </div>
@@ -540,7 +515,7 @@ const AdminOrders = () => {
                                     >
 
                                         <img
-                                            src={item.image[0]}
+                                            src={Array.isArray(item.image)?item.image[0]:item.image}
                                             alt={item.name}
                                             className='w-16 h-16 object-contain'
                                         />

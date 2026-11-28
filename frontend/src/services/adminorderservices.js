@@ -1,7 +1,7 @@
 import api from "./api";
 
-export const getOrders=async()=>{
-    const response=await api.get("/admin/orders");
+export const getOrders=async(params)=>{
+    const response=await api.get("/admin/orders",{params});
     return response.data;
 };
 

@@ -185,18 +185,139 @@ export const restoreProduct = async (req,res,next) => {
 //Order
 export const getAllOrders = async(req,res,next) =>{
     try{
-        const orders= await Order.find()
-            .populate("userId","name username email")
-            .sort({createdAt:-1});
+        const page = Math.max(1,parseInt(req.query.page)||1);
+        const limit = Math.min(100,Math.max(1,parseInt(req.query.limit)||5));
+
+        const search = req.query.search?.trim()||"";
+        const status = req.query.status||"";
+
+        const validStatuses =[
+            "Pending",
+            "Processing",
+            "Shipped",
+            "Delivered",
+            "Cancelled"
+        ];
+
+        if(status && !validStatuses.includes(status)){
+            return res.status(400).json({
+                success:false,
+                message:messages.INVALID_ORDER_STATUS
+            });
+        }
+
+        const pipeline = [
+            {
+                $lookup:{
+                    from:User.collection.name,
+                    let:{userId:"$userId"},
+                    pipeline:[
+                        {
+                            $match:{
+                                $expr:{$eq:["$_id","$$userId"]}
+                            }
+                        },
+                        {
+                            $project:{
+                                name:1,
+                                username:1,
+                                email:1
+                            }
+                        }
+                    ],
+                    as:"userDetails"
+                }
+            },
+            {
+                $unwind:{
+                    path:"$userDetails",
+                    preserveNullAndEmptyArrays:true
+                }
+            }
+        ];
+
+        const filter = {};
+
+        if(status){
+            filter.status=status;
+        }
+        if(search){
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+
+            filter.$or=[
+                {"address.name":{$regex:escapedSearch,$options:"i"}},
+                {"userDetails.name":{$regex:escapedSearch,$options:"i"}},
+                { "userDetails.username": { $regex: escapedSearch, $options: "i" } },
+                { "userDetails.email": { $regex: escapedSearch, $options: "i" } },
+                {
+                    $expr:{
+                        $regexMatch:{
+                            input:{$toString:"$_id"},
+                            regex:escapedSearch,
+                            options:"i"
+                        }
+                    }
+                },
+                {
+                    $expr:{
+                        $regexMatch:{
+                            input:{$toString:"$userId"},
+                            regex:escapedSearch,
+                            options:"i"
+                        }
+                    }
+                }
+            ];
+        }
+
+        pipeline.push(
+            {$match:filter},
+            {$sort:{createdAt:-1}},
+            {
+                $facet:{
+                    orders:[
+                        {$skip:(page-1)*limit},
+                        {$limit:limit},
+                        {
+                            $set:{
+                                userId:{
+                                    $ifNull:[
+                                        "$userDetails",
+                                        "$userId"
+                                    ]
+                                }
+                            }
+                        },
+                        {$unset:"userDetails"}
+                    ],
+                    totalCount:[
+                        {$count:"total"}
+                    ]
+                }
+            }
+        );
+
+        const [result] =await Order.aggregate(pipeline);
+
+        const orders  =result.orders;
+        const totalOrders = result.totalCount[0]?.total||0;
+        const totalPages = Math.ceil(totalOrders/limit);
 
         return res.status(200).json({
             success:true,
             count:orders.length,
-            orders
-        });    
+            orders,
+            pagination:{
+                currentPage:page,
+                totalPages,
+                totalOrders,
+                limit
+            }
+        });
+
     }
     catch(error){
-        console.log("ADMIN GET ALL ORDERS ERROR:",error);
+        console.log("ADMIN GET ALL ORDERS ERROR:", error);
         next(error);
     }
 };

@@ -6,6 +6,11 @@ export const getProduct = async (params) => {
     return response.data;
 };
 
+export const getSingleProduct = async (id) => {
+    const response = await api.get(`/admin/products/${id}`);
+    return response.data;
+};
+
 export const getDeletedProducts = async (params) => {
     const response = await api.get("/admin/products/deleted", { params });
     return response.data;

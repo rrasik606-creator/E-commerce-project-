@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getAllProducts, getDeletedProducts, createProduct,updateProduct,temporaryDeleteProduct, restoreProduct, permanentDeleteProduct, getAllOrders, updateOrderStatus, getAllUsers, blockUser, unblockUser, getDashboardStats } from "../controllers/adminController.js";
+import { getAllProducts, getSingleProduct, getDeletedProducts, createProduct,updateProduct,temporaryDeleteProduct, restoreProduct, permanentDeleteProduct, getAllOrders, updateOrderStatus, getAllUsers, blockUser, unblockUser, getDashboardStats } from "../controllers/adminController.js";
 
 import authMiddleware from "../middlewares/authMiddleware.js";
 import roleMiddleware from "../middlewares/roleMiddleware.js";
@@ -18,6 +18,7 @@ router.use(roleMiddleware("admin"));
 
 router.get("/products",getAllProducts);
 router.get("/products/deleted", getDeletedProducts);
+router.get("/products/:id",getSingleProductValidator,validateMiddleware,getSingleProduct)
 router.post("/products",createProductValidator,validateMiddleware,createProduct);
 router.patch("/products/:id",updateProductValidator,validateMiddleware,updateProduct);
 router.delete("/products/:id",getSingleProductValidator,validateMiddleware,temporaryDeleteProduct);

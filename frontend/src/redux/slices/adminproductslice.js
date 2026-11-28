@@ -21,10 +21,10 @@ const adminProductSlice=createSlice({
 
         //store product
         setProducts:(state,action)=>{
-            state.products=action.payload.products;
+            state.products=action.payload.products||[];
             state.brands = action.payload.brands || [];
             state.types = action.payload.types || [];
-            state.pagination=action.payload.pagination;
+            state.pagination=action.payload.pagination||initialState.pagination;
         },
 
         //add product

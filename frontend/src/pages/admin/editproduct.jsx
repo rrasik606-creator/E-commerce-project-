@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import ProductForm from "../../components/productform";
 
 import {
-    getProduct,
+    getSingleProduct,
     updateProduct
 } from "../../services/adminproductservices";
 
-import {
-    updateProduct as updateProductRedux
-} from "../../redux/slices/adminproductslice";
 
 const EditProduct = () => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -28,11 +23,9 @@ const EditProduct = () => {
 
             try {
 
-                const products = await getProduct();
+                const data = await getSingleProduct(id);
 
-                const product = products.find(
-                    (product) => product.id === id
-                );
+                const product = data.product
 
                 if (!product) {
                     navigate("/admin/product");
@@ -70,6 +63,7 @@ const EditProduct = () => {
             } catch (error) {
 
                 console.log(error);
+                toast.error(error.response?.data?.message||"Failed to load product")
 
             }
         };
@@ -116,20 +110,16 @@ const EditProduct = () => {
                 isNew: formData.isNew
             };
 
-            const data = await updateProduct(
-                id,
-                updatedProduct
-            );
+            await updateProduct(id,updatedProduct);
 
-            dispatch(updateProductRedux(data));
-
-            toast.success("product updated")
+            toast.success("Product updated")
 
             navigate("/admin/product");
 
         } catch (error) {
 
             console.log(error);
+            toast.error(error.response?.data?.message||"Failed to update product")
 
         }
     };

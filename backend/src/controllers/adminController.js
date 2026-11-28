@@ -44,7 +44,7 @@ export const getAllProducts = async (req, res, next) => {
             .skip((page-1)*limit)
             .limit(limit);
         const brands = await Product.distinct("brand", { deleted: false });
-        const types = await Product.distinct("type", { deleted: true });
+        const types = await Product.distinct("type", { deleted: false });
 
         return res.status(200).json({
             success: true,
@@ -62,6 +62,41 @@ export const getAllProducts = async (req, res, next) => {
     }
     catch (error) {
         console.error("ADMIN GET ALL PRODUCTS ERROR:", error);
+        next(error);
+    }
+};
+
+
+export const getSingleProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: messages.INVALID_PRODUCT_ID
+            });
+        }
+
+        const product = await Product.findOne({
+            _id: id,
+            deleted: false
+        });
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: messages.PRODUCT_NOT_FOUND
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            product
+        });
+    }
+    catch (error) {
+        console.log("ADMIN GET SINGLE PRODUCT ERROR:", error);
         next(error);
     }
 };

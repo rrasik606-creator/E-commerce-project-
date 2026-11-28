@@ -1,18 +1,13 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import ProductForm from "../../components/productform";
 
 import { addProduct } from "../../services/adminproductservices";
-import {
-    addProduct as addProductRedux
-} from "../../redux/slices/adminproductslice";
 
 const AddProduct = () => {
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const initialData = {
@@ -71,9 +66,7 @@ const AddProduct = () => {
                 deleted: false
             };
 
-            const data = await addProduct(newProduct);
-
-            dispatch(addProductRedux(data));
+            await addProduct(newProduct);
 
             toast.success("New product added");
 
@@ -81,6 +74,7 @@ const AddProduct = () => {
 
         } catch (error) {
             console.log(error);
+            toast.error(error.response?.data?.message||"Failed to add product")
         }
     };
 
